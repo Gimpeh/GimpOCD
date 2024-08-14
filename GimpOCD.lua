@@ -1,10 +1,8 @@
 --GimpOCD (Overseeing, Controlling, Directing) main v0.0.1
 local event = require("event")
-local hud = require("hud")
 local overlay = require("overlay")
 local component = require("component")
 component.glasses.removeAll()
---HUD = hud.init()
 overlay.init()
 
 local function handleClick(_, _, _, x, y, button)
