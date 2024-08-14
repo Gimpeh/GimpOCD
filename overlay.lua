@@ -17,8 +17,6 @@ function overlay.tabs.loadTab(tab)
 end
 
 function overlay.init()
-	machinesManager
-
 	overlay.tabs.itemWindow = {}
 	overlay.tabs.itemWindow.background = widgetsAreUs.createBox(10, 10, 140, 40, {0, 0, 1}, 0.7)
 	overlay.tabs.itemWindow.title = component.glasses.addTextLabel()
