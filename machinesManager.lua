@@ -6,7 +6,8 @@ local PagedWindow = require("PagedWindow")
 local widgetsAreUs = require("widgetsAreUs")
 
 local has_been_sorted = false
-local active = nil
+local tbl = gimpHelper.loadTable("/home/programData/machinesManager.data")
+local active = tbl.active or "groups"
 
 local machinesManager = {}
 machinesManager.groups = {}
