@@ -56,10 +56,10 @@ function overlay.init()
 	overlay.tabs.left = widgetsAreUs.createBox(10, 225, 20, 20, {0, 1, 0}, 0.7)
 	overlay.tabs.right = widgetsAreUs.createBox(750, 225, 20, 20, {0, 1, 0}, 0.7)
 
-	overlay.boxes {left = overlay.tabs.left, right = overlay.tabs.right, textEditor = overlay.tabs.textEditor.background, options = overlay.tabs.options.background}
+	overlay.boxes = {left = overlay.tabs.left, right = overlay.tabs.right, textEditor = overlay.tabs.textEditor.background, options = overlay.tabs.options.background}
 
 	local success, config = pcall(gimpHelper.loadTable, "/home/programData/overlay.data")
-	if success then
+	if success and config then
 		local tab = config.currentTab
 		overlay.tabs.loadTab(tab)
 	else
