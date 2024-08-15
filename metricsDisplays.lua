@@ -315,7 +315,7 @@ function machineIndividual.create(x, y, individualProxy)
 
 			return machineInterface.getState()
 		end,
-		onClick = function(button, machinesInterface)
+		onClick = function(button, machineInterface)
 			if button == 0 then -- left click
 				machineInterface.setState(machineInterface)
 			elseif button == 1 then --right click
@@ -334,7 +334,7 @@ function machineIndividual.create(x, y, individualProxy)
 						local xyz = {}
 						xyz.x, xyz.y, xyz.z = machine.getCoordinates()
 
-						machinesInterface.setName(newText)
+						machineInterface.setName(newText)
 						modem.broadcast(888, "rename", s.serialize(xyz), newText)
 
 						helpMessage:remove()
