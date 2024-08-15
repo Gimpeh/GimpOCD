@@ -6,7 +6,8 @@ component.glasses.removeAll()
 overlay.init()
 
 local function handleClick(_, _, _, x, y, button)
-    overlay.onClick(x, y, button)
+    local success, error = pcall(overlay.onClick, x, y, button)
+	if not success then print(error) end
 end
 
 local function onOverlayEvent(eventType, ...)
