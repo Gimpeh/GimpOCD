@@ -6,15 +6,8 @@ local PagedWindow = require("PagedWindow")
 local widgetsAreUs = require("widgetsAreUs")
 
 local has_been_sorted = false
-local tbl = gimpHelper.loadTable("/home/programData/machinesManager.data")
-local active
-
-local status, result = pcall(function() return tbl and tbl.active end)
-if status then
-  active = result or "groups"
-else
-  active = "groups"
-end
+local activeIndividualPage
+local active = "groups"
 
 local machinesManager = {}
 machinesManager.groups = {}
@@ -50,12 +43,7 @@ local function sortProxies()
 end
 
 function machinesManager.init()
-	local success, config = pcall(gimpHelper.loadTable, "/home/programData/machines.config")
-	if success then
-		machinesManager[config.active].init()
-	else
-		machinesManager.groups.init()
-	end
+		machinesManager[active].init(activeIndividualPage)
 end
 
 function machinesManager.groups.init()
@@ -82,10 +70,14 @@ function machinesManager.groups.remove()
 end
 
 function machinesManager.individuals.init(machinesTable)
+	if not machinesTable then
+		machinesTable = activeIndividualPage
+	end
 	machinesManager.individuals.background = widgetsAreUs.createBox(70, 70, 640, 430, {1, 1, 1}, 0.7)
 	machinesManager.individuals.display = PagedWindow.new(machinesTable, 60, 34, {x1 = 80, y1 = 80, x2 = 700, y2 = 400}, 7, metricsDisplays.machine.create)
 	machinesManager.individuals.display:displayItems()
 	active = "individuals"
+	activeIndividualPage = machinesTable
 end
 
 function machinesManager.individuals.remove()
