@@ -63,11 +63,13 @@ function machinesManager.groups.init()
 		sortProxies()
 	end
 	local args = {}
-	for k, v in ipairs(machinesManager.groups.groupings) do
+	local args2 = {}
+	for k, v in pairs(machinesManager.groups.groupings) do
 		table.insert(args, k)
+		table.insert(args2, v)
 	end
 	machinesManager.groups.background = widgetsAreUs.createBox(90, 30, 720, 465, {1, 1, 1}, 0.8)
-	machinesManager.groups.display = PagedWindow.new(machinesManager.groups.groupings, 107, 75, {x1 = 100, y1 = 40, x2 = 700, y2 = 430}, 15, metricsDisplays.machineGroups.createElement, args)
+	machinesManager.groups.display = PagedWindow.new(args2, 107, 75, {x1 = 100, y1 = 40, x2 = 700, y2 = 430}, 15, metricsDisplays.machineGroups.createElement, args)
 	machinesManager.groups.display:displayItems()
 	active = "groups"
 end
