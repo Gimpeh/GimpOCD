@@ -10,7 +10,7 @@ overlay.tabs = {}
 local active
 
 function overlay.tabs.loadTab(tab)
-    if active and type(active.remove) == "function" then
+    if active and active.remove then
         pcall(active.remove)
     end
     overlay.tabs[tab].init()
