@@ -129,6 +129,7 @@ function machinesManager.right()
 end
 
 function machinesManager.setVisible(visible)
+	machinesManager[active].background.setVisible(visible)
 	for k, v in ipairs(machinesManager[active].display.currentlyDisplayed) do
 		v.setVisible(visible)
 	end
