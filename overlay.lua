@@ -85,12 +85,16 @@ end
 
 function overlay.hide()
 	overlay.tabs.setVisible(false)
-	machinesManager.setVisible(false)
+	if active and active.setVisible then
+		active.setVisible(false)
+	end
 end
 
 function overlay.show()
 	overlay.tabs.setVisible(true)
-	machinesManager.setVisible(true)
+	if active and active.setVisible then
+		active.setVisible(true)
+	end
 end
 
 function overlay.onClick(x, y, button)
