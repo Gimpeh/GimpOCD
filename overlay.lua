@@ -60,7 +60,7 @@ function overlay.init()
 
 	local success, config = pcall(gimpHelper.loadTable, "/home/programData/overlay.data")
 	if success and config then
-		local tab = config.currentTab
+		local tab = config.tab
 		overlay.tabs.loadTab(tab)
 	else
 		overlay.tabs.machines.init()
