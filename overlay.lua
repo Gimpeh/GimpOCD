@@ -10,10 +10,12 @@ overlay.tabs = {}
 local active
 
 function overlay.tabs.loadTab(tab)
-	pcall(pcall(active.remove))
-	overlay.tabs[tab].init()
-	local tbl = {tab = tab}
-	gimpHelper.saveTable(tbl, "/home/programData/overlay.data")
+    if active and type(active.remove) == "function" then
+        pcall(active.remove)
+    end
+    overlay.tabs[tab].init()
+    local tbl = {tab = tab}
+    gimpHelper.saveTable(tbl, "/home/programData/overlay.data")
 end
 
 function overlay.init()
