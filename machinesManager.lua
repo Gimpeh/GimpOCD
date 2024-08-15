@@ -74,6 +74,7 @@ function machinesManager.individuals.init(machinesTable)
 		machinesTable = activeIndividualPage
 	end
 	machinesManager.individuals.background = widgetsAreUs.createBox(70, 70, 640, 430, {1, 1, 1}, 0.7)
+	machinesManager.individuals.back = widgetsAreUs.createBox(720, 75, 50, 25, {1, 0, 0}, 0.7)
 	machinesManager.individuals.display = PagedWindow.new(machinesTable, 60, 34, {x1 = 80, y1 = 80, x2 = 700, y2 = 400}, 7, metricsDisplays.machine.create)
 	machinesManager.individuals.display:displayItems()
 	active = "individuals"
@@ -83,6 +84,7 @@ end
 function machinesManager.individuals.remove()
 	machinesManager.individuals.display:clearDisplayedItems()
 	component.glasses.removeObject(machinesManager.individuals.background.getID())
+	component.glasses.removeObject(machinesManager.individuals.back.getID())
 	machinesManager.individuals.background = nil
 end
 
@@ -107,6 +109,12 @@ function machinesManager.update()
 end
 
 function machinesManager.onClick(x, y, button)
+	if machinesManager.individuals.back then
+		if widgetsAreUs.isPointInBox(x, y, machinesManager.individuals.back) then
+			machinesManager.individuals.remove()
+			machinesManager.groups.init()
+		end
+	end
 	for k, v in ipairs(machinesManager[active].display.currentlyDisplayed) do
 		if widgetsAreUs.isPointInBox(x, y, v.background) then
 			v.onClick(button, v)
