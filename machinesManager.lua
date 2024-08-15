@@ -7,7 +7,6 @@ local widgetsAreUs = require("widgetsAreUs")
 
 local has_been_sorted = false
 local tbl = gimpHelper.loadTable("/home/programData/machinesManager.data")
-local tbl = gimpHelper.loadTable("/home/programData/machinesManager.data")
 local active
 
 local status, result = pcall(function() return tbl and tbl.active end)
