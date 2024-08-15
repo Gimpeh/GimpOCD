@@ -112,4 +112,10 @@ function overlay.onClick(x, y, button)
 	active.onClick(x, y, button)
 end
 
+function overlay.update()
+	if active and active.update then
+		active.update()
+	end
+end
+
 return overlay

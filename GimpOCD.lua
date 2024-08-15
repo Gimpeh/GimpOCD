@@ -4,6 +4,11 @@ local overlay = require("overlay")
 local component = require("component")
 component.glasses.removeAll()
 overlay.init()
+local overlayUpdateEvent
+
+local function updateOverlay()
+	overlay.update()
+end
 
 local function handleClick(_, _, _, x, y, button)
     local success, error = pcall(overlay.onClick, x, y, button)
@@ -14,9 +19,12 @@ local function onOverlayEvent(eventType, ...)
 	if eventType == "overlay_opened" then
 		event.listen("hud_click", handleClick)
 		overlay.show()
+		overlay.update()
+		overlayUpdateEvent = event.timer(20, updateOverlay, math.huge)
 	elseif eventType == "overlay_closed" then
 		event.ignore("hud_click", handleClick)
 		overlay.hide()
+		event.cancel(overlayUpdateEvent)
 	end
 end
 

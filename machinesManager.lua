@@ -42,10 +42,6 @@ local function sortProxies()
 	has_been_sorted = true
 end
 
-function machinesManager.init()
-		machinesManager[active].init(activeIndividualPage)
-end
-
 function machinesManager.groups.init()
 	if not has_been_sorted then
 		sortProxies()
@@ -56,8 +52,9 @@ function machinesManager.groups.init()
 		table.insert(args, k)
 		table.insert(args2, v)
 	end
-	machinesManager.groups.background = widgetsAreUs.createBox(90, 30, 720, 465, {1, 1, 1}, 0.8)
-	machinesManager.groups.display = PagedWindow.new(args2, 107, 75, {x1 = 100, y1 = 40, x2 = 700, y2 = 430}, 15, metricsDisplays.machineGroups.createElement, args)
+	machinesManager.groups.background = widgetsAreUs.createBox(70, 70, 640, 430, {1, 1, 1}, 0.8)
+	os.sleep(0.1)
+	machinesManager.groups.display = PagedWindow.new(args2, 60, 34, {x1 = 80, y1 = 80, x2 = 700, y2 = 400}, 15, metricsDisplays.machineGroups.createElement, args)
 	machinesManager.groups.display:displayItems()
 	active = "groups"
 end
