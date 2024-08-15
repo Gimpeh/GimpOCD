@@ -10,7 +10,9 @@ overlay.tabs = {}
 local active
 
 function overlay.tabs.loadTab(tab)
-	pcall(active.remove)
+	if active and active.remove then
+		pcall(active.remove)
+	end
 	overlay.tabs[tab].init()
 	local tbl = {tab = tab}
 	gimpHelper.saveTable(tbl, "/home/programData/overlay.data")
