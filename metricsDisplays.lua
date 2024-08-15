@@ -334,7 +334,7 @@ function machineIndividual.create(x, y, individualProxy)
 						local xyz = {}
 						xyz.x, xyz.y, xyz.z = machine.getCoordinates()
 
-						machineInterfaces.setName(newText)
+						machinesInterface.setName(newText)
 						modem.broadcast(888, "rename", s.serialize(xyz), newText)
 
 						helpMessage:remove()
