@@ -154,7 +154,7 @@ function machinesMetricsElement.createElement(x, y, machineTable, header)
     backgroundInterior.setAlpha(0.7)
 
   local headerText = glasses.addTextLabel()
-    headerText.setScale(2)
+    headerText.setScale(1.2)
     headerText.setText(header)
     headerText.setPosition(x + 10, y + 10)
 
@@ -315,7 +315,7 @@ function machineIndividual.create(x, y, individualProxy)
 
 			return machineInterface.getState()
 		end,
-		onClick = function(machineInterface, button)
+		onClick = function(button, machinesInterface)
 			if button == 0 then -- left click
 				machineInterface.setState(machineInterface)
 			elseif button == 1 then --right click

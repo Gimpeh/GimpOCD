@@ -117,7 +117,7 @@ end
 function machinesManager.onClick(x, y, button)
 	for k, v in ipairs(machinesManager[active].display.currentlyDisplayed) do
 		if widgetsAreUs.isPointInBox(x, y, v.background) then
-			v.onClick(button)
+			v.onClick(button, v)
 		end
 	end
 end
