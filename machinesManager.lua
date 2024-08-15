@@ -39,7 +39,7 @@ local function sortProxies()
 		for e = #unsorted, 1, -1 do
 			local i = unsorted[e]
 			local x, y, z = i.getCoordinates()
-			if v.start.x < x and x < v.ending.x and v.start.y < y and y < v.ending.y and v.start.z < z and z < v.ending.z then
+			if v.start.x < x and x < v.ending.x and v.start.z < z and z < v.ending.z then
 				table.insert(proxies, i)
 				table.remove(unsorted, e)
 			end
