@@ -69,7 +69,7 @@ function PagedWindow:displayItems()
 		end
 
         if item then
-            -- Call renderItem without the index `i`
+            print(item)
             local displayedItem = self.renderItem(x, y, item, self.args[i])
             table.insert(self.currentlyDisplayed, displayedItem)
         end
