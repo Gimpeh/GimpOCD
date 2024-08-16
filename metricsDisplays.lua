@@ -181,9 +181,7 @@ function machinesMetricsElement.createElement(x, y, machineTable, header)
       numberOfMachines.setText(tostring(#machinesTable))
 	  local allowedToWork = 0
 	  for k, v in ipairs(machinesTable) do
-		print("checking if allowed")
 		if v.isWorkAllowed() then
-			print("was allowed")
 			allowedToWork = allowedToWork +1
 		end
 	  end
@@ -362,7 +360,7 @@ function machineIndividual.create(x, y, individualProxy)
 			state = nil
 		
 			machineInterface = nil
-		end,
+		end
 	}
 
 	return machineInterface

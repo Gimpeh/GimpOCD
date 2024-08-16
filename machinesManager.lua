@@ -54,7 +54,7 @@ function machinesManager.groups.init()
 	end
 	machinesManager.groups.background = widgetsAreUs.createBox(70, 70, 640, 430, {1, 1, 1}, 0.8)
 	os.sleep(0.1)
-	machinesManager.groups.display = PagedWindow.new(args2, 107, 75, {x1 = 80, y1 = 80, x2 = 700, y2 = 400}, 15, metricsDisplays.machineGroups.createElement, args)
+	machinesManager.groups.display = PagedWindow.new(args2, 107, 75, {x1 = 80, y1 = 80, x2 = 700, y2 = 500}, 15, metricsDisplays.machineGroups.createElement, args)
 	machinesManager.groups.display:displayItems()
 	active = "groups"
 end
@@ -72,7 +72,7 @@ function machinesManager.individuals.init(machinesTable)
 	end
 	machinesManager.individuals.background = widgetsAreUs.createBox(70, 70, 640, 430, {1, 1, 1}, 0.7)
 	machinesManager.individuals.back = widgetsAreUs.createBox(720, 75, 50, 25, {1, 0, 0}, 0.7)
-	machinesManager.individuals.display = PagedWindow.new(machinesTable, 60, 34, {x1 = 80, y1 = 80, x2 = 700, y2 = 400}, 7, metricsDisplays.machine.create)
+	machinesManager.individuals.display = PagedWindow.new(machinesTable, 60, 34, {x1 = 80, y1 = 80, x2 = 700, y2 = 500}, 7, metricsDisplays.machine.create)
 	machinesManager.individuals.display:displayItems()
 	active = "individuals"
 	activeIndividualPage = machinesTable
