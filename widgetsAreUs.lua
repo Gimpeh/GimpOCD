@@ -201,7 +201,7 @@ function widgetsAreUs.isPointInBox(x, y, box)
     return x >= start.xS and x <= finish.endX and y >= start.yS and y <= finish.endY
 end
 
-function widgetsAreUs.titledBox(x, y, width, height, color, alpha, titleText, textScale)
+function widgetsAreUs.titleBox(x, y, width, height, color, alpha, titleText, textScale)
     local background = widgetsAreUs.createBox(x, y, width, height, color, alpha)
     local title = component.glasses.addTextLabel()
     title.setScale(textScale)
