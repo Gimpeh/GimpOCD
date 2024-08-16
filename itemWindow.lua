@@ -132,8 +132,10 @@ function itemWindow.onClick(x, y, button)
         if widgetsAreUs.isPointInBox(x, y, v.background) then
             if not addTo then
                 if button == 0 then
-                    itemWindow.elements.monitoredItems.display:clearDisplayedItems()
-                    itemWindow.elements.monitoredItems.display = nil
+                    if itemWindow.elements.monitoredItems.display then
+                        itemWindow.elements.monitoredItems.display:clearDisplayedItems()
+                        itemWindow.elements.monitoredItems.display = nil
+                    end
                     local tbl = gimpHelper.loadTable("/home/programData/monitoredItems") or {}
                     table.insert(tbl, v.item)
                     gimpHelper.saveTable(tbl, "/home/programData/monitoredItems")
