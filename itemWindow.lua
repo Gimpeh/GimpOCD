@@ -17,6 +17,7 @@ function itemWindow.init()
     local items = component.me_interface.getItemsInNetwork()
     itemWindow.elements.mainStorage.display = PagedWindow.new(items, 120, 40, {x1=25, y1=83, x2=320, y2=403}, 5, itemElements.itemBox.create)
     itemWindow.elements.mainStorage.display:displayItems()
+    --itemWindow.elements.mainStorage.previousButton = widgetsAreUs.createBox()
 
     itemWindow.elements.reverseLevelMaintainer.background = widgetsAreUs.createBox(330, 78, 160, 160, {1.0, 0.0, 0.0}, 0.8)
 
