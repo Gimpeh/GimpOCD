@@ -139,10 +139,12 @@ function itemWindow.onClick(x, y, button)
                     gimpHelper.saveTable(tbl, "/home/programData/monitoredItems")
                     itemWindow.elements.monitoredItems.display = PagedWindow.new(monItemsData, 120, 40, {x1=355, y1=270, x2=630, y2=421}, 5, itemElements.itemBox.create)
                     itemWindow.elements.monitoredItems.display:displayItems()
+                    return
                 elseif button == 1 then
                     component.modem.open(300)
                     component.modem.broadcast(300, s.serialize(v.item))
                     component.modem.close(300)
+                    return
                 end
             else
 
