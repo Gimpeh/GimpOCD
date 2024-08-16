@@ -156,4 +156,6 @@ function saveData(newName, xyz)
 	gimpHelper.saveTable(tbl, "/home/programData/" .. individualHeader .. ".data")
 end
 
+event.listen("nameSet", saveData)
+
 return machinesManager
