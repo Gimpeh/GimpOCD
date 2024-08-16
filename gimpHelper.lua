@@ -97,8 +97,6 @@ function gimpHelper.loadTable(filename)
 
     local content = file:read("*a")  -- Read the whole file content
     file:close()
-
-    print(content)
     local func = load(content)  -- Execute the file's contents as Lua code
     local tbl = func()
     return tbl
