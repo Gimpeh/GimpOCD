@@ -159,7 +159,7 @@ function machinesMetricsElement.createElement(x, y, machineTable, header)
     headerText.setPosition(x + 10, y + 10)
 
   local numberOfMachines = glasses.addTextLabel()
-  numberOfMachines.setPosition(x+42, y+50)
+  numberOfMachines.setPosition(x+70, y+50)
   numberOfMachines.setText(" ")
 
   local canRunTitle = glasses.addTextLabel()
@@ -169,7 +169,7 @@ function machinesMetricsElement.createElement(x, y, machineTable, header)
 
   local canRun = glasses.addTextLabel()
   canRun.setText(" ")
-  canRun.setPosition(x+70, y+50)
+  canRun.setPosition(x+42, y+50)
   canRun.setScale(1.5)
 
   local workAllowed = true
@@ -181,7 +181,9 @@ function machinesMetricsElement.createElement(x, y, machineTable, header)
       numberOfMachines.setText(tostring(#machinesTable))
 	  local allowedToWork = 0
 	  for k, v in ipairs(machinesTable) do
+		print("checking if allowed")
 		if v.isWorkAllowed() then
+			print("was allowed")
 			allowedToWork = allowedToWork +1
 		end
 	  end
@@ -189,7 +191,7 @@ function machinesMetricsElement.createElement(x, y, machineTable, header)
       if allowed == 0 then
         background.setColor(255, 0, 0)
         workAllowed = false
-      elseif allowed > 0 and allowed < metricsGroup.amountOfMachines then
+      elseif allowed > 0 and allowed < #machinesTable then
         background.setColor(1, 0, 1)
       else
         background.setColor(0, 0, 0)
