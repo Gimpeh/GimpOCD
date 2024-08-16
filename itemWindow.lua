@@ -192,7 +192,7 @@ function itemWindow.onClick(x, y, button)
                 end
                 table.insert(rvlvlmaint, {itemStack = v.item, batch = 0, amount = 0})
                 gimpHelper.saveTable(rvlvlmaint, "/home/programData/reverseLevelMaintainer.data")
-                rlm.display = PagedWindow.new(rvlvlmaint, 150, 30, {x1=330, y1=71, x2=490, y2=238}, 5, widgetsAreUs.levelMaintainer)
+                rlm.display = PagedWindow.new(rvlvlmaint, 150, 30, {x1=335, y1=77, x2=490, y2=238}, 5, widgetsAreUs.levelMaintainer)
                 rlm.display:displayItems()
                 renameBatch()
             elseif addTo == "levelMaintainer" then
