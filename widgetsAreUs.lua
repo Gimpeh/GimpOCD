@@ -257,7 +257,7 @@ function widgetsAreUs.levelMaintainer(x, y, argsTable, arrayIndex)
     local batchText = component.glasses.addTextLabel()
     batchText.setScale(0.9)
     batchText.setPosition(x+10, y+12)
-    batchText.setText(argsTable.batch)
+    batchText.setText(tostring(argsTable.batch))
     local amount = widgetsAreUs.titleBox(x+70, y+10, 75, 20, {1, 1, 1}, 0.8, "Amount", 0.7)
     amount.onClick = function()
         while true do
@@ -284,7 +284,7 @@ function widgetsAreUs.levelMaintainer(x, y, argsTable, arrayIndex)
     amountText = component.glasses.addTextLabel()
     amountText.setScale(0.9)
     amountText.setPosition(x+70, y+12)
-    amountText.setText(argsTable.amount)
+    amountText.setText(tostring(argsTable.amount))
 
     return {
         background = background,
