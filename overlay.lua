@@ -56,10 +56,8 @@ function overlay.init()
 		print("text editor tab init called")
 		active = "text editor not set yet"
 	end
-	overlay.tabs.left = widgetsAreUs.createBox(10, 225, 20, 20, {0, 1, 0}, 0.7)
-	overlay.tabs.right = widgetsAreUs.createBox(750, 225, 20, 20, {0, 1, 0}, 0.7)
 
-	overlay.boxes = {left = overlay.tabs.left, right = overlay.tabs.right, textEditor = overlay.tabs.textEditor.background, options = overlay.tabs.options.background, machines = overlay.tabs.machines.background, itemWindow = overlay.tabs.itemWindow.background}
+	overlay.boxes = {textEditor = overlay.tabs.textEditor.background, options = overlay.tabs.options.background, machines = overlay.tabs.machines.background, itemWindow = overlay.tabs.itemWindow.background}
 
 	local success, config = pcall(gimpHelper.loadTable, "/home/programData/overlay.data")
 	if success and config then
@@ -99,17 +97,6 @@ function overlay.show()
 end
 
 function overlay.onClick(x, y, button)
-	for k, v in pairs(overlay.boxes) do
-		if widgetsAreUs.isPointInBox(x, y, v) then
-			if k ~= "left" and k ~="right" then
-				return overlay.tabs.loadTab(k)
-			elseif k == "left" then
-				return pcall(active.left)
-			elseif k == "right" then
-				return pcall(active.right)
-			end
-		end
-	end
 	active.onClick(x, y, button)
 end
 

@@ -111,6 +111,8 @@ end
 --machinesManager.next()
 
 function machinesManager.init()
+	machinesManager.left = widgetsAreUs.createBox(10, 225, 20, 20, {0, 1, 0}, 0.7)
+	machinesManager.right = widgetsAreUs.createBox(750, 225, 20, 20, {0, 1, 0}, 0.7)
 	machinesManager[active].init()
 end
 
@@ -125,25 +127,26 @@ function machinesManager.update()
 end
 
 function machinesManager.onClick(x, y, button)
+	if widgetsAreUs.isPointInBox(x, y, machinesManager.left) then
+		machinesManager[active].display:prevPage()
+		return
+	elseif widgetsAreUs.isPointInBox(x, y, machinesManager.right) then
+		machinesManager[active].display:nextPage()
+		return
+	end
 	if machinesManager.individuals.back then
 		if widgetsAreUs.isPointInBox(x, y, machinesManager.individuals.back) then
 			machinesManager.individuals.remove()
 			machinesManager.groups.init()
+			return
 		end
 	end
 	for k, v in ipairs(machinesManager[active].display.currentlyDisplayed) do
 		if widgetsAreUs.isPointInBox(x, y, v.background) then
 			v.onClick(button, v)
+			return
 		end
 	end
-end
-
-function machinesManager.left()
-	machinesManager[active].display:prevPage()
-end
-
-function machinesManager.right()
-	machinesManager[active].display:nextPage()
 end
 
 function machinesManager.setVisible(visible)

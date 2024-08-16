@@ -35,7 +35,7 @@ function itemWindow.setVisible(visible)
     itemWindow.elements.monitoredItems.background.setVisible(visible)
     itemWindow.elements.searchBox.setVisible(visible)
 
-    for k, v in pairs(itemWindow.elements.mainStorage.display.displayedItems) do
+    for k, v in pairs(itemWindow.elements.mainStorage.display.currentlyDisplayed) do
         v.setVisible(visible)
     end
 end
@@ -46,7 +46,7 @@ function itemWindow.remove()
     component.glasses.removeObject(itemWindow.elements.levelMaintainer.background.getID())
     component.glasses.removeObject(itemWindow.elements.monitoredItems.background.getID())
     component.glasses.removeObject(itemWindow.elements.searchBox.getID())
-    for k, v in pairs(itemWindow.elements.mainStorage.display.displayedItems) do
+    for k, v in pairs(itemWindow.elements.mainStorage.display.currentlyDisplayed) do
         v.remove()
     end
 
