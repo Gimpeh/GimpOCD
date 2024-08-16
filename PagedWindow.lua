@@ -69,7 +69,7 @@ function PagedWindow:displayItems()
 		end
 
         if item then
-            print(item)
+            print("displayItems if item reached")
             local displayedItem = self.renderItem(x, y, item, self.args[i])
             table.insert(self.currentlyDisplayed, displayedItem)
         end

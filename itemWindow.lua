@@ -70,6 +70,7 @@ function itemWindow.init()
     if monItemsData and monItemsData[1] then
         itemWindow.elements.monitoredItems.itemList = monItemsData
         itemWindow.elements.monitoredItems.display = PagedWindow.new(monItemsData, 120, 40, {x1=355, y1=270, x2=630, y2=421}, 5, itemElements.itemBox.create)
+        itemWindow.elements.monitoredItems.display:displayItems()
     end
 
     itemWindow.searchBox = widgetsAreUs.createBox(25, 55, 120, 20, {1, 1, 1}, 1.0)
@@ -136,10 +137,13 @@ function itemWindow.onClick(x, y, button)
                         itemWindow.elements.monitoredItems.display:clearDisplayedItems()
                         itemWindow.elements.monitoredItems.display = nil
                     end
-                    local tbl = gimpHelper.loadTable("/home/programData/monitoredItems") or {}
+                    local tbl = gimpHelper.loadTable("/home/programData/monitoredItems")
+                    if not tbl and not tbl[1] then
+                        tbl = {}
+                    end
                     table.insert(tbl, v.item)
                     gimpHelper.saveTable(tbl, "/home/programData/monitoredItems")
-                    itemWindow.elements.monitoredItems.display = PagedWindow.new(monItemsData, 120, 40, {x1=355, y1=270, x2=630, y2=421}, 5, itemElements.itemBox.create)
+                    itemWindow.elements.monitoredItems.display = PagedWindow.new(tbl, 120, 40, {x1=355, y1=270, x2=630, y2=421}, 5, itemElements.itemBox.create)
                     itemWindow.elements.monitoredItems.display:displayItems()
                     return
                 elseif button == 1 then
