@@ -3,9 +3,11 @@ local event = require("event")
 local overlay = require("overlay")
 local component = require("component")
 local widgetsAreUs = require("widgetsAreUs")
+local hud = require("hud")
 
 component.glasses.removeAll()
 overlay.init()
+hud.init()
 local overlayUpdateEvent
 local highlighters = {}
 
@@ -50,7 +52,14 @@ local function onHighlight(_, xyz)
 	if not success then print(error) end
 end
 
+local function onModemMessage(_, _, _, port, _, message1)
+	if port == 202 then
+		pcall(hud.modemMessageHandler(port, message1))
+	end
+end
+
 event.listen("highlight", onHighlight)
+event.listen("modem_message", onModemMessage)
 event.listen("overlay_opened", onOverlayEvent)
 event.listen("overlay_closed", onOverlayEvent)
 --event.listen("modem_message", onModemMessage)

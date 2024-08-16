@@ -54,4 +54,11 @@ function hud.show()
 	hud.elements.battery.setVisible(true)
 end
 
+function hud.modemMessageHandler(port, message)
+	if port == 202 then
+		local unserializedTable = s.unserialize(message)
+		hud.elements.battery:update(unserializedTable)
+	end
+end
+
 return hud

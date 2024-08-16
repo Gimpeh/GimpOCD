@@ -4,6 +4,7 @@ local component = require("component")
 local widgetsAreUs = require("widgetsAreUs")
 local gimpHelper = require("gimpHelper")
 local machinesManager = require("machinesManager")
+local itemWindow = require("itemWindow")
 
 local overlay = {}
 overlay.tabs = {}
@@ -25,8 +26,8 @@ function overlay.init()
 	overlay.tabs.itemWindow.title.setPosition(20, 20)
 	overlay.tabs.itemWindow.title.setText("Storage")
 	overlay.tabs.itemWindow.init = function()
-		print("item window init called")
-		active = "item window not ready yet"
+		itemWindow.init()
+		active = itemWindow
 	end
 	overlay.tabs.machines = {}
 	overlay.tabs.machines.background = widgetsAreUs.createBox(160, 10, 140, 40, {0, 0, 1}, 0.7)
