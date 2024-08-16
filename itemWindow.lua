@@ -66,7 +66,7 @@ function itemWindow.init()
 
     itemWindow.searchBox = widgetsAreUs.createBox(25, 55, 120, 20, {0.1, 0.1, 0.1}, 1.0)
     itemWindow.searchText = component.glasses.addTextLabel()
-    itemWindow.searchText.setPosition(57, 27)
+    itemWindow.searchText.setPosition(27, 57)
     itemWindow.searchText.setScale(1)
     itemWindow.searchText.setText("Search")
     event.listen("hud_keyboard", handleKeyboardWrapper)
