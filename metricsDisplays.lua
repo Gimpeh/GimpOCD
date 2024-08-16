@@ -252,7 +252,7 @@ local machineIndividual = {}
 function machineIndividual.create(x, y, individualProxy)
 	local machine = individualProxy
 
-	local background = widgetsAreUs.createBox(x, y, 60, 34, {1, 1, 1}, 0.6)
+	local background = widgetsAreUs.createBox(x, y, 85, 34, {1, 1, 1}, 0.6)
 
 	local name = glasses.addTextLabel()
 	name.setPosition(x+4, y+4)
@@ -262,7 +262,7 @@ function machineIndividual.create(x, y, individualProxy)
 	local name2 = glasses.addTextLabel()
 	name2.setPosition(x+4, y+12)
 	name2.setText(" ")
-	name2.setScale(1)
+	name2.setScale(0.9)
 
 	local state = glasses.addTextLabel()
 	state.setScale(1.2)
