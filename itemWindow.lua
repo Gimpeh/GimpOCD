@@ -1,6 +1,6 @@
 local widgetsAreUs = require("widgetsAreUs")
 local PagedWindow = require("PagedWindow")
-local components = require("component")
+local component = require("component")
 local itemElements = require("itemElements")
 
 local itemWindow = {}
