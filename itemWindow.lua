@@ -15,6 +15,9 @@ local function trim(s)
 end
 
 local function handleKeyboard(character)
+    if trim(itemWindow.searchText.getText()) == "Search" then
+        itemWindow.searchText.setText("")
+    end
     if character == 13 then  -- Enter key                        
         if itemWindow.elements.mainStorage.display then                  
             itemWindow.elements.mainStorage.display:clearDisplayedItems()
@@ -47,7 +50,6 @@ function itemWindow.init()
     itemWindow.elements.mainStorage.display:displayItems()
     itemWindow.elements.mainStorage.previousButton = widgetsAreUs.createBox(150, 55, 20, 20, {0, 1, 0.3}, 0.8)
     itemWindow.elements.mainStorage.nextButton = widgetsAreUs.createBox(150, 405, 20, 20, {0, 1, 0.3}, 0.8)
-    event.listen("hud_keyboard", handleKeyboardWrapper)
 
     itemWindow.elements.reverseLevelMaintainer.background = widgetsAreUs.createBox(330, 78, 160, 160, {1.0, 0.0, 0.0}, 0.8)
     itemWindow.elements.reverseLevelMaintainer.previousButton = widgetsAreUs.createBox(400, 55, 20, 20, {0, 1, 0.3}, 0.8)
@@ -66,6 +68,7 @@ function itemWindow.init()
     itemWindow.searchText.setPosition(57, 27)
     itemWindow.searchText.setScale(1)
     itemWindow.searchText.setText("Search")
+    event.listen("hud_keyboard", handleKeyboardWrapper)
 end
 
 function itemWindow.setVisible(visible)
@@ -99,6 +102,7 @@ function itemWindow.remove()
         v.nextButton = nil
         v.background = nil
     end
+    event.ignore("hud_keyboard", handleKeyboardWrapper)
 end
 
 function itemWindow.onClick(x, y, button)
