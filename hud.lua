@@ -1,6 +1,7 @@
 local widgetsAreUs = require("widgetsAreUs")
 local event = require("event")
 local metricsDisplays = require("metricsDisplays")
+local s = require("serialization")
 
 local hud = {}
 hud.elements = {}
@@ -57,7 +58,7 @@ end
 function hud.modemMessageHandler(port, message)
 	if port == 202 then
 		local unserializedTable = s.unserialize(message)
-		hud.elements.battery:update(unserializedTable)
+		hud.elements.battery.update(unserializedTable)
 	end
 end
 
