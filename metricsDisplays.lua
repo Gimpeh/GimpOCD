@@ -284,7 +284,7 @@ function machineIndividual.create(x, y, individualProxy)
 				xyz.x, xyz.y, xyz.z = machine.getCoordinates()
 				computer.pushSignal("nameSet", newName, xyz)
 			else
-				local firstPart, secondPart = string.match(machine.getName(), "([^%]+)%.([^%]+)%.?.*")
+				local firstPart, secondPart = string.match(machine.getName(), "([^%.]+)%.([^%.]+)%.?.*")
 				name.setText(firstPart)
 				name2.setText(secondPart)
 			end
