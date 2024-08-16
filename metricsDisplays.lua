@@ -315,7 +315,7 @@ function machineIndividual.create(x, y, individualProxy)
 			end
 		end,
 		setState = function(machineInterface)
-			local allowed = machineInterface.getState()
+			local allowed = machine.isWorkAllowed()
 			if allowed then
 				machine.setWorkAllowed(false)
 				background.setColor(1, 0, 0)
