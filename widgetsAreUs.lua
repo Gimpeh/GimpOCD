@@ -155,7 +155,10 @@ function widgetsAreUs.maintenanceBeacon(x, y, z)
 		remove = function()
 			component.glasses.removeObject(element.getID())
 			element = nil
-		end
+		end,
+        x = x,
+        y = y,
+        z = z
 	}
 end
 

@@ -30,7 +30,7 @@ local function onOverlayEvent(eventType, ...)
 	end
 end
 
-function onHighlight(_, xyz)
+local function onHighlightActual(xyz)
 	for k,v in ipairs(highlighters) do
 		if v.x == xyz.x and v.y == xyz.y and v.z == xyz.z then
 			v.remove()
@@ -41,6 +41,13 @@ function onHighlight(_, xyz)
 	local beacon = widgetsAreUs.maintenanceBeacon(xyz.x, xyz.y, xyz.z)
 	beacon.beacon.setColor(0, 1, 1)
 	table.insert(highlighters, beacon)
+end
+
+local function onHighlight(_, xyz)
+	print(xyz)
+	local success, error = pcall(onHighlightActual, xyz)
+	print(success)
+	print(error)
 end
 
 event.listen("highlight", onHighlight)
