@@ -253,16 +253,20 @@ function itemWindow.onClick(x, y, button)
         os.sleep(0)
         if widgetsAreUs.isPointInBox(x, y, v.background) then
             if widgetsAreUs.isPointInBox(x, y, v.amount.background) then
+                event.ignore("hud_keyboard", handleKeyboardWrapper)
                 local args = v.amount.onClick()
                 local tbl = gimpHelper.loadTable("/home/programData/levelMaintainer.data")
                 tbl[args.location].amount=args.amount
                 gimpHelper.saveTable(tbl, "/home/programData/levelMaintainer.data")
+                event.listen("hud_keyboard", handleKeyboardWrapper)
                 return
             elseif widgetsAreUs.isPointInBox(x, y, v.batch.background) then
+                event.ignore("hud_keyboard", handleKeyboardWrapper)
                 local args = v.batch.onClick()
                 local tbl = gimpHelper.loadTable("/home/programData/levelMaintainer.data")
                 tbl[args.location].batch=args.batch
                 gimpHelper.saveTable(tbl, "/home/programData/levelMaintainer.data")
+                event.listen("hud_keyboard", handleKeyboardWrapper)
                 return
             end
         end
@@ -271,16 +275,20 @@ function itemWindow.onClick(x, y, button)
         os.sleep(0)
         if widgetsAreUs.isPointInBox(x, y, v.background) then
             if widgetsAreUs.isPointInBox(x, y, v.amount.background) then
+                event.ignore("hud_keyboard", handleKeyboardWrapper)
                 local args = v.amount.onClick()
                 local tbl = gimpHelper.loadTable("/home/programData/reverseLevelMaintainer.data")
                 tbl[args.location].amount=args.amount
                 gimpHelper.saveTable(tbl, "/home/programData/reverseLevelMaintainer.data")
+                event.listen("hud_keyboard", handleKeyboardWrapper)
                 return
             elseif widgetsAreUs.isPointInBox(x, y, v.batch.background) then
+                event.ignore("hud_keyboard", handleKeyboardWrapper)
                 local args = v.batch.onClick()
                 local tbl = gimpHelper.loadTable("/home/programData/reverseLevelMaintainer.data")
                 tbl[args.location].batch=args.batch
                 gimpHelper.saveTable(tbl, "/home/programData/reverseLevelMaintainer.data")
+                event.listen("hud_keyboard", handleKeyboardWrapper)
                 return
             end
         end

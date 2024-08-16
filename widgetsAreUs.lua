@@ -234,7 +234,6 @@ function widgetsAreUs.levelMaintainer(x, y, argsTable, arrayIndex)
     local batch = widgetsAreUs.titleBox(x+5, y+10, 60, 20, {1, 1, 1}, 0.8, "Batch", 0.7)
     batch.onClick = function()
         while true do
-            event.ignore("hud_keyboard", handleKeyboardWrapper)
             if batchText.getText == "0" then batchText.setText("") end
             local _, _, _, character, _ = event.pull("hud_keyboard")
             if character == 13 then  -- Enter key
@@ -261,7 +260,6 @@ function widgetsAreUs.levelMaintainer(x, y, argsTable, arrayIndex)
     local amount = widgetsAreUs.titleBox(x+70, y+10, 75, 20, {1, 1, 1}, 0.8, "Amount", 0.7)
     amount.onClick = function()
         while true do
-            event.ignore("hud_keyboard", handleKeyboardWrapper)
             if amountText.getText == "0" then amountText.setText("") end
             local _, _, _, character, _ = event.pull("hud_keyboard")
             if character == 13 then  -- Enter key
