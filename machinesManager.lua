@@ -125,6 +125,7 @@ end
 
 function machinesManager.update()
 	for k, v in ipairs(machinesManager[active].display.currentlyDisplayed) do
+		os.sleep(0)
 		v.update()
 	end
 end

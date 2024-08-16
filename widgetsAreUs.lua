@@ -201,4 +201,130 @@ function widgetsAreUs.isPointInBox(x, y, box)
     return x >= start.xS and x <= finish.endX and y >= start.yS and y <= finish.endY
 end
 
+function widgetsAreUs.titledBox(x, y, width, height, color, alpha, titleText, textScale)
+    local background = widgetsAreUs.createBox(x, y, width, height, color, alpha)
+    local title = component.glasses.addTextLabel()
+    title.setScale(textScale)
+    title.setPosition(x+3, y+2)
+    title.setText(titleText)
+
+    return {
+        background = background,
+        title = title,
+        onClick = function()
+            print("reassign me")
+        end,
+        setVisible = function(visible)
+            background.setVisible(visible)
+            title.setVisible(visible)
+        end,
+        remove = function()
+            component.glasses.removeObject(background.getID())
+            component.glasses.removeObject(title.getID())
+            background = nil
+            title = nil
+        end
+    }
+end
+
+function widgetsAreUs.levelMaintainer(x, y, argsTable, arrayIndex)
+    local itemStack = argsTable.itemStack
+    local background = widgetsAreUs.titleBox(x, y, 150, 30, {1, 0.2, 1}, 0.8, itemStack.label, 0.9)
+
+    local batch = widgetsAreUs.titleBox(x+5, y+10, 60, 20, {1, 1, 1}, 0.8, "Batch", 0.7)
+    batch.onClick = function()
+        while true do
+            event.ignore("hud_keyboard", handleKeyboardWrapper)
+            if batchText.getText == "0" then batchText.setText("") end
+            local _, _, _, character, _ = event.pull("hud_keyboard")
+            if character == 13 then  -- Enter key
+                if batchText.getText == ""  then batchText.setText("0") end
+                break
+            elseif character == 8 then  -- Backspace key
+                local currentText = batchText.getText()
+                batchText.setText(currentText:sub(1, -2))
+            else
+                local letter = string.char(character)
+                local currentText = batchText.getText()
+                batchText.setText(currentText .. letter)
+            end
+        end
+        return {
+            location = arrayIndex,
+            batch = tonumber(batchText.getText())
+        }
+    end
+    local batchText = component.glasses.addTextLabel()
+    batchText.setScale(0.9)
+    batchText.setPosition(x+10, y+12)
+    batchText.setText(argsTable.batch)
+    local amount = widgetsAreUs.titleBox(x+70, y+10, 75, 20, {1, 1, 1}, 0.8, "Amount", 0.7)
+    amount.onClick = function()
+        while true do
+            event.ignore("hud_keyboard", handleKeyboardWrapper)
+            if amountText.getText == "0" then amountText.setText("") end
+            local _, _, _, character, _ = event.pull("hud_keyboard")
+            if character == 13 then  -- Enter key
+                if amountText.getText == ""  then amountText.setText("0") end
+                break
+            elseif character == 8 then  -- Backspace key
+                local currentText = amountText.getText()
+                amountText.setText(currentText:sub(1, -2))
+            else
+                local letter = string.char(character)
+                local currentText = amountText.getText()
+                amountText.setText(currentText .. letter)
+            end
+        end
+        return {
+            location = arrayIndex,
+            amount = tonumber(amountText.getText())
+        }
+    end
+    amountText = component.glasses.addTextLabel()
+    amountText.setScale(0.9)
+    amountText.setPosition(x+70, y+12)
+    amountText.setText(argsTable.amount)
+
+    return {
+        background = background,
+        batch = batch,
+        amount = amount,
+        getBatch = function()
+            return batchText.getText()
+        end,
+        getAmount = function()
+            return amountText.getText()
+        end,
+        setBatch = function(num)
+            batchText.setText(tostring(num))
+        end,
+        setAmount = function (num)
+            amountText.setText(tostring(num))
+        end,
+        getItemStack = function()
+            return itemStack
+        end,
+        setVisible = function(visible)
+            background.setVisible(visible)
+            batch.setVisible(visible)
+            batchText.setVisible(visible)
+            amount.setVisible(visible)
+            amountText.setVisible(visible)
+        end,
+        remove = function()
+            component.glasses.removeObject(amount.getID())
+            component.glasses.removeObject(background.getID())
+            component.glasses.removeObject(batch.getID())
+            component.glasses.removeObject(batchText.getID())
+            component.glasses.removeObject(amountText.getID())
+            amount = nil
+            background = nil
+            batch = nil
+            batchText = nil
+            amountText = nil
+        end        
+    }
+end
+
 return widgetsAreUs

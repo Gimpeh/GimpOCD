@@ -54,6 +54,7 @@ function PagedWindow:displayItems()
     local endIndex = math.min(self.currentPage * self.itemsPerPage, #self.items)
 
     for i = startIndex, endIndex do
+        os.sleep(0)
         -- Calculate row and column based on dynamic values
         local row = math.floor((i - startIndex) / self.itemsPerRow)
         local col = (i - startIndex) % self.itemsPerRow
@@ -64,7 +65,7 @@ function PagedWindow:displayItems()
 		if self.args and self.args[i] then
 		else
 			self.args = {}
-			self.args[i] = 0 
+			self.args[i] = true
 		end
 
         if item then

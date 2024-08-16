@@ -13,6 +13,14 @@ itemWindow.elements.reverseLevelMaintainer = {}
 itemWindow.elements.levelMaintainer = {}
 itemWindow.elements.monitoredItems = {}
 
+local lm
+local rlm
+local function renameBatch()
+    for k, v in ipairs(rlm.display.currentlyDisplayed) do
+        v.batch.title.setText("Speed")
+    end
+end
+
 local addTo = nil
 
 local function trim(s)
@@ -58,17 +66,31 @@ function itemWindow.init()
     itemWindow.elements.reverseLevelMaintainer.background = widgetsAreUs.createBox(330, 78, 160, 160, {1.0, 0.0, 0.0}, 0.7)
     itemWindow.elements.reverseLevelMaintainer.previousButton = widgetsAreUs.createBox(400, 55, 20, 20, {0, 1, 0.3}, 0.8)
     itemWindow.elements.reverseLevelMaintainer.nextButton = widgetsAreUs.createBox(400, 241, 20, 20, {0, 1, 0.3}, 0.8)
+    itemWindow.elements.reverseLevelMaintainer.addButton = widgetsAreUs.createBox(460, 55, 20, 20, {1, 1, 0.6}, 0.8)
+    rlm = itemWindow.elements.reverseLevelMaintainer
+    local rvlvlmaint = gimpHelper.loadTable("/home/programData/reverseLevelMaintainer.data")
+    if rvlvlmaint and rvlvlmaint[1] then
+        rlm.display = PagedWindow.new(rvlvlmaint, 150, 30, {x1=330, y1=71, x2=490, y2=238}, 5, widgetsAreUs.levelMaintainer)
+        rlm.display:displayItems()
+        renameBatch()
+    end
 
     itemWindow.elements.levelMaintainer.background = widgetsAreUs.createBox(500, 78, 160, 160, {0.0, 1.0, 0.0}, 0.7)
     itemWindow.elements.levelMaintainer.previousButton = widgetsAreUs.createBox(565, 55, 20, 20, {0, 1, 0.3}, 0.8)
     itemWindow.elements.levelMaintainer.nextButton = widgetsAreUs.createBox(565, 241, 20, 20, {0, 1, 0.3}, 0.8)
+    itemWindow.elements.levelMaintainer.addButton = widgetsAreUs.createBox(635, 55, 20, 20, {1, 1, 0.6}, 0.8)
+    lm = itemWindow.elements.levelMaintainer
+    local lvlmaint = gimpHelper.loadTable("/home/programData/levelMaintainer.data")
+    if lvlmaint and lvlmaint[1] then
+        lm.display = PagedWindow.new(lvlmaint, 150, 30, {x1=500, y1= 78, x2= 660, y2=238}, 5, widgetsAreUs.levelMaintainer)
+        lm.display:displayItems()
+    end
 
     itemWindow.elements.monitoredItems.background = widgetsAreUs.createBox(350, 265, 285, 161, {1.0, 1.0, 0.0}, 0.7)
     itemWindow.elements.monitoredItems.previousButton = widgetsAreUs.createBox(320, 340, 20, 20, {0, 1, 0.3}, 0.8)
     itemWindow.elements.monitoredItems.nextButton = widgetsAreUs.createBox(640, 340, 20, 20, {0, 1, 0.3}, 0.8)
     local monItemsData = gimpHelper.loadTable("/home/programData/monitoredItems")
     if monItemsData and monItemsData[1] then
-        itemWindow.elements.monitoredItems.itemList = monItemsData
         itemWindow.elements.monitoredItems.display = PagedWindow.new(monItemsData, 120, 40, {x1=355, y1=270, x2=630, y2=421}, 5, itemElements.itemBox.create)
         itemWindow.elements.monitoredItems.display:displayItems()
     end
@@ -120,6 +142,7 @@ end
 
 function itemWindow.onClick(x, y, button)
     for k, v in pairs(itemWindow.elements) do
+        os.sleep(0)
         if widgetsAreUs.isPointInBox(x, y, v.previousButton) then
             v.display:prevPage()
             return
@@ -129,6 +152,7 @@ function itemWindow.onClick(x, y, button)
         end
     end
     for k, v in pairs(itemWindow.elements.mainStorage.display.currentlyDisplayed) do
+        os.sleep(0)
         if widgetsAreUs.isPointInBox(x, y, v.background) then
             if not addTo then
                 if button == 0 then
@@ -151,12 +175,38 @@ function itemWindow.onClick(x, y, button)
                     component.modem.close(300)
                     return
                 end
-            else
-
+            elseif addTo == "reverseLevelMaintainer" then
+                if rlm.display then
+                    rlm.display:clearDisplayedItems()
+                    rlm.display = nil
+                end
+                local rvlvlmaint = gimpHelper.loadTable("/home/programData/reverseLevelMaintainer.data")
+                if not rvlvlmaint or not rvlvlmaint[1] then
+                    rvlvlmaint = {}
+                end
+                table.insert(rvlvlmaint, {itemStack = v.item, batch = 0, amount = 0})
+                gimpHelper.saveTable(rvlvlmaint, "/home/programData/reverseLevelMaintainer.data")
+                rlm.display = PagedWindow.new(rvlvlmaint, 150, 30, {x1=330, y1=71, x2=490, y2=238}, 5, widgetsAreUs.levelMaintainer)
+                rlm.display:displayItems()
+                renameBatch()
+            elseif addTo == "levelMaintainer" then
+                if lm.display then
+                    lm.display:clearDisplayedItems()
+                    lm.display = nil
+                end
+                local lvlmaint = gimpHelper.loadTable("/home/programData/levelMaintainer.data")
+                if not lvlmaint or not lvlmaint[1] then
+                    lvlmaint = {}
+                end
+                table.insert(lvlmaint, {itemStack = v.item, batch = 0, amount = 0})
+                gimpHelper.saveTable(lvlmaint, "/home/programData/levelMaintainer.data")
+                lm.display = PagedWindow.new(lvlmaint, 150, 30, {x1=330, y1=71, x2=490, y2=238}, 5, widgetsAreUs.levelMaintainer)
+                lm.display:displayItems()
             end
         end
     end
     for k, v in ipairs(itemWindow.elements.monitoredItems.display.currentlyDisplayed) do
+        os.sleep(0)
         if widgetsAreUs.isPointInBox(x, y, v.background) then
             if not addTo then
                 if itemWindow.elements.monitoredItems.display then
@@ -167,8 +217,22 @@ function itemWindow.onClick(x, y, button)
                 table.remove(tbl, k)
                 gimpHelper.saveTable(tbl, "/home/programData/monitoredItems")
                 itemWindow.elements.monitoredItems.display = PagedWindow.new(tbl, 120, 40, {x1=355, y1=270, x2=630, y2=421}, 5, itemElements.itemBox.create)
-                itemWindow.elements.monitoredItems.display:displayItems()    
+                itemWindow.elements.monitoredItems.display:displayItems()  
+                return  
             end
+        end
+    end
+    if widgetsAreUs.isPointInBox(x, y, itemWindow.elements.levelMaintainer.addButton) then
+        if not addTo or addTo ~= "levelMaintainer" then
+            addTo = "levelMaintainer"
+        elseif addTo == "levelMaintainer" then
+            addTo = nil
+        end
+    elseif widgetsAreUs.isPointInBox(x, y, itemWindow.elements.reverseLevelMaintainer.addButton) then
+        if not addTo or addTo ~= "reverseLevelMaintainer" then
+            addTo = "reverseLevelMaintainer"
+        elseif addTo == "reverseLevelMaintainer" then
+            addTo = nil
         end
     end
 end
@@ -177,6 +241,7 @@ function itemWindow.update()
     for k, v in pairs(itemWindow.elements) do
         if v.display then
             for i, j in pairs(v.display.currentlyDisplayed) do
+                os.sleep(0)
                 j.update()
             end
         end

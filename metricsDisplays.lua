@@ -183,6 +183,7 @@ function machinesMetricsElement.createElement(x, y, machineTable, header)
 	  for k, v in ipairs(machinesTable) do
 		if v.isWorkAllowed() then
 			allowedToWork = allowedToWork +1
+			os.sleep(0)
 		end
 	  end
       local allowed = allowedToWork
@@ -208,6 +209,7 @@ function machinesMetricsElement.createElement(x, y, machineTable, header)
     onClick = function(button)
 		if button == 0 then
 			for _, machine in ipairs(machinesTable) do
+				os.sleep(0)
 				if workAllowed == true then
 					machine.setWorkAllowed(false)
 				else
@@ -221,6 +223,8 @@ function machinesMetricsElement.createElement(x, y, machineTable, header)
 				workAllowed = true
 				background.setColor(255, 255, 255)
 			end
+			local machinesManager = require("machinesManager")
+			machinesManager.update()
 		elseif button == 1 then
 			local machinesManager = require("machinesManager")
 			machinesManager.groups.remove()

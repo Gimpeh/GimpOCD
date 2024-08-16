@@ -56,9 +56,4 @@ end
 
 itemElements.itemBox = itemBox
 
-local itemList = {}
-function itemList.create(x, y, itemStack)
-
-end
-
 return itemElements
