@@ -8,7 +8,7 @@ function itemBox.create(x, y, itemStack)
     local background = widgetsAreUs.createBox(x, y, 120, 40, {1, 0.8, 0.5}, 0.8)
 
     local name = component.glasses.addTextLabel()
-    name.setPosition(y+2, x+2)
+    name.setPosition(x+2, y+2)
     name.setScale(0.9)
     name.setText(itemStack.label)
 
