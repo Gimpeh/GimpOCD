@@ -268,7 +268,7 @@ function machineIndividual.create(x, y, individualProxy)
 	local state = glasses.addTextLabel()
 	state.setScale(1.2)
 	state.setText(" ")
-	state.setPosition(x+22, y+30)
+	state.setPosition(x+22, y+26)
 
 	local highlightedIndicator = glasses.addRect()
 	highlightedIndicator.setPosition(x+78, y+27)
@@ -318,11 +318,11 @@ function machineIndividual.create(x, y, individualProxy)
 			local allowed = machineInterface.getState()
 			if allowed then
 				machine.setWorkAllowed(false)
+				background.setColor(1, 0, 0)
 			else
 				machine.setWorkAllowed(true)
+				background.setColor(1, 1, 1)
 			end
-
-			return machineInterface.getState()
 		end,
 		onClick = function(button, machinesInterface)
 			if button == 0 then -- left click
