@@ -325,7 +325,7 @@ function machineIndividual.create(x, y, individualProxy)
 			elseif button == 1 then --right click
 				local xyz = {}
 				xyz.x, xyz.y, xyz.z = machine.getCoordinates()
-				modem.broadcast(888, "manual", s.serialize(xyz))
+				event.push("highlight", xyz)
 			elseif button == 2 then
 				name.setText(" ")
 				name2.setText(" ")

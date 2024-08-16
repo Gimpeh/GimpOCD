@@ -2,9 +2,11 @@
 local event = require("event")
 local overlay = require("overlay")
 local component = require("component")
+
 component.glasses.removeAll()
 overlay.init()
 local overlayUpdateEvent
+local highlighters = {}
 
 local function updateOverlay()
 	overlay.update()
@@ -28,6 +30,20 @@ local function onOverlayEvent(eventType, ...)
 	end
 end
 
+function onHighlight(_, xyz)
+	for k,v in ipairs(highlighters) do
+		if v.x == xyz.x and v.y == xyz.y and v.z == xyz.z then
+			v.remove()
+			table.remove(highlighters, k)
+			return
+		end
+	end
+	local beacon = widgetsAreUs.maintenanceBeacon(xyz.x, xyz.y, xyz.z)
+	beacon.beacon.setColor(0, 1, 1)
+	table.insert(highlighters, beacon)
+end
+
+event.listen("highlight", onHighlight)
 event.listen("overlay_opened", onOverlayEvent)
 event.listen("overlay_closed", onOverlayEvent)
 --event.listen("modem_message", onModemMessage)
