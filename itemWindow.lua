@@ -156,6 +156,21 @@ function itemWindow.onClick(x, y, button)
             end
         end
     end
+    for k, v in ipairs(itemWindow.elements.monitoredItems.display.currentlyDisplayed) do
+        if widgetsAreUs.isPointInBox(x, y, v.background) then
+            if not addTo then
+                if itemWindow.elements.monitoredItems.display then
+                    itemWindow.elements.monitoredItems.display:clearDisplayedItems()
+                    itemWindow.elements.monitoredItems.display = nil
+                end
+                local tbl = gimpHelper.loadTable("/home/programData/monitoredItems")
+                table.remove(tbl, k)
+                gimpHelper.saveTable(tbl, "/home/programData/monitoredItems")
+                itemWindow.elements.monitoredItems.display = PagedWindow.new(tbl, 120, 40, {x1=355, y1=270, x2=630, y2=421}, 5, itemElements.itemBox.create)
+                itemWindow.elements.monitoredItems.display:displayItems()    
+            end
+        end
+    end
 end
 
 function itemWindow.update()
