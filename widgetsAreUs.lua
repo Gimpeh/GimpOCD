@@ -311,9 +311,9 @@ function widgetsAreUs.levelMaintainer(x, y, argsTable, arrayIndex)
             amountText.setVisible(visible)
         end,
         remove = function()
-            component.glasses.removeObject(amount.getID())
-            component.glasses.removeObject(background.getID())
-            component.glasses.removeObject(batch.getID())
+            amount.remove()
+            background.remove()
+            batch.remove()
             component.glasses.removeObject(batchText.getID())
             component.glasses.removeObject(amountText.getID())
             amount = nil
