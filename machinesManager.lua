@@ -118,6 +118,9 @@ end
 
 function machinesManager.remove()
 	machinesManager[active].remove()
+	component.glasses.removeObject(machinesManager.left.getID())
+	component.glasses.removeObject(machinesManager.right.getID())
+	machinesManager.left = nil
 end
 
 function machinesManager.update()
@@ -157,6 +160,8 @@ function machinesManager.setVisible(visible)
 	for k, v in ipairs(machinesManager[active].display.currentlyDisplayed) do
 		v.setVisible(visible)
 	end
+	machinesManager.left.setVisible(visible)
+	machinesManager.right.setVisible(visible)
 end
 
 function saveData(_, newName, xyz)

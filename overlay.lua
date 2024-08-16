@@ -78,8 +78,6 @@ function overlay.tabs.setVisible(visible)
 	overlay.tabs.options.title.setVisible(visible)
 	overlay.tabs.textEditor.background.setVisible(visible)
 	overlay.tabs.textEditor.title.setVisible(visible)
-	overlay.tabs.left.setVisible(visible)
-	overlay.tabs.right.setVisible(visible)
 end
 
 function overlay.hide()
