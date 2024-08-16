@@ -128,7 +128,7 @@ function itemWindow.onClick(x, y, button)
             return
         end
     end
-    for k, v in pairs(itemWindow.elements.mainStorage.display.displayedItems) do
+    for k, v in pairs(itemWindow.elements.mainStorage.display.currentlyDisplayed) do
         if widgetsAreUs.isPointInBox(x, y, v.background) then
             if not addTo then
                 if button == 0 then
