@@ -10,7 +10,8 @@ local overlayUpdateEvent
 local highlighters = {}
 
 local function updateOverlay()
-	overlay.update()
+	local success, error = pcall(overlay.update)
+	if not success then print(error) end
 end
 
 local function handleClick(_, _, _, x, y, button)
@@ -45,10 +46,8 @@ local function onHighlightActual(xyz)
 end
 
 local function onHighlight(_, xyz)
-	print(xyz)
 	local success, error = pcall(onHighlightActual, xyz)
-	print(success)
-	print(error)
+	if not success then print(error) end
 end
 
 event.listen("highlight", onHighlight)
