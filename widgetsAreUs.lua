@@ -1,5 +1,6 @@
 --widgetsAreUs.lua
 local component = require("component")
+local event = require("event")
 
 local glasses = component.glasses
 
