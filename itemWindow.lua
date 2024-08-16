@@ -105,6 +105,8 @@ end
 
 function itemWindow.setVisible(visible)
     itemWindow.searchBox.setVisible(visible)
+    lm.addButton.setVisible(visible)
+    rlm.addButton.setVisible(visible)
 
     for k, v in pairs(itemWindow.elements) do
         v.previousButton.setVisible(visible)
@@ -121,6 +123,10 @@ end
 function itemWindow.remove()
     component.glasses.removeObject(itemWindow.searchBox.getID())
     itemWindow.searchBox = nil
+    component.glasses.removeObject(lm.addButton.getID())
+    component.glasses.removeObject(rlm.addButton.getID())
+    rlm.addButton = nil
+    lm.addButton = nil
     for i, j in pairs(itemWindow.elements) do
         if itemWindow.elements[i].display then
             for k, v in pairs(itemWindow.elements[i].display.currentlyDisplayed) do
