@@ -29,7 +29,7 @@ function itemBox.create(x, y, itemStack)
         background = background,
         item = itemStack,
         update = function()
-            local updatedItemStack = component.me_interface.getItemsInNetwork(itemStack)
+            local updatedItemStack = component.me_interface.getItemsInNetwork(itemStack)[1]
             amount.setText(tostring(updatedItemStack.size))
         end,
         remove = function()
