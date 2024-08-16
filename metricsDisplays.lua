@@ -224,7 +224,7 @@ function machinesMetricsElement.createElement(x, y, machineTable, header)
 		elseif button == 1 then
 			local machinesManager = require("machinesManager")
 			machinesManager.groups.remove()
-			machinesManager.individuals.init(machinesTable)
+			machinesManager.individuals.init(machinesTable, header)
 		end
     end,
 	remove = function()
@@ -280,6 +280,9 @@ function machineIndividual.create(x, y, individualProxy)
 		setName = function(newName)
 			if newName then
 				name.setText(newName)
+				local xyz = {}
+				xyz.x, xyz.y, xyz.z = machine.getCoordinates()
+				computer.pushSignal("nameSet", newName, xyz)
 			else
 				local firstPart, secondPart = string.match(machine.getName(), "([^%]+)%.([^%.]+)")
 				name.setText(firstPart)

@@ -7,6 +7,7 @@ local widgetsAreUs = require("widgetsAreUs")
 
 local has_been_sorted = false
 local activeIndividualPage
+local individualHeader
 local active = "groups"
 
 local machinesManager = {}
@@ -66,7 +67,7 @@ function machinesManager.groups.remove()
 	machinesManager.groups.background = nil
 end
 
-function machinesManager.individuals.init(machinesTable)
+function machinesManager.individuals.init(machinesTable, header)
 	if not machinesTable then
 		machinesTable = activeIndividualPage
 	end
@@ -76,6 +77,21 @@ function machinesManager.individuals.init(machinesTable)
 	machinesManager.individuals.display:displayItems()
 	active = "individuals"
 	activeIndividualPage = machinesTable
+	individualHeader = header
+
+	for k, v in pairs(machinesManager.individuals.display.currentlyDisplayed) do
+		v.setName()
+	end
+	local savedNames = gimpHelper.loadTable("/home/programData/" .. header .. ".data")
+	for k, v in pairs(savedNames) do
+		for j, i in pairs(machinesManager.individuals.display.currentlyDisplayed) do
+			local xyzCheck = {}
+			xyzCheck.x, xyzCheck.y, xyzCheck.z = i.getCoords()
+			if v.x == xyzCheck.x and v.y == xyzCheck.y and v.z == xyzCheck.z  then
+				i.setName(k)
+			end
+		end
+	end
 end
 
 function machinesManager.individuals.remove()
@@ -132,6 +148,12 @@ function machinesManager.setVisible(visible)
 	for k, v in ipairs(machinesManager[active].display.currentlyDisplayed) do
 		v.setVisible(visible)
 	end
+end
+
+function saveData(newName, xyz)
+	local tbl = gimpHelper.loadTable(individualHeader .. ".data") or {}
+	table.insert(tbl, {newName = xyz})
+	gimpHelper.saveTable(tbl, "/home/programData/" .. individualHeader .. ".data")
 end
 
 return machinesManager
