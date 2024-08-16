@@ -85,7 +85,7 @@ function machinesManager.individuals.init(machinesTable, header)
 	end
 	print("in init")
 	local savedNames = gimpHelper.loadTable("/home/programData/" .. header .. ".data")
-	print("in init2")
+	print("in init")
 	for k, v in pairs(savedNames) do
 		for j, i in pairs(machinesManager.individuals.display.currentlyDisplayed) do
 			local xyzCheck = {}
@@ -155,7 +155,8 @@ end
 
 function saveData(_, newName, xyz)
 	local tbl = gimpHelper.loadTable("/home/programData/" .. individualHeader .. ".data") or {}
-	tbl[newName] = xyz
+	str = newName:gsub("^[\0-\31\127]+", "")
+	tbl[str] = xyz
 	gimpHelper.saveTable(tbl, "/home/programData/" .. individualHeader .. ".data")
 end
 

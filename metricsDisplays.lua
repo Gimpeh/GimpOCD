@@ -280,6 +280,7 @@ function machineIndividual.create(x, y, individualProxy)
 		setName = function(newName)
 			if newName then
 				name.setText(newName)
+				name2.setText(" ")
 				local xyz = {}
 				xyz.x, xyz.y, xyz.z = machine.getCoordinates()
 				event.push("nameSet", newName, xyz)
