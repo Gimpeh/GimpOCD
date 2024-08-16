@@ -56,7 +56,8 @@ end
 
 local function onModemMessage(_, _, _, port, _, message1)
 	if port == 202 then
-		pcall(hud.modemMessageHandler(port, message1))
+		local success, error = pcall(hud.modemMessageHandler(port, message1))
+		if not success then print(error) end
 	end
 end
 
