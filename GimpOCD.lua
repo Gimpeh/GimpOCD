@@ -2,6 +2,7 @@
 local event = require("event")
 local overlay = require("overlay")
 local component = require("component")
+local widgetsAreUs = require("widgetsAreUs")
 
 component.glasses.removeAll()
 overlay.init()
