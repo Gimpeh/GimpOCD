@@ -151,7 +151,7 @@ function machinesManager.setVisible(visible)
 	end
 end
 
-function saveData(newName, xyz)
+function saveData(_, newName, xyz)
 	local tbl = gimpHelper.loadTable(individualHeader .. ".data") or {}
 	table.insert(tbl, {newName = xyz})
 	gimpHelper.saveTable(tbl, "/home/programData/" .. individualHeader .. ".data")
