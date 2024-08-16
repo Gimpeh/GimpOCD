@@ -268,7 +268,7 @@ function machineIndividual.create(x, y, individualProxy)
 	local state = glasses.addTextLabel()
 	state.setScale(1.2)
 	state.setText(" ")
-	state.setPosition(x+22, y+26)
+	state.setPosition(x+22, y+24)
 
 	local highlightedIndicator = glasses.addRect()
 	highlightedIndicator.setPosition(x+78, y+27)

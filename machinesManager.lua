@@ -59,6 +59,7 @@ function machinesManager.groups.init()
 	machinesManager.groups.display = PagedWindow.new(args2, 107, 75, {x1 = 80, y1 = 80, x2 = 700, y2 = 500}, 15, metricsDisplays.machineGroups.createElement, args)
 	machinesManager.groups.display:displayItems()
 	active = "groups"
+	machinesManager.update()
 end
 
 function machinesManager.groups.remove()
@@ -93,6 +94,7 @@ function machinesManager.individuals.init(machinesTable, header)
 			end
 		end
 	end
+	machinesManager.update()
 end
 
 function machinesManager.individuals.remove()
