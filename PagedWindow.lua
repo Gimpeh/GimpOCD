@@ -32,8 +32,7 @@ function PagedWindow.new(items, itemWidth, itemHeight, screenBounds, padding, re
 
     self.currentPage = 1  -- Start on the first page
     self.currentlyDisplayed = {}  -- Keep track of currently displayed items
-    print(self.renderItem)
-    print(self.items)
+    print(#self.items)
     return self
 end
 
