@@ -95,6 +95,11 @@ function overlay.show()
 end
 
 function overlay.onClick(x, y, button)
+	for k, v in pairs(overlay.boxes) do
+		if widgetsAreUs.isPointInBox(x, y, v) then
+			return overlay.tabs.loadTab(k)
+		end
+	end
 	active.onClick(x, y, button)
 end
 

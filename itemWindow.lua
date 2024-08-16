@@ -69,7 +69,7 @@ function itemWindow.remove()
 end
 
 function itemWindow.onClick(x, y, button)
-    for k, v in ipairs(itemWindow.elements) do
+    for k, v in pairs(itemWindow.elements) do
         if widgetsAreUs.isPointInBox(x, y, v.previousButton) then
             v.display:prevPage()
             return
