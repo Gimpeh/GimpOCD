@@ -323,6 +323,7 @@ function machineIndividual.create(x, y, individualProxy)
 			if button == 0 then -- left click
 				machinesInterface.setState(machinesInterface)
 			elseif button == 1 then --right click
+				print("right clicked")
 				local xyz = {}
 				xyz.x, xyz.y, xyz.z = machine.getCoordinates()
 				event.push("highlight", xyz)
