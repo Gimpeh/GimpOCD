@@ -251,7 +251,7 @@ function itemWindow.onClick(x, y, button)
     end
     for k, v in ipairs(lm.display.currentlyDisplayed) do
         os.sleep(0)
-        if widgetsAreUs.isPointInBox(x, y, v.background) then
+        if widgetsAreUs.isPointInBox(x, y, v.background.background) then
             if widgetsAreUs.isPointInBox(x, y, v.amount.background) then
                 event.ignore("hud_keyboard", handleKeyboardWrapper)
                 local args = v.amount.onClick()
@@ -273,7 +273,7 @@ function itemWindow.onClick(x, y, button)
     end
     for k, v in ipairs(rlm.display.currentlyDisplayed) do
         os.sleep(0)
-        if widgetsAreUs.isPointInBox(x, y, v.background) then
+        if widgetsAreUs.isPointInBox(x, y, v.background.background) then
             if widgetsAreUs.isPointInBox(x, y, v.amount.background) then
                 event.ignore("hud_keyboard", handleKeyboardWrapper)
                 local args = v.amount.onClick()
