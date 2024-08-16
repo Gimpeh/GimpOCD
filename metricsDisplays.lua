@@ -299,7 +299,7 @@ function machineIndividual.create(x, y, individualProxy)
 		getCoords = function()
 			return machine.getCoordinates()
 		end,
-		getState = function()
+		update = function()
 			local machineState = machine.isMachineActive()
 			if machineState	then
 				state.setText("On")
@@ -313,7 +313,6 @@ function machineIndividual.create(x, y, individualProxy)
 			else
 				background.setColor(1, 0, 0)
 			end
-			return allowed
 		end,
 		setState = function(machineInterface)
 			local allowed = machineInterface.getState()
