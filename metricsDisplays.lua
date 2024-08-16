@@ -251,6 +251,7 @@ local machineIndividual = {}
 
 function machineIndividual.create(x, y, individualProxy)
 	local machine = individualProxy
+	local highlighted = false
 
 	local background = widgetsAreUs.createBox(x, y, 85, 34, {1, 1, 1}, 0.6)
 
@@ -268,6 +269,11 @@ function machineIndividual.create(x, y, individualProxy)
 	state.setScale(1.2)
 	state.setText(" ")
 	state.setPosition(x+22, y+30)
+
+	local highlightedIndicator = glasses.addRect()
+	highlightedIndicator.setPosition(x+78, y+27)
+	highlightedIndicator.setSize(0, 0)
+	highlightedIndicator.setColor(0, 1, 1)
 
 	local machineInterface = {
 		background = background,
@@ -323,11 +329,16 @@ function machineIndividual.create(x, y, individualProxy)
 			if button == 0 then -- left click
 				machinesInterface.setState(machinesInterface)
 			elseif button == 1 then --right click
-				print("right clicked")
 				local xyz = {}
 				xyz.x, xyz.y, xyz.z = machine.getCoordinates()
 				event.push("highlight", xyz)
-				print("end of right click function")
+				if highlighted then
+					highlightedIndicator.setSize(0, 0)
+					highlighted = false
+				else
+					highlightedIndicator.setSize(5, 5)
+					highlighted = true
+				end
 			elseif button == 2 then
 				name.setText(" ")
 				name2.setText(" ")
