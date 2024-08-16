@@ -26,6 +26,7 @@ function itemBox.create(x, y, itemStack)
     amount.setText(tostring(itemStack.size))
 
     return {
+        background = background,
         item = itemStack,
         update = function()
             local updatedItemStack = component.me_interface.getItemsInNetwork(itemStack)
