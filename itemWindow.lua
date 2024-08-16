@@ -82,18 +82,17 @@ function itemWindow.init()
 end
 
 function itemWindow.setVisible(visible)
-    itemWindow.elements.mainStorage.background.setVisible(visible)
-    itemWindow.elements.reverseLevelMaintainer.background.setVisible(visible)
-    itemWindow.elements.levelMaintainer.background.setVisible(visible)
-    itemWindow.elements.monitoredItems.background.setVisible(visible)
     itemWindow.searchBox.setVisible(visible)
 
     for k, v in pairs(itemWindow.elements) do
         v.previousButton.setVisible(visible)
         v.nextButton.setVisible(visible)
-    end
-    for k, v in pairs(itemWindow.elements.mainStorage.display.currentlyDisplayed) do
-        v.setVisible(visible)
+        v.background.setVisible(visible)
+        if v.display then
+            for i, j in ipairs(v.display.currentlyDisplayed) do
+                j.setVisible(visible)
+            end
+        end
     end
 end
 
