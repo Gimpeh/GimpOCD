@@ -4,6 +4,7 @@ local component = require("component")
 local gimpHelper = require("gimpHelper")
 local PagedWindow = require("PagedWindow")
 local widgetsAreUs = require("widgetsAreUs")
+local event = require("event")
 
 local has_been_sorted = false
 local activeIndividualPage
