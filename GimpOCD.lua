@@ -5,6 +5,8 @@ local component = require("component")
 local widgetsAreUs = require("widgetsAreUs")
 local hud = require("hud")
 
+component.modem.open(202)
+
 component.glasses.removeAll()
 overlay.init()
 hud.init()
