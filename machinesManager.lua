@@ -153,7 +153,7 @@ end
 
 function saveData(_, newName, xyz)
 	local tbl = gimpHelper.loadTable(individualHeader .. ".data") or {}
-	table.insert(tbl, {newName = xyz})
+	tbl[newName] = xyz
 	gimpHelper.saveTable(tbl, "/home/programData/" .. individualHeader .. ".data")
 end
 
