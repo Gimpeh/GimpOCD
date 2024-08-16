@@ -326,6 +326,7 @@ function machineIndividual.create(x, y, individualProxy)
 				local xyz = {}
 				xyz.x, xyz.y, xyz.z = machine.getCoordinates()
 				event.push("highlight", xyz)
+				print("end of right click function")
 			elseif button == 2 then
 				name.setText(" ")
 				name2.setText(" ")
