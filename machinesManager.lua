@@ -83,7 +83,9 @@ function machinesManager.individuals.init(machinesTable, header)
 	for k, v in pairs(machinesManager.individuals.display.currentlyDisplayed) do
 		v.setName()
 	end
+	print("in init")
 	local savedNames = gimpHelper.loadTable("/home/programData/" .. header .. ".data")
+	print("in init")
 	for k, v in pairs(savedNames) do
 		for j, i in pairs(machinesManager.individuals.display.currentlyDisplayed) do
 			local xyzCheck = {}
