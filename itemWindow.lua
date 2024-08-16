@@ -1,6 +1,7 @@
 local widgetsAreUs = require("widgetsAreUs")
 local PagedWindow = require("PagedWindow")
 local components = require("component")
+local itemElements = require("itemElements")
 
 local itemWindow = {}
 itemWindow.elements = {}
@@ -25,3 +26,5 @@ function itemWindow.init()
 
     itemWindow.elements.searchBox = widgetsAreUs.createBox(25, 55, 120, 20, {0.1, 0.1, 0.1}, 1.0)
 end
+
+return itemWindow
