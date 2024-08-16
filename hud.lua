@@ -22,7 +22,7 @@ function hud.init()
 					hud.elements.battery:remove()
 					hud.elements.battery = nil
 				end
-				hud.elements.battery = metricsDisplays.create(x, y)
+				hud.elements.battery = metricsDisplays.battery.create(x, y)
 				os.sleep(1)
 			elseif button == 1 then
 				if hud.elements.battery then
@@ -31,7 +31,7 @@ function hud.init()
 				end
 				local xModified = x - 203
 				local yModified = y - 183
-				hud.elements.battery = metricsDisplays.create(xModified, yModified)
+				hud.elements.battery = metricsDisplays.battery.create(xModified, yModified)
 			elseif button == 2 then
 				break
 			end
