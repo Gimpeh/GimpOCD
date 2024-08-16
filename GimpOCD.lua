@@ -24,12 +24,14 @@ end
 local function onOverlayEvent(eventType, ...)
 	if eventType == "overlay_opened" then
 		event.listen("hud_click", handleClick)
+		hud.hide()
 		overlay.show()
 		overlay.update()
 		overlayUpdateEvent = event.timer(20, updateOverlay, math.huge)
 	elseif eventType == "overlay_closed" then
 		event.ignore("hud_click", handleClick)
 		overlay.hide()
+		hud.show()
 		event.cancel(overlayUpdateEvent)
 	end
 end
