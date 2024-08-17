@@ -284,7 +284,7 @@ function itemWindow.onClick(x, y, button)
                 local tbl = gimpHelper.loadTable("/home/programData/reverseLevelMaintainer.data")
                 tbl[args.location].amount=args.amount
                 gimpHelper.saveTable(tbl, "/home/programData/reverseLevelMaintainer.data")
-                event.listen("hud_keyboard", handleKeyboardWrapper)v
+                event.listen("hud_keyboard", handleKeyboardWrapper)
                 return
             elseif widgetsAreUs.isPointInBox(x, y, v.batch.background) then
                 event.ignore("hud_keyboard", handleKeyboardWrapper)
