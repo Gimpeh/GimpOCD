@@ -14,6 +14,7 @@ local gc = {}
 local mm = {}
 
 ----------------------------------------------------------
+---event handlers
 
 local function stockPileData(_, config)
     local tbl = gimpHelper.loadTable("/home/programData/machinesNamed.data")
@@ -126,6 +127,9 @@ local function addIndex(_, path)
     gimpHelper.saveTable(tbl, path)
 end
 
+----------------------------------------------------------
+---event listeners
+
 event.listen("add_index", addIndex)
 event.listen("remove_index", removeIndex)
 event.listen("config_change", saveConfigs)
@@ -133,10 +137,14 @@ event.listen("machine_named", stockPileData)
 event.listen("load_config", loadConfig)
 
 ----------------------------------------------------------
+---forward declarations
 
 local boxes = {}
 local buttons = {}
 local displays = {}
+
+----------------------------------------------------------
+---initalization
 
 function configurations.initBoxes()
     boxes.background = widgetsAreUs.createBox(10, 70, 750, 430, {0.2, 0.2, 0.2}, 0.8)
@@ -202,6 +210,7 @@ function configurations.init()
 end
 
 ----------------------------------------------------------
+---configs factory
 
 local function removeConfig(activeConfigsIndex)
     for k, v in pairs(activeConfigs[activeConfigsIndex].elements) do
@@ -291,6 +300,7 @@ local function createGeneralConfig()
 end
 
 ----------------------------------------------------------
+---got tired of typing everything 10,000 times
 
 local helperTable = {}
 for k, v in pairs(boxes) do
@@ -312,14 +322,23 @@ for k, v in pairs(configurations.gc) do
     table.insert(helperTable, v)
 end
 
+----------------------------------------------------------
+---element functionality
+
 function configurations.update()
     os.sleep(0)
-    print("configurations.update")
+    print("configurations.update(hard_reset)")
 end
+
 function configurations.setVisible(visible)
     for k, v in pairs(helperTable) do
         v.setVisible(visible)
         os.sleep(0)
+    end
+    for k, v in pairs(activeConfigs) do
+        for i, j in pairs(v.elements) do
+            j.setVisible(visible)
+        end
     end
 end
 function configurations.remove()
@@ -327,12 +346,24 @@ function configurations.remove()
         v.remove()
         os.sleep(0)
     end
+    for k, v in pairs(activeConfigs) do
+        for i, j in pairs(v.elements) do
+            j.remove()
+        end
+    end
 end
 function configurations.onClick(x, y, button)
     for k, v in pairs(helperTable) do
         v.onClick(x, y, button)
         os.sleep(0)
     end
+    for k, v in pairs(activeConfigs) do
+        for i, j in pairs(v.elements) do
+            j.onClick(x, y, button)
+        end
+    end
 end
+
+----------------------------------------------------------
 
 return configurations
