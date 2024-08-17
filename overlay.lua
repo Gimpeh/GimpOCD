@@ -7,14 +7,18 @@ local machinesManager = require("machinesManager")
 local itemWindow = require("itemWindow")
 local configurations = require("configurations")
 
+-----------------------------------------
+---forward declarations
+
 local overlay = {}
 overlay.tabs = {}
 local active
 
+-----------------------------------------
+----Initialization and Swap Functions
+
 function overlay.tabs.loadTab(tab)
-    if active and active.remove then
-        pcall(active.remove)
-    end
+    if active and active.remove then pcall(active.remove) end
     overlay.tabs[tab].init()
     local tbl = {tab = tab}
     gimpHelper.saveTable(tbl, "/home/programData/overlay.data")
@@ -22,7 +26,7 @@ end
 
 function overlay.init()
 	overlay.tabs.itemWindow = {}
-	overlay.tabs.itemWindow.background = widgetsAreUs.createBox(10, 10, 140, 40, {0, 0, 1}, 0.7)
+	overlay.tabs.itemWindow.box = widgetsAreUs.createBox(10, 10, 140, 40, {0, 0, 1}, 0.7)
 	overlay.tabs.itemWindow.title = component.glasses.addTextLabel()
 	overlay.tabs.itemWindow.title.setPosition(20, 20)
 	overlay.tabs.itemWindow.title.setText("Storage")
@@ -31,7 +35,7 @@ function overlay.init()
 		active = itemWindow
 	end
 	overlay.tabs.machines = {}
-	overlay.tabs.machines.background = widgetsAreUs.createBox(160, 10, 140, 40, {0, 0, 1}, 0.7)
+	overlay.tabs.machines.box = widgetsAreUs.createBox(160, 10, 140, 40, {0, 0, 1}, 0.7)
 	overlay.tabs.machines.title = component.glasses.addTextLabel()
 	overlay.tabs.machines.title.setPosition(170,20)
 	overlay.tabs.machines.title.setText("Machines")
@@ -40,16 +44,16 @@ function overlay.init()
 		active = machinesManager
 	end
 	overlay.tabs.options = {}
-	overlay.tabs.options.background = widgetsAreUs.createBox(310, 10, 140, 40, {0, 0, 1}, 0.7)
+	overlay.tabs.options.box = widgetsAreUs.createBox(310, 10, 140, 40, {0, 0, 1}, 0.7)
 	overlay.tabs.options.title = component.glasses.addTextLabel()
 	overlay.tabs.options.title.setPosition(320, 20)
 	overlay.tabs.options.title.setText("Options")
 	overlay.tabs.options.init = function()
 		configurations.init()
-		active = "options not set yet"
+		active = configurations
 	end
 	overlay.tabs.textEditor = {}
-	overlay.tabs.textEditor.background = widgetsAreUs.createBox(460, 10, 140, 40, {0, 0, 1}, 0.7)
+	overlay.tabs.textEditor.box = widgetsAreUs.createBox(460, 10, 140, 40, {0, 0, 1}, 0.7)
 	overlay.tabs.textEditor.title = component.glasses.addTextLabel()
 	overlay.tabs.textEditor.title.setPosition(470, 20)
 	overlay.tabs.textEditor.title.setText("Text Editor")
@@ -58,7 +62,7 @@ function overlay.init()
 		active = "text editor not set yet"
 	end
 
-	overlay.boxes = {textEditor = overlay.tabs.textEditor.background, options = overlay.tabs.options.background, machines = overlay.tabs.machines.background, itemWindow = overlay.tabs.itemWindow.background}
+	overlay.boxes = {textEditor = overlay.tabs.textEditor.box, options = overlay.tabs.options.box, machines = overlay.tabs.machines.box, itemWindow = overlay.tabs.itemWindow.box}
 
 	local success, config = pcall(gimpHelper.loadTable, "/home/programData/overlay.data")
 	if success and config then
@@ -70,15 +74,14 @@ function overlay.init()
 	overlay.hide()
 end
 
+-----------------------------------------
+---element functionality
+
 function overlay.tabs.setVisible(visible)
-	overlay.tabs.itemWindow.background.setVisible(visible)
-	overlay.tabs.itemWindow.title.setVisible(visible)
-	overlay.tabs.machines.background.setVisible(visible)
-	overlay.tabs.machines.title.setVisible(visible)
-	overlay.tabs.options.background.setVisible(visible)
-	overlay.tabs.options.title.setVisible(visible)
-	overlay.tabs.textEditor.background.setVisible(visible)
-	overlay.tabs.textEditor.title.setVisible(visible)
+	for k, v in pairs(overlay.tabs) do
+		v.box.setVisible(visible)
+		v.title.setVisible(visible)
+	end
 end
 
 function overlay.hide()
@@ -94,6 +97,8 @@ function overlay.show()
 		active.setVisible(true)
 	end
 end
+
+-------------------
 
 function overlay.onClick(x, y, button)
 	for k, v in pairs(overlay.boxes) do
