@@ -176,6 +176,7 @@ function itemWindow.onClick(x, y, button)
                     end
                     table.insert(tbl, v.item)
                     gimpHelper.saveTable(tbl, "/home/programData/monitoredItems")
+                    event.push("add_index", "/home/programData/itemConfig.data")
                     itemWindow.elements.monitoredItems.display = PagedWindow.new(tbl, 120, 40, {x1=355, y1=270, x2=630, y2=421}, 5, itemElements.itemBox.create)
                     itemWindow.elements.monitoredItems.display:displayItems()
                     return
@@ -212,6 +213,7 @@ function itemWindow.onClick(x, y, button)
                 gimpHelper.saveTable(lvlmaint, "/home/programData/levelMaintainer.data")
                 lm.display = PagedWindow.new(lvlmaint, 150, 30, {x1=330, y1=71, x2=490, y2=238}, 5, widgetsAreUs.levelMaintainer)
                 lm.display:displayItems()
+                event.push("add_index", "/home/programData/levelMaintainerConfig.data")
             end
         end
     end
@@ -228,6 +230,7 @@ function itemWindow.onClick(x, y, button)
                 gimpHelper.saveTable(tbl, "/home/programData/monitoredItems")
                 itemWindow.elements.monitoredItems.display = PagedWindow.new(tbl, 120, 40, {x1=355, y1=270, x2=630, y2=421}, 5, itemElements.itemBox.create)
                 itemWindow.elements.monitoredItems.display:displayItems()  
+                event.push("remove_index", "/home/programData/itemConfig.data", k)
                 return  
             end
         end
@@ -267,11 +270,11 @@ function itemWindow.onClick(x, y, button)
                     return
                elseif widgetsAreUs.isPointInBox(x, y, v.batch.background) then
                     event.ignore("hud_keyboard", handleKeyboardWrapper)
-                   local args = v.batch.onClick()
-                   local tbl = gimpHelper.loadTable("/home/programData/levelMaintainer.data")
-                   tbl[args.location].batch=args.batch
-                   gimpHelper.saveTable(tbl, "/home/programData/levelMaintainer.data")
-                   event.listen("hud_keyboard", handleKeyboardWrapper)
+                    local args = v.batch.onClick()
+                    local tbl = gimpHelper.loadTable("/home/programData/levelMaintainer.data")
+                    tbl[args.location].batch=args.batch
+                    gimpHelper.saveTable(tbl, "/home/programData/levelMaintainer.data")
+                    event.listen("hud_keyboard", handleKeyboardWrapper)
                     return
                end
             elseif button == 1 then
@@ -279,6 +282,7 @@ function itemWindow.onClick(x, y, button)
             elseif button == 2 then
                 local tbl = gimpHelper.loadTable("/home/programData/levelMaintainer.data")
                 table.remove(tbl, k)
+                event.push("remove_index", "/home/programData/levelMaintainerConfig.data", k)
                 lm.display:clearDisplayedItems()
                 lm.display = nil
                 gimpHelper.saveTable(tbl, "/home/programData/levelMaintainer.data")

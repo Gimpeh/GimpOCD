@@ -41,6 +41,10 @@ function widgetsAreUs.createBox(x, y, width, height, color, alpha)
 
 		return {endX = endingX, endY = endingY}
 	end
+    function box.remove()
+        glasses.removeObject(box.getID())
+        box = nil
+    end
 	return box
 end
 
@@ -68,10 +72,10 @@ end
 widgetsAreUs.initText = initText
 
 function widgetsAreUs.numberFillBar(x, y, width, height, title, maxAmount, color)
-    local background = glasses.addRect()
-    background.setSize(height, width)
-    background.setPosition(x, y)
-    background.setColor(100, 100, 100)
+    local box = glasses.addRect()
+    box.setSize(height, width)
+    box.setPosition(x, y)
+    box.setColor(100, 100, 100)
 
     local bar = glasses.addRect()
     bar.setSize(height, 20)
@@ -96,17 +100,17 @@ function widgetsAreUs.numberFillBar(x, y, width, height, title, maxAmount, color
             text.setText(convertedNumber)
         end,
         setVisible = function(visible)
-            background.setVisible(visible)
+            box.setVisible(visible)
             bar.setVisible(visible)
             titleText.setVisible(visible)
             text.setVisible(visible)
         end,
 		remove = function()
-			glasses.removeObject(background.getID())
+			glasses.removeObject(box.getID())
 			glasses.removeObject(bar.getID())
 			glasses.removeObject(titleText.getID())
 			glasses.removeObject(text.getID())
-			background = nil
+			box = nil
 			bar = nil
 			titleText = nil
 			text = nil
@@ -115,11 +119,11 @@ function widgetsAreUs.numberFillBar(x, y, width, height, title, maxAmount, color
 end
 
 function widgetsAreUs.maintenanceAlert(x, y, width, height)
-    local background = glasses.addRect()
-    background.setSize(height, width)
-    background.setPosition(x, y)
-    background.setColor(255, 0, 0)  -- Red
-    background.setAlpha(0.5)  -- Semi-transparent
+    local box = glasses.addRect()
+    box.setSize(height, width)
+    box.setPosition(x, y)
+    box.setColor(255, 0, 0)  -- Red
+    box.setAlpha(0.5)  -- Semi-transparent
 
     local text = glasses.addTextLabel()
     text.setPosition(x + 10, y + 10)
@@ -128,18 +132,18 @@ function widgetsAreUs.maintenanceAlert(x, y, width, height)
 
     return {
         show = function(message)
-            background.setVisible(true)
+            box.setVisible(true)
             text.setText(message)
             text.setVisible(true)
         end,
         hide = function()
-            background.setVisible(false)
+            box.setVisible(false)
             text.setVisible(false)
         end,
 		remove = function()
-			glasses.removeObject(background.getID())
+			glasses.removeObject(box.getID())
 			glasses.removeObject(text.getID())
-			background = nil
+			box = nil
 			text = nil
 		end
     }
@@ -204,26 +208,26 @@ function widgetsAreUs.isPointInBox(x, y, box)
 end
 
 function widgetsAreUs.titleBox(x, y, width, height, color, alpha, titleText, textScale)
-    local background = widgetsAreUs.createBox(x, y, width, height, color, alpha)
+    local box = widgetsAreUs.createBox(x, y, width, height, color, alpha)
     local title = component.glasses.addTextLabel()
     title.setScale(textScale)
     title.setPosition(x+3, y+2)
     title.setText(titleText)
 
     return {
-        background = background,
+        box = box,
         title = title,
         onClick = function()
             print("reassign me")
         end,
         setVisible = function(visible)
-            background.setVisible(visible)
+            box.setVisible(visible)
             title.setVisible(visible)
         end,
         remove = function()
-            component.glasses.removeObject(background.getID())
+            component.glasses.removeObject(box.getID())
             component.glasses.removeObject(title.getID())
-            background = nil
+            box = nil
             title = nil
         end
     }
@@ -231,7 +235,7 @@ end
 
 function widgetsAreUs.levelMaintainer(x, y, argsTable, arrayIndex)
     local itemStack = argsTable.itemStack
-    local background = widgetsAreUs.titleBox(x, y, 150, 30, {1, 0.2, 1}, 0.8, itemStack.label, 0.9)
+    local box = widgetsAreUs.titleBox(x, y, 150, 30, {1, 0.2, 1}, 0.8, itemStack.label, 0.9)
 
     local batch = widgetsAreUs.titleBox(x+5, y+10, 60, 20, {1, 1, 1}, 0.8, "Batch", 0.7)
     local batchText
@@ -289,7 +293,7 @@ function widgetsAreUs.levelMaintainer(x, y, argsTable, arrayIndex)
     option.setText(tostring(argsTable.amount))
 
     return {
-        background = background,
+        box = box,
         batch = batch,
         amount = amount,
         getBatch = function()
@@ -308,7 +312,7 @@ function widgetsAreUs.levelMaintainer(x, y, argsTable, arrayIndex)
             return itemStack
         end,
         setVisible = function(visible)
-            background.setVisible(visible)
+            box.setVisible(visible)
             batch.setVisible(visible)
             batchText.setVisible(visible)
             amount.setVisible(visible)
@@ -316,12 +320,12 @@ function widgetsAreUs.levelMaintainer(x, y, argsTable, arrayIndex)
         end,
         remove = function()
             amount.remove()
-            background.remove()
+            box.remove()
             batch.remove()
             component.glasses.removeObject(batchText.getID())
             component.glasses.removeObject(option.getID())
             amount = nil
-            background = nil
+            box = nil
             batch = nil
             batchText = nil
             option = nil
@@ -329,8 +333,8 @@ function widgetsAreUs.levelMaintainer(x, y, argsTable, arrayIndex)
     }
 end
 
-function widgetsAreUs.configSingleString(x, y, width, titleText, index)
-    local background = widgetsAreUs.createBox(x, y, width, 20, {0.6, 0.6, 0.6}, 0.8)
+function widgetsAreUs.configSingleString(x, y, width, titleText)
+    local box = widgetsAreUs.createBox(x, y, width, 20, {0.6, 0.6, 0.6}, 0.8)
     local title = component.glasses.addTextLabel()
     title.setScale(1.2)
     title.setPosition(x+15, y+4)
@@ -342,33 +346,31 @@ function widgetsAreUs.configSingleString(x, y, width, titleText, index)
     option.setText("Set Me")
 
     return {
-        background = background,
-        master = title,
+        box = box,
         option = option,
         setVisible = function(visible)
-            background.setVisible(visible)
+            box.setVisible(visible)
             title.setVisible(visible)
             option.setVisible(visible)
         end,
         remove = function()
-            component.glasses.removeObject(background.getID())
+            component.glasses.removeObject(box.getID())
             component.glasses.removeObject(title.getID())
             component.glasses.removeObject(option.getID())
-            background = nil
+            box = nil
             title = nil
             option = nil
         end,
-        onClick = function(context)
-            background.setColor(1, 1, 1)
+        onClick = function()
+            box.setColor(1, 1, 1)
             option.setText("")
             while true do
                 local _, _, _, character, _ = event.pull("hud_keyboard")
                 if character == 13 then  -- Enter key
                     if gimpHelper.trim(option.getText()) == ""  then option.setText("Set me or I won't go") end
-                    background.setColor(0.6, 0.6, 0.6)
-                    local name = gimpHelper.trim(title.getText())
+                    box.setColor(0.6, 0.6, 0.6)
                     local str = gimpHelper.trim(option.getText())
-                    event.push("config_set", context, index)
+                    event.push("config_change")
                     break
                 elseif character == 8 then  -- Backspace key
                     local currentText = option.getText()
@@ -380,111 +382,53 @@ function widgetsAreUs.configSingleString(x, y, width, titleText, index)
                 end
             end
         end,
-        load = function(tbl)
-            local master = gimpHelper.trim(title.getText())
-            if tbl[master] then
-                option.setText(tbl[master])
-            end
-        end
     }
 end
 
-function widgetsAreUs.configCheck(x, y, index)
-    local background = widgetsAreUs.createBox(x, y, 22, 22, {0, 0, 0}, 0.8)
+function widgetsAreUs.configCheck(x, y, index, keyName)
+    local box = widgetsAreUs.createBox(x, y, 22, 22, {0, 0, 0}, 0.8)
     local backgroundInterior = widgetsAreUs.createBox(x+3, y+3, 16, 16, {1, 1, 1}, 0.8)
     local check = component.glasses.addTextLabel()
     check.setScale(1.0)
     check.setPosition(x+2, y+2)
     check.setText("")
     return {
-        background = background,
+        box = box,
+        option = check,
         setVisible = function(visible)
-            background.setVisible(visible)
+            box.setVisible(visible)
             backgroundInterior.setVisible(visible)
             check.setVisible(visible)
         end,
         remove = function()
-            component.glasses.removeObject(background.getID())
+            component.glasses.removeObject(box.getID())
             component.glasses.removeObject(backgroundInterior.getID())
             component.glasses.removeObject(check.getID())
-            background = nil
+            box = nil
             backgroundInterior = nil
             check = nil
         end,
-        onClick = function(context)
+        onClick = function()
             if gimpHelper.trim(check.getText()) == "" then
                 check.setText("X")
-                event.push("config_set", context, index)
+                event.push("config_change")
             else
                 check.setText("")
-                event.push("config_set", context, index)
-            end
-        end,
-        load = function (tbl)
-            if tbl[index] then
-                check.setText(tbl[index])
-            end
-        end
-    }
-end
-
-function widgetsAreUs.configEntryOnly(x, y, width, index)
-    local background = widgetsAreUs.createBox(x, y, width, 60, {0.6, 0.6, 0.6}, 0.8)
-
-    local option = component.glasses.addTextLabel()
-    option.setScale(1.5)
-    option.setPosition(x+5, y+32)
-    option.setText("Set to unlock functionality")
-
-    return {
-        background = background,
-        option = option,
-        setVisible = function(visible)
-            background.setVisible(visible)
-            option.setVisible(visible)
-        end,
-        remove = function()
-            component.glasses.removeObject(background.getID())
-            component.glasses.removeObject(option.getID())
-            background = nil
-            option = nil
-        end,
-        onClick = function(context)
-            background.setColor(1, 1, 1)
-            option.setText("")
-            while true do
-                local _, _, _, character, _ = event.pull("hud_keyboard")
-                if character == 13 then  -- Enter key
-                    if gimpHelper.trim(option.getText()) == ""  then option.setText("Set me or I won't go") end
-                    background.setColor(0.6, 0.6, 0.6)
-                    local str = gimpHelper.trim(option.getText())
-                    event.push("config_set", context, index)
-                    break
-                elseif character == 8 then  -- Backspace key
-                    local currentText = option.getText()
-                    option.setText(currentText:sub(1, -2))
-                else
-                    local letter = string.char(character)
-                    local currentText = option.getText()
-                    option.setText(currentText .. letter)
-                end
-            end
-        end,
-        load = function(tbl)
-            if tbl[index] then
-                option.setText(tbl[index])
+                event.push("config_change")
             end
         end
     }
 end
 
 function widgetsAreUs.staticText(x, y, textToDisplay, scale)
+    local box = widgetsAreUs.createBox(x, y, 0, 0, {0.6, 0.6, 0.6}, 0.0)
     local text = component.glasses.addTextLabel()
     text.setScale(scale)
     text.setPosition(x, y)
     text.setText(textToDisplay)
 
     return {
+        box = box,
         setText = function(newText)
             text.setText(newText)
         end,
@@ -494,75 +438,99 @@ function widgetsAreUs.staticText(x, y, textToDisplay, scale)
         remove = function()
             component.glasses.removeObject(text.getID())
             text = nil
+        end,
+        onClick = function()
+            print("I'm a static text box")
         end
     }
 end
 
-function widgetsAreUs.symbolBox(x, y, symbolText, colorOrGreen)
+function widgetsAreUs.symbolBox(x, y, symbolText, colorOrGreen, func)
     if not colorOrGreen then colorOrGreen = {0, 0, 1} end
-    local background = widgetsAreUs.createBox(x, y, 20, 20, colorOrGreen, 0.8)
+    local box = widgetsAreUs.createBox(x, y, 20, 20, colorOrGreen, 0.8)
     local symbol = component.glasses.addTextLabel()
     symbol.setText(symbolText)
     symbol.setScale(2)
     symbol.setPosition(x+3, y+3)
-    return background
+    return {
+        box = box,
+        remove = function()
+            component.glasses.removeObject(box.getID())
+            component.glasses.removeObject(symbol.getID())
+            box = nil
+            symbol = nil
+        end,
+        setVisible = function(visible)
+            box.setVisible(visible)
+            symbol.setVisible(visible)
+        end,
+        onclick = func
+    }
 end
 
 function widgetsAreUs.levelMaintainerOptions(x, y, tbl, index)
-    local background = widgetsAreUs.titleBox(x, y, 150, 30, {1, 0.2, 1}, 0.8, tbl.itemStack.label, 0.9)
+    local box = widgetsAreUs.titleBox(x, y, 150, 30, {1, 0.2, 1}, 0.8, tbl.itemStack.label, 0.9)
     local batch = widgetsAreUs.staticText(x+5, y+10, "Batch: " .. tostring(tbl.batch), 0.7)
     local amount = widgetsAreUs.staticText(x+70, y+10, "Amount: " .. tostring(tbl.amount), 0.7)
 
     return {
-        background,
-        onClick = function(createConfigFunc)
-            local lmconfig = gimpHelper.loadTable("/home/programData/levelMaintainerConfig.data")
-            if not lmconfig then
-                lmconfig = {}
-            end
-            if not lmconfig[index] then
-                lmconfig[index] = createConfigFunc()
-                gimpHelper.saveTable(lmconfig, "/home/programData/levelMaintainerConfig.data")
-            end
-            return lmconfig[index]
+        box = box,
+        onClick = function()
+            local configurations = require("configurations")
+            configurations.createLevelMaintainerConfig()
+            
+            event.push("load_config", "/home/programData/levelMaintainerConfig.data", index)
         end,
         setVisible = function(visible)
-            background.setVisible(visible)
+            box.setVisible(visible)
             batch.setVisible(visible)
             amount.setVisible(visible)
         end,
         remove = function()
-            background.remove()
+            box.remove()
             batch.remove()
             amount.remove()
-            background = nil
+            box = nil
             batch = nil
             amount = nil
         end
     }
 end
 
-function widgetsAreUs.textBox(x, y, width, height, text)
-    local background = widgetsAreUs.createBox(x, y, width, height, {0.6, 0.6, 0.6}, 0.8)
+function widgetsAreUs.textBox(x, y, width, height, text, index, keyName)
+    local box = widgetsAreUs.createBox(x, y, width, height, {0.6, 0.6, 0.6}, 0.8)
     local textLabel = component.glasses.addTextLabel()
     textLabel.setPosition(x+5, y+5)
     textLabel.setText(text)
 
     return {
-        background = background,
-        text = textLabel,
+        box = box,
+        option = textLabel,
         setText = function(newText)
             textLabel.setText(newText)
         end,
         setVisible = function(visible)
-            background.setVisible(visible)
+            box.setVisible(visible)
             textLabel.setVisible(visible)
         end,
         remove = function()
-            component.glasses.removeObject(background.getID())
+            component.glasses.removeObject(box.getID())
             component.glasses.removeObject(textLabel.getID())
-            background = nil
+            box = nil
             textLabel = nil
+        end,
+        onClick = function()
+            local configurations = require("configurations")
+            local derp = initText:new(100, 100, "Click all the way to the right")
+            _, _, _, x, y = event.pull("hud_click")
+            configurations.gc.screenSizeWidth.setText(x)
+            derp:remove()
+            derp = initText:new(100, 100, "Click all the way to the bottom")
+            _, _, _, x, y = event.pull("hud_click")
+            configurations.gc.screenSizeHeight.setText(y)
+            derp:remove()
+            derp = nil
+            event.push("config_change")
         end
     }
 end

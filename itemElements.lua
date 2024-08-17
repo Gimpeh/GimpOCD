@@ -1,6 +1,7 @@
 local widgetsAreUs = require("widgetsAreUs")
 local component = require("component")
 local gimpHelper = require("gimpHelper")
+local event = require("event")
 
 local itemElements = {}
 
@@ -70,7 +71,7 @@ function itemBox.itemOptions(x, y, itemStack, index)
     end
 
     return {
-        background = background,
+        box = background,
         item = itemStack,
         remove = function()
             component.glasses.removeObject(background.getID())
@@ -86,16 +87,10 @@ function itemBox.itemOptions(x, y, itemStack, index)
             name.setVisible(visible)
             icon.setVisible(visible)
         end,
-        onClick = function(createConfigFunc)
-            local config = gimpHelper.loadTable("/home/programData/itemConfig.data")
-            if not config then
-                config = {}
-            end
-            if not config[index] then
-                config[index] = createConfigFunc()
-                gimpHelper.saveTable(config, "/home/programData/itemConfig.data")
-            end
-            return config[index]
+        onClick = function()
+            local configurations = require("configurations")
+            configurations.createItemManagerConfig()
+            event.push("")
         end
     }
 end

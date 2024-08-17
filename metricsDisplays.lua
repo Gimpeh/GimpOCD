@@ -392,7 +392,7 @@ function machineIndividual.machineConfig(x, y, tbl, index)
 	local name = widgetsAreUs.staticText(x+4, y+4, tbl.newMachineName, 1)
 
 	return {
-		background = background,
+		box = background,
 		setVisible = function(visible)
 			background.setVisible(visible)
 			name.setVisible(visible)
@@ -404,16 +404,10 @@ function machineIndividual.machineConfig(x, y, tbl, index)
 			background = nil
 			name = nil
 		end,
-		onClick = function(createConfigFunc)
-			local config = gimpHelper.loadTable("/home/programData/machineConfig.data")
-			if not config then
-				config = {}
-			end
-			if not config[index] then
-				config[index] = createConfigFunc()
-				gimpHelper.saveTable("/home/programData/machineConfig.data", config)
-			end
-			return config[index]
+		onClick = function()
+			local configurations = require("configurations")
+			configurations.createMachineManagerConfig(335, 310, tbl, index)
+			event.push("loadConfig", "/home/programData/machineConfig.data", index)
 		end
 	}
 end
