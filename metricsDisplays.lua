@@ -318,7 +318,7 @@ function machineIndividual.create(x, y, individualProxy)
 				background.setColor(1, 0, 0)
 			end
 		end,
-		setState = function(machineInterface)
+		setState = function()
 			local allowed = machine.isWorkAllowed()
 			if allowed then
 				machine.setWorkAllowed(false)
@@ -384,32 +384,6 @@ function machineIndividual.create(x, y, individualProxy)
 	}
 
 	return machineInterface
-end
-
---tbl = {[1] = {machineGroup = groupName, newMachineName = name, machineCoords = xyz}}
-function machineIndividual.machineConfig(x, y, tbl, index)
-	local background = widgetsAreUs.createBox(x, y, 85, 12, {1, 1, 1}, 0.6)
-	local name = widgetsAreUs.staticText(x+4, y+4, tbl.newMachineName, 1)
-
-	return {
-		box = background,
-		setVisible = function(visible)
-			background.setVisible(visible)
-			name.setVisible(visible)
-		end,
-		remove = function()
-			component.glasses.removeObject(background.getID())
-			component.glasses.removeObject(name.getID())
-		
-			background = nil
-			name = nil
-		end,
-		onClick = function()
-			local configurations = require("configurations")
-			configurations.createMachineManagerConfig(335, 310, tbl, index)
-			event.push("loadConfig", "/home/programData/machineConfig.data", index)
-		end
-	}
 end
 
 metricsDisplays.machine = machineIndividual

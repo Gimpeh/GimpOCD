@@ -1,4 +1,58 @@
+local event = require("event")
+
 local gimpHelper = {}
+
+--import function
+--[[
+function widgetsAreUs.displayLocation(radarData)
+    local name = radarData.name
+    local distance = radarData.distance
+    local x = radarData.x
+    local y = radarData.y
+    local z = radarData.z
+
+    local beacon = widgetsAreUs.maintenanceBeacon(x+1, y + 50.5, z + 21)
+    beacon.beacon.setColor(1, 1, 1)
+    beacon.beacon.setViewDistance(500)
+
+   return {
+    name = name,
+    distance = distance,
+    x = x,
+    y = y,
+    z = z,
+    beacon = beacon,
+    remove = function()
+        beacon.remove()
+    end,
+    setDistance = function(distanceNew)
+        distance = distanceNew
+    end,
+    setColor = function(rgb)
+        beacon.beacon.setColor(rgb[1], rgb[2], rgb[3])
+    end,
+    move = function(xyz)
+        beacon.beacon.set3DPos(xyz.x, xyz.y +49, xyz.z +20)
+    end
+   }
+end]]
+
+function gimpHelper.handleTextInput(textLabel)
+    while true do
+        if textLabel.getText() == "0" then textLabel.setText("") end
+        local _, _, _, character = event.pull("hud_keyboard")
+        if character == 13 then  -- Enter key
+            if textLabel.getText() == "" then textLabel.setText("0") end
+            break
+        elseif character == 8 then  -- Backspace key
+            textLabel.setText(textLabel.getText():sub(1, -2))
+        else
+            textLabel.setText(textLabel.getText() .. string.char(character))
+        end
+    end
+    return tonumber(textLabel.getText())
+end
+
 
 function gimpHelper.removeCommas(str)
   return string.gsub(str, ",", "")
