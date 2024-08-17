@@ -499,12 +499,12 @@ function widgetsAreUs.staticText(x, y, textToDisplay, scale)
 end
 
 function widgetsAreUs.symbolBox(x, y, symbolText, colorOrGreen)
-    if not colorOrGreen then colorOrGreen = {0, 0, 0.7} end
-    local background = widgetsAreUs.createBox(x, y, 20, 20, {colorOrGreen}, 0.8)
+    if not colorOrGreen then colorOrGreen = {0, 0, 1} end
+    local background = widgetsAreUs.createBox(x, y, 20, 20, colorOrGreen, 0.8)
     local symbol = component.glasses.addTextLabel()
     symbol.setText(symbolText)
-    symbol.setScale(1)
-    symbol.setPosition(x+8, y+8)
+    symbol.setScale(2)
+    symbol.setPosition(x+3, y+3)
     return background
 end
 
