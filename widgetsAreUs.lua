@@ -252,7 +252,7 @@ function widgetsAreUs.levelMaintainer(x, y, argsTable, arrayIndex)
         end
         return {
             location = arrayIndex,
-            batch = tonumber(batchText.getBatch())
+            batch = tonumber(batchText.getText())
         }
     end
     batchText = component.glasses.addTextLabel()
@@ -279,7 +279,7 @@ function widgetsAreUs.levelMaintainer(x, y, argsTable, arrayIndex)
         end
         return {
             location = arrayIndex,
-            amount = tonumber(amountText.getAmount())
+            amount = tonumber(amountText.getText())
         }
     end
     amountText = component.glasses.addTextLabel()
