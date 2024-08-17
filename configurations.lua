@@ -16,6 +16,8 @@ local mm = {}
 ----------------------------------------------------------
 ---event handlers
 
+--This function should really be moved into machinesManager.
+--It's not a configuration, it's a persistance file for machinesManager.
 local function stockPileData(_, config)
     local tbl = gimpHelper.loadTable("/home/programData/machinesNamed.data")
     if not tbl then
