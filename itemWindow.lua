@@ -312,7 +312,7 @@ function itemWindow.onClick(x, y, button)
                 end
             elseif button == 1 then
 
-            elseif bitton == 2 then
+            elseif button == 2 then
                 local tbl = gimpHelper.loadTable("/home/programData/reverseLevelMaintainer.data")
                 table.remove(tbl, k)
                 rlm.display:clearDisplayedItems()
