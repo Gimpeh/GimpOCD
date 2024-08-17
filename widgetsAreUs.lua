@@ -1,6 +1,7 @@
 --widgetsAreUs.lua
 local component = require("component")
 local event = require("event")
+local gimpHelper = require("gimpHelper")
 
 local glasses = component.glasses
 
@@ -260,32 +261,32 @@ function widgetsAreUs.levelMaintainer(x, y, argsTable, arrayIndex)
     batchText.setPosition(x+10, y+20)
     batchText.setText(tostring(argsTable.batch))
     local amount = widgetsAreUs.titleBox(x+70, y+10, 75, 20, {1, 1, 1}, 0.8, "Amount", 0.7)
-    local amountText
+    local option
     amount.onClick = function()
         while true do
-            if amountText.getText == "0" then amountText.setText("") end
+            if option.getText == "0" then option.setText("") end
             local _, _, _, character, _ = event.pull("hud_keyboard")
             if character == 13 then  -- Enter key
-                if amountText.getText == ""  then amountText.setText("0") end
+                if option.getText == ""  then option.setText("0") end
                 break
             elseif character == 8 then  -- Backspace key
-                local currentText = amountText.getText()
-                amountText.setText(currentText:sub(1, -2))
+                local currentText = option.getText()
+                option.setText(currentText:sub(1, -2))
             else
                 local letter = string.char(character)
-                local currentText = amountText.getText()
-                amountText.setText(currentText .. letter)
+                local currentText = option.getText()
+                option.setText(currentText .. letter)
             end
         end
         return {
             location = arrayIndex,
-            amount = tonumber(amountText.getText())
+            amount = tonumber(option.getText())
         }
     end
-    amountText = component.glasses.addTextLabel()
-    amountText.setScale(0.9)
-    amountText.setPosition(x+70, y+20)
-    amountText.setText(tostring(argsTable.amount))
+    option = component.glasses.addTextLabel()
+    option.setScale(0.9)
+    option.setPosition(x+70, y+20)
+    option.setText(tostring(argsTable.amount))
 
     return {
         background = background,
@@ -295,13 +296,13 @@ function widgetsAreUs.levelMaintainer(x, y, argsTable, arrayIndex)
             return batchText.getText()
         end,
         getAmount = function()
-            return amountText.getText()
+            return option.getText()
         end,
         setBatch = function(num)
             batchText.setText(tostring(num))
         end,
         setAmount = function (num)
-            amountText.setText(tostring(num))
+            option.setText(tostring(num))
         end,
         getItemStack = function()
             return itemStack
@@ -311,21 +312,200 @@ function widgetsAreUs.levelMaintainer(x, y, argsTable, arrayIndex)
             batch.setVisible(visible)
             batchText.setVisible(visible)
             amount.setVisible(visible)
-            amountText.setVisible(visible)
+            option.setVisible(visible)
         end,
         remove = function()
             amount.remove()
             background.remove()
             batch.remove()
             component.glasses.removeObject(batchText.getID())
-            component.glasses.removeObject(amountText.getID())
+            component.glasses.removeObject(option.getID())
             amount = nil
             background = nil
             batch = nil
             batchText = nil
-            amountText = nil
-        end        
+            option = nil
+        end
     }
+end
+
+function widgetsAreUs.configSingleString(x, y, width, titleText)
+    local background = widgetsAreUs.createBox(x, y, width, 60, {0.6, 0.6, 0.6}, 0.8)
+    local title = component.glasses.addTextLabel()
+    title.setScale(1.2)
+    title.setPosition(x+15, y+4)
+    title.setText(titleText)
+
+    local option = component.glasses.addTextLabel()
+    option.setScale(1.5)
+    option.setPosition(x+5, y+32)
+    option.setText("Set to unlock functionality")
+
+    return {
+        background = background,
+        master = title,
+        option = option,
+        setVisible = function(visible)
+            background.setVisible(visible)
+            title.setVisible(visible)
+            option.setVisible(visible)
+        end,
+        remove = function()
+            component.glasses.removeObject(background.getID())
+            component.glasses.removeObject(title.getID())
+            component.glasses.removeObject(option.getID())
+            background = nil
+            title = nil
+            option = nil
+        end,
+        onClick = function()
+            background.setColor(1, 1, 1)
+            option.setText("")
+            while true do
+                local _, _, _, character, _ = event.pull("hud_keyboard")
+                if character == 13 then  -- Enter key
+                    if gimpHelper.trim(option.getText()) == ""  then option.setText("Set me or I won't go") end
+                    background.setColor(0.6, 0.6, 0.6)
+                    local name = gimpHelper.trim(title.getText())
+                    local str = gimpHelper.trim(option.getText())
+                    event.push("config_set", name, str)
+                    break
+                elseif character == 8 then  -- Backspace key
+                    local currentText = option.getText()
+                    option.setText(currentText:sub(1, -2))
+                else
+                    local letter = string.char(character)
+                    local currentText = option.getText()
+                    option.setText(currentText .. letter)
+                end
+            end
+        end,
+        load = function(tbl)
+            local master = gimpHelper.trim(title.getText())
+            if tbl[master] then
+                option.setText(tbl[master])
+            end
+        end
+    }
+end
+
+function widgetsAreUs.configCheck(x, y, master)
+    local background = widgetsAreUs.createBox(x, y, 22, 22, {0, 0, 0}, 0.8)
+    local backgroundInterior = widgetsAreUs.createBox(x+3, y+3, 16, 16, {1, 1, 1}, 0.8)
+    local check = component.glasses.addTextLabel()
+    check.setScale(1.0)
+    check.setPosition(x+2, y+2)
+    check.setText("")
+    return {
+        background = background,
+        master = master,
+        option = gimpHelper.trim(check.getText()),
+        setVisible = function(visible)
+            background.setVisible(visible)
+            backgroundInterior.setVisible(visible)
+            check.setVisible(visible)
+        end,
+        remove = function()
+            component.glasses.removeObject(background.getID())
+            component.glasses.removeObject(backgroundInterior.getID())
+            component.glasses.removeObject(check.getID())
+            background = nil
+            backgroundInterior = nil
+            check = nil
+        end,
+        onClick = function()
+            if gimpHelper.trim(check.getText()) == "" then
+                check.setText("X")
+                event.push("config_set", master, true)
+            else
+                check.setText("")
+                event.push("config_set", master, false)
+            end
+        end,
+        load = function (tbl)
+            if tbl[master] then
+                check.setText(tbl[master])
+            end
+        end
+    }
+end
+
+function widgetsAreUs.configEntryOnly(x, y, width, master)
+    local background = widgetsAreUs.createBox(x, y, width, 60, {0.6, 0.6, 0.6}, 0.8)
+
+    local option = component.glasses.addTextLabel()
+    option.setScale(1.5)
+    option.setPosition(x+5, y+32)
+    option.setText("Set to unlock functionality")
+
+    return {
+        background = background,
+        master = master,
+        option = option,
+        setVisible = function(visible)
+            background.setVisible(visible)
+            option.setVisible(visible)
+        end,
+        remove = function()
+            component.glasses.removeObject(background.getID())
+            component.glasses.removeObject(option.getID())
+            background = nil
+            option = nil
+        end,
+        onClick = function()
+            background.setColor(1, 1, 1)
+            option.setText("")
+            while true do
+                local _, _, _, character, _ = event.pull("hud_keyboard")
+                if character == 13 then  -- Enter key
+                    if gimpHelper.trim(option.getText()) == ""  then option.setText("Set me or I won't go") end
+                    background.setColor(0.6, 0.6, 0.6)
+                    local str = gimpHelper.trim(option.getText())
+                    event.push("config_set", master, str)
+                    break
+                elseif character == 8 then  -- Backspace key
+                    local currentText = option.getText()
+                    option.setText(currentText:sub(1, -2))
+                else
+                    local letter = string.char(character)
+                    local currentText = option.getText()
+                    option.setText(currentText .. letter)
+                end
+            end
+        end,
+        load = function(tbl)
+            if tbl[master] then
+                option.setText(tbl[master])
+            end
+        end
+    }
+end
+
+function widgetsAreUs.staticText(x, y, textToDisplay, scale)
+    local text = component.glasses.addTextLabel()
+    text.setScale(scale)
+    text.setPosition(x, y)
+    text.setText(textToDisplay)
+
+    return {
+        setVisible = function(visible)
+            text.setVisible(visible)
+        end,
+        remove = function()
+            component.glasses.removeObject(text.getID())
+            text = nil
+        end
+    }
+end
+
+function widgetsAreUs.symbolBox(x, y, symbolText, colorOrGreen)
+    if not colorOrGreen then colorOrGreen = {0, 0, 0.7} end
+    local background = widgetsAreUs.createBox(x, y, 20, 20, {colorOrGreen}, 0.8)
+    local symbol = component.glasses.addTextLabel()
+    symbol.setText(symbolText)
+    symbol.setScale(1)
+    symbol.setPosition(x+8, y+8)
+    return background
 end
 
 return widgetsAreUs

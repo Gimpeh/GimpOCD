@@ -1,7 +1,7 @@
 local widgetsAreUs = require("widgetsAreUs")
 local component = require("component")
 
-itemElements = {}
+local itemElements = {}
 
 local itemBox = {}
 function itemBox.create(x, y, itemStack)
@@ -48,8 +48,6 @@ function itemBox.create(x, y, itemStack)
             name.setVisible(visible)
             icon.setVisible(visible)
             amount.setVisible(visible)
-        end,
-        onClick = function(button, context)
         end
     }
 end

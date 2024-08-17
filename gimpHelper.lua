@@ -98,8 +98,16 @@ function gimpHelper.loadTable(filename)
     local content = file:read("*a")  -- Read the whole file content
     file:close()
     local func = load(content)  -- Execute the file's contents as Lua code
+    if not func or type(func) ~= "function" then
+        return nil, "Unable to load file content"
+    end
     local tbl = func()
     return tbl
+end
+
+--remove whitespace and control characters from the beginning and end of a string
+function gimpHelper.trim(s)
+    return (s:gsub("^%s*(.-)%s*$", "%1")):gsub("%c", "")
 end
 
 return gimpHelper
