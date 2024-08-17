@@ -70,7 +70,7 @@ function itemWindow.init()
     rlm = itemWindow.elements.reverseLevelMaintainer
     local rvlvlmaint = gimpHelper.loadTable("/home/programData/reverseLevelMaintainer.data")
     if rvlvlmaint and rvlvlmaint[1] then
-        rlm.display = PagedWindow.new(rvlvlmaint, 150, 30, {x1=330, y1=71, x2=490, y2=238}, 5, widgetsAreUs.levelMaintainer)
+        rlm.display = PagedWindow.new(rvlvlmaint, 150, 30, {x1=335, y1=83, x2=490, y2=238}, 5, widgetsAreUs.levelMaintainer)
         rlm.display:displayItems()
         renameBatch()
     end
@@ -82,7 +82,7 @@ function itemWindow.init()
     lm = itemWindow.elements.levelMaintainer
     local lvlmaint = gimpHelper.loadTable("/home/programData/levelMaintainer.data")
     if lvlmaint and lvlmaint[1] then
-        lm.display = PagedWindow.new(lvlmaint, 150, 30, {x1=500, y1= 78, x2= 660, y2=238}, 5, widgetsAreUs.levelMaintainer)
+        lm.display = PagedWindow.new(lvlmaint, 150, 30, {x1=505, y1= 83, x2= 660, y2=238}, 5, widgetsAreUs.levelMaintainer)
         lm.display:displayItems()
     end
 
@@ -280,7 +280,7 @@ function itemWindow.onClick(x, y, button)
                 local tbl = gimpHelper.loadTable("/home/programData/reverseLevelMaintainer.data")
                 tbl[args.location].amount=args.amount
                 gimpHelper.saveTable(tbl, "/home/programData/reverseLevelMaintainer.data")
-                event.listen("hud_keyboard", handleKeyboardWrapper)
+                event.listen("hud_keyboard", handleKeyboardWrapper)v
                 return
             elseif widgetsAreUs.isPointInBox(x, y, v.batch.background) then
                 event.ignore("hud_keyboard", handleKeyboardWrapper)
