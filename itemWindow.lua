@@ -36,9 +36,13 @@ local function handleKeyboard(character)
             itemWindow.elements.mainStorage.display:clearDisplayedItems()
         end
         itemWindow.elements.mainStorage.display = nil
-
+        local items
         local trimmedStr =  trim(itemWindow.searchText.getText())
-        local items = component.me_interface.getItemsInNetwork({label = trimmedStr})
+        if trimmedStr = "" then 
+            items = component.me_interface.getItemsInNetwork()
+        else
+            items = component.me_interface.getItemsInNetwork({label = trimmedStr})
+        end
         itemWindow.elements.mainStorage.display = PagedWindow.new(items, 120, 40, {x1=25, y1=83, x2=320, y2=403}, 5, itemElements.itemBox.create)
         itemWindow.elements.mainStorage.display:displayItems()
     elseif character == 8 then  -- Backspace key
