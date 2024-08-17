@@ -65,7 +65,7 @@ function PagedWindow:displayItems()
 		if self.args and self.args[i] then
 		else
 			self.args = {}
-			self.args[i] = true
+			self.args[i] = i
 		end
 
         if item then
