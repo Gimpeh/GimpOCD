@@ -28,9 +28,7 @@ end
 function overlay.init()
 	overlay.tabs.itemWindow = {}
 	overlay.tabs.itemWindow.box = widgetsAreUs.createBox(10, 10, 140, 40, {0, 0, 1}, 0.7)
-	overlay.tabs.itemWindow.title = component.glasses.addTextLabel()
-	overlay.tabs.itemWindow.title.setPosition(20, 20)
-	overlay.tabs.itemWindow.title.setText("Storage")
+	overlay.tabs.itemWindow.title = widgetsAreUs.text(20, 20, "Storage", 1)
 	overlay.tabs.itemWindow.init = function()
 		itemWindow.init()
 		os.sleep(0)
@@ -38,9 +36,7 @@ function overlay.init()
 	end
 	overlay.tabs.machines = {}
 	overlay.tabs.machines.box = widgetsAreUs.createBox(160, 10, 140, 40, {0, 0, 1}, 0.7)
-	overlay.tabs.machines.title = component.glasses.addTextLabel()
-	overlay.tabs.machines.title.setPosition(170,20)
-	overlay.tabs.machines.title.setText("Machines")
+	overlay.tabs.machines.title = widgetsAreUs.text(170, 20, "Machines", 1)
 	overlay.tabs.machines.init = function()
 		machinesManager.init()
 		os.sleep(0)
@@ -49,19 +45,16 @@ function overlay.init()
 	os.sleep(0)
 	overlay.tabs.options = {}
 	overlay.tabs.options.box = widgetsAreUs.createBox(310, 10, 140, 40, {0, 0, 1}, 0.7)
-	overlay.tabs.options.title = component.glasses.addTextLabel()
-	overlay.tabs.options.title.setPosition(320, 20)
-	overlay.tabs.options.title.setText("Options")
+	overlay.tabs.options.title = widgetsAreUs.text(320, 20, "Options", 1)
 	overlay.tabs.options.init = function()
 		configurations.init()
 		os.sleep(0)
 		active = configurations
 	end
+
 	overlay.tabs.textEditor = {}
 	overlay.tabs.textEditor.box = widgetsAreUs.createBox(460, 10, 140, 40, {0, 0, 1}, 0.7)
-	overlay.tabs.textEditor.title = component.glasses.addTextLabel()
-	overlay.tabs.textEditor.title.setPosition(470, 20)
-	overlay.tabs.textEditor.title.setText("Text Editor")
+	overlay.tabs.textEditor.title = widgetsAreUs.text(470, 20, "Text Editor", 1)
 	overlay.tabs.textEditor.init = function()
 		print("text editor tab init called")
 		os.sleep(0)
@@ -105,7 +98,7 @@ function overlay.show()
 	end
 end
 
--------------------
+---------
 
 function overlay.onClick(x, y, button)
 	for k, v in pairs(overlay.boxes) do
