@@ -22,6 +22,7 @@ function overlay.tabs.loadTab(tab)
     overlay.tabs[tab].init()
     local tbl = {tab = tab}
     gimpHelper.saveTable(tbl, "/home/programData/overlay.data")
+	os.sleep(0)
 end
 
 function overlay.init()
@@ -32,6 +33,7 @@ function overlay.init()
 	overlay.tabs.itemWindow.title.setText("Storage")
 	overlay.tabs.itemWindow.init = function()
 		itemWindow.init()
+		os.sleep(0)
 		active = itemWindow
 	end
 	overlay.tabs.machines = {}
@@ -41,8 +43,10 @@ function overlay.init()
 	overlay.tabs.machines.title.setText("Machines")
 	overlay.tabs.machines.init = function()
 		machinesManager.init()
+		os.sleep(0)
 		active = machinesManager
 	end
+	os.sleep(0)
 	overlay.tabs.options = {}
 	overlay.tabs.options.box = widgetsAreUs.createBox(310, 10, 140, 40, {0, 0, 1}, 0.7)
 	overlay.tabs.options.title = component.glasses.addTextLabel()
@@ -50,6 +54,7 @@ function overlay.init()
 	overlay.tabs.options.title.setText("Options")
 	overlay.tabs.options.init = function()
 		configurations.init()
+		os.sleep(0)
 		active = configurations
 	end
 	overlay.tabs.textEditor = {}
@@ -59,6 +64,7 @@ function overlay.init()
 	overlay.tabs.textEditor.title.setText("Text Editor")
 	overlay.tabs.textEditor.init = function()
 		print("text editor tab init called")
+		os.sleep(0)
 		active = "text editor not set yet"
 	end
 
@@ -72,6 +78,7 @@ function overlay.init()
 		overlay.tabs.machines.init()
 	end
 	overlay.hide()
+	os.sleep(0)
 end
 
 -----------------------------------------
@@ -103,14 +110,17 @@ end
 function overlay.onClick(x, y, button)
 	for k, v in pairs(overlay.boxes) do
 		if widgetsAreUs.isPointInBox(x, y, v) then
+			os.sleep(0)
 			return overlay.tabs.loadTab(k)
 		end
 	end
 	active.onClick(x, y, button)
+	os.sleep(0)
 end
 
 function overlay.update()
 	if active and active.update then
+		os.sleep(0)
 		active.update()
 	end
 end
