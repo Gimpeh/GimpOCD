@@ -386,6 +386,38 @@ function machineIndividual.create(x, y, individualProxy)
 	return machineInterface
 end
 
+--tbl = {[1] = {machineGroup = groupName, newMachineName = name, machineCoords = xyz}}
+function machineIndividual.machineConfig(x, y, tbl, index)
+	local background = widgetsAreUs.createBox(x, y, 85, 12, {1, 1, 1}, 0.6)
+	local name = widgetsAreUs.staticText(x+4, y+4, tbl.newMachineName, 1)
+
+	return {
+		background = background,
+		setVisible = function(visible)
+			background.setVisible(visible)
+			name.setVisible(visible)
+		end,
+		remove = function()
+			component.glasses.removeObject(background.getID())
+			component.glasses.removeObject(name.getID())
+		
+			background = nil
+			name = nil
+		end,
+		onClick = function(createConfigFunc)
+			local config = gimpHelper.loadTable("/home/programData/machineConfig.data")
+			if not config then
+				config = {}
+			end
+			if not config[index] then
+				config[index] = createConfigFunc()
+				gimpHelper.saveTable("/home/programData/machineConfig.data", config)
+			end
+			return config[index]
+		end
+	}
+end
+
 metricsDisplays.machine = machineIndividual
 
 return metricsDisplays

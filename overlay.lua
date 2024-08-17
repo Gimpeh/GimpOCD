@@ -5,6 +5,7 @@ local widgetsAreUs = require("widgetsAreUs")
 local gimpHelper = require("gimpHelper")
 local machinesManager = require("machinesManager")
 local itemWindow = require("itemWindow")
+local configurations = require("configurations")
 
 local overlay = {}
 overlay.tabs = {}

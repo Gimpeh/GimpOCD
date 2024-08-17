@@ -329,8 +329,8 @@ function widgetsAreUs.levelMaintainer(x, y, argsTable, arrayIndex)
     }
 end
 
-function widgetsAreUs.configSingleString(x, y, width, titleText)
-    local background = widgetsAreUs.createBox(x, y, width, 60, {0.6, 0.6, 0.6}, 0.8)
+function widgetsAreUs.configSingleString(x, y, width, titleText, index)
+    local background = widgetsAreUs.createBox(x, y, width, 20, {0.6, 0.6, 0.6}, 0.8)
     local title = component.glasses.addTextLabel()
     title.setScale(1.2)
     title.setPosition(x+15, y+4)
@@ -339,7 +339,7 @@ function widgetsAreUs.configSingleString(x, y, width, titleText)
     local option = component.glasses.addTextLabel()
     option.setScale(1.5)
     option.setPosition(x+5, y+32)
-    option.setText("Set to unlock functionality")
+    option.setText("Set Me")
 
     return {
         background = background,
@@ -358,7 +358,7 @@ function widgetsAreUs.configSingleString(x, y, width, titleText)
             title = nil
             option = nil
         end,
-        onClick = function()
+        onClick = function(context)
             background.setColor(1, 1, 1)
             option.setText("")
             while true do
@@ -368,7 +368,7 @@ function widgetsAreUs.configSingleString(x, y, width, titleText)
                     background.setColor(0.6, 0.6, 0.6)
                     local name = gimpHelper.trim(title.getText())
                     local str = gimpHelper.trim(option.getText())
-                    event.push("config_set", name, str)
+                    event.push("config_set", context, index)
                     break
                 elseif character == 8 then  -- Backspace key
                     local currentText = option.getText()
@@ -389,7 +389,7 @@ function widgetsAreUs.configSingleString(x, y, width, titleText)
     }
 end
 
-function widgetsAreUs.configCheck(x, y, master)
+function widgetsAreUs.configCheck(x, y, index)
     local background = widgetsAreUs.createBox(x, y, 22, 22, {0, 0, 0}, 0.8)
     local backgroundInterior = widgetsAreUs.createBox(x+3, y+3, 16, 16, {1, 1, 1}, 0.8)
     local check = component.glasses.addTextLabel()
@@ -398,8 +398,6 @@ function widgetsAreUs.configCheck(x, y, master)
     check.setText("")
     return {
         background = background,
-        master = master,
-        option = gimpHelper.trim(check.getText()),
         setVisible = function(visible)
             background.setVisible(visible)
             backgroundInterior.setVisible(visible)
@@ -413,24 +411,24 @@ function widgetsAreUs.configCheck(x, y, master)
             backgroundInterior = nil
             check = nil
         end,
-        onClick = function()
+        onClick = function(context)
             if gimpHelper.trim(check.getText()) == "" then
                 check.setText("X")
-                event.push("config_set", master, true)
+                event.push("config_set", context, index)
             else
                 check.setText("")
-                event.push("config_set", master, false)
+                event.push("config_set", context, index)
             end
         end,
         load = function (tbl)
-            if tbl[master] then
-                check.setText(tbl[master])
+            if tbl[index] then
+                check.setText(tbl[index])
             end
         end
     }
 end
 
-function widgetsAreUs.configEntryOnly(x, y, width, master)
+function widgetsAreUs.configEntryOnly(x, y, width, index)
     local background = widgetsAreUs.createBox(x, y, width, 60, {0.6, 0.6, 0.6}, 0.8)
 
     local option = component.glasses.addTextLabel()
@@ -440,7 +438,6 @@ function widgetsAreUs.configEntryOnly(x, y, width, master)
 
     return {
         background = background,
-        master = master,
         option = option,
         setVisible = function(visible)
             background.setVisible(visible)
@@ -452,7 +449,7 @@ function widgetsAreUs.configEntryOnly(x, y, width, master)
             background = nil
             option = nil
         end,
-        onClick = function()
+        onClick = function(context)
             background.setColor(1, 1, 1)
             option.setText("")
             while true do
@@ -461,7 +458,7 @@ function widgetsAreUs.configEntryOnly(x, y, width, master)
                     if gimpHelper.trim(option.getText()) == ""  then option.setText("Set me or I won't go") end
                     background.setColor(0.6, 0.6, 0.6)
                     local str = gimpHelper.trim(option.getText())
-                    event.push("config_set", master, str)
+                    event.push("config_set", context, index)
                     break
                 elseif character == 8 then  -- Backspace key
                     local currentText = option.getText()
@@ -474,8 +471,8 @@ function widgetsAreUs.configEntryOnly(x, y, width, master)
             end
         end,
         load = function(tbl)
-            if tbl[master] then
-                option.setText(tbl[master])
+            if tbl[index] then
+                option.setText(tbl[index])
             end
         end
     }
@@ -488,6 +485,9 @@ function widgetsAreUs.staticText(x, y, textToDisplay, scale)
     text.setText(textToDisplay)
 
     return {
+        setText = function(newText)
+            text.setText(newText)
+        end,
         setVisible = function(visible)
             text.setVisible(visible)
         end,
@@ -506,6 +506,65 @@ function widgetsAreUs.symbolBox(x, y, symbolText, colorOrGreen)
     symbol.setScale(2)
     symbol.setPosition(x+3, y+3)
     return background
+end
+
+function widgetsAreUs.levelMaintainerOptions(x, y, tbl, index)
+    local background = widgetsAreUs.titleBox(x, y, 150, 30, {1, 0.2, 1}, 0.8, tbl.itemStack.label, 0.9)
+    local batch = widgetsAreUs.staticText(x+5, y+10, "Batch: " .. tostring(tbl.batch), 0.7)
+    local amount = widgetsAreUs.staticText(x+70, y+10, "Amount: " .. tostring(tbl.amount), 0.7)
+
+    return {
+        background,
+        onClick = function(createConfigFunc)
+            local lmconfig = gimpHelper.loadTable("/home/programData/levelMaintainerConfig.data")
+            if not lmconfig then
+                lmconfig = {}
+            end
+            if not lmconfig[index] then
+                lmconfig[index] = createConfigFunc()
+                gimpHelper.saveTable(lmconfig, "/home/programData/levelMaintainerConfig.data")
+            end
+            return lmconfig[index]
+        end,
+        setVisible = function(visible)
+            background.setVisible(visible)
+            batch.setVisible(visible)
+            amount.setVisible(visible)
+        end,
+        remove = function()
+            background.remove()
+            batch.remove()
+            amount.remove()
+            background = nil
+            batch = nil
+            amount = nil
+        end
+    }
+end
+
+function widgetsAreUs.textBox(x, y, width, height, text)
+    local background = widgetsAreUs.createBox(x, y, width, height, {0.6, 0.6, 0.6}, 0.8)
+    local textLabel = component.glasses.addTextLabel()
+    textLabel.setPosition(x+5, y+5)
+    textLabel.setText(text)
+
+    return {
+        background = background,
+        text = textLabel,
+        setText = function(newText)
+            textLabel.setText(newText)
+        end,
+        setVisible = function(visible)
+            background.setVisible(visible)
+            textLabel.setVisible(visible)
+        end,
+        remove = function()
+            component.glasses.removeObject(background.getID())
+            component.glasses.removeObject(textLabel.getID())
+            background = nil
+            textLabel = nil
+        end
+    }
 end
 
 return widgetsAreUs

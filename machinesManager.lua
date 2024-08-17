@@ -165,11 +165,23 @@ function machinesManager.setVisible(visible)
 	machinesManager.right.setVisible(visible)
 end
 
-function saveData(_, newName, xyz)
+---@diagnostic disable-next-line: unused-function
+local function saveData(_, newName, xyz)
 	local tbl = gimpHelper.loadTable("/home/programData/" .. individualHeader .. ".data") or {}
-	str = newName:gsub("^[\0-\31\127]+", "")
-	tbl[str] = xyz
+	local data = {}
+	local str = newName:gsub("^[\0-\31\127]+", "")
+	data.newName = str
+	data.xyz = xyz
+	data.groupName = individualHeader
+	for k, v in ipairs(tbl) do
+		if v.xyz.x == xyz.x and v.xyz.y == xyz.y and v.xyz.z == xyz.z then
+			table.remove(tbl, k)
+		end
+	end
+	table.insert(tbl, data)
+	
 	gimpHelper.saveTable(tbl, "/home/programData/" .. individualHeader .. ".data")
+	event.push("machine_named", tbl)
 end
 
 event.listen("nameSet", saveData)
