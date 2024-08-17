@@ -38,7 +38,7 @@ local function handleKeyboard(character)
         itemWindow.elements.mainStorage.display = nil
         local items
         local trimmedStr =  trim(itemWindow.searchText.getText())
-        if trimmedStr = "" then 
+        if trimmedStr == "" then 
             items = component.me_interface.getItemsInNetwork()
         else
             items = component.me_interface.getItemsInNetwork({label = trimmedStr})
