@@ -45,7 +45,7 @@ function overlay.init()
 	overlay.tabs.options.title.setPosition(320, 20)
 	overlay.tabs.options.title.setText("Options")
 	overlay.tabs.options.init = function()
-		print("options tab init called")
+		configurations.init()
 		active = "options not set yet"
 	end
 	overlay.tabs.textEditor = {}
