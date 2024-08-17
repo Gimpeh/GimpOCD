@@ -256,46 +256,74 @@ function itemWindow.onClick(x, y, button)
     for k, v in ipairs(lm.display.currentlyDisplayed) do
         os.sleep(0)
         if widgetsAreUs.isPointInBox(x, y, v.background.background) then
-            if widgetsAreUs.isPointInBox(x, y, v.amount.background) then
+            if button == 0 then
+               if widgetsAreUs.isPointInBox(x, y, v.amount.background) then
                 event.ignore("hud_keyboard", handleKeyboardWrapper)
-                local args = v.amount.onClick()
+                   local args = v.amount.onClick()
+                    local tbl = gimpHelper.loadTable("/home/programData/levelMaintainer.data")
+                    tbl[args.location].amount=args.amount
+                   gimpHelper.saveTable(tbl, "/home/programData/levelMaintainer.data")
+                    event.listen("hud_keyboard", handleKeyboardWrapper)
+                    return
+               elseif widgetsAreUs.isPointInBox(x, y, v.batch.background) then
+                    event.ignore("hud_keyboard", handleKeyboardWrapper)
+                   local args = v.batch.onClick()
+                   local tbl = gimpHelper.loadTable("/home/programData/levelMaintainer.data")
+                   tbl[args.location].batch=args.batch
+                   gimpHelper.saveTable(tbl, "/home/programData/levelMaintainer.data")
+                   event.listen("hud_keyboard", handleKeyboardWrapper)
+                    return
+               end
+            elseif button == 1 then
+
+            elseif button == 2 then
                 local tbl = gimpHelper.loadTable("/home/programData/levelMaintainer.data")
-                tbl[args.location].amount=args.amount
+                table.remove(tbl, k)
+                lm.display:clearDisplayedItems()
+                lm.display = nil
                 gimpHelper.saveTable(tbl, "/home/programData/levelMaintainer.data")
-                event.listen("hud_keyboard", handleKeyboardWrapper)
-                return
-            elseif widgetsAreUs.isPointInBox(x, y, v.batch.background) then
-                event.ignore("hud_keyboard", handleKeyboardWrapper)
-                local args = v.batch.onClick()
-                local tbl = gimpHelper.loadTable("/home/programData/levelMaintainer.data")
-                tbl[args.location].batch=args.batch
-                gimpHelper.saveTable(tbl, "/home/programData/levelMaintainer.data")
-                event.listen("hud_keyboard", handleKeyboardWrapper)
-                return
+                if tbl[1] then
+                    lm.display = PagedWindow.new(tbl, 150, 30, {x1=330, y1=71, x2=490, y2=238}, 5, widgetsAreUs.levelMaintainer)
+                    lm.display:displayItems()
+                end
             end
         end
     end
     for k, v in ipairs(rlm.display.currentlyDisplayed) do
         os.sleep(0)
         if widgetsAreUs.isPointInBox(x, y, v.background.background) then
-            if widgetsAreUs.isPointInBox(x, y, v.amount.background) then
-                event.ignore("hud_keyboard", handleKeyboardWrapper)
-                local args = v.amount.onClick()
+            if button == 0 then
+                if widgetsAreUs.isPointInBox(x, y, v.amount.background) then
+                    event.ignore("hud_keyboard", handleKeyboardWrapper)
+                    local args = v.amount.onClick()
+                    local tbl = gimpHelper.loadTable("/home/programData/reverseLevelMaintainer.data")
+                    tbl[args.location].amount=args.amount
+                    gimpHelper.saveTable(tbl, "/home/programData/reverseLevelMaintainer.data")
+                    event.listen("hud_keyboard", handleKeyboardWrapper)
+                    return
+                elseif widgetsAreUs.isPointInBox(x, y, v.batch.background) then
+                    event.ignore("hud_keyboard", handleKeyboardWrapper)
+                    local args = v.batch.onClick()
+                    local tbl = gimpHelper.loadTable("/home/programData/reverseLevelMaintainer.data")
+                    print(args.location)
+                    print(args.batch)
+                    tbl[args.location].batch=args.batch
+                    gimpHelper.saveTable(tbl, "/home/programData/reverseLevelMaintainer.data")
+                    event.listen("hud_keyboard", handleKeyboardWrapper)
+                    return
+                end
+            elseif button == 1 then
+
+            elseif bitton == 2 then
                 local tbl = gimpHelper.loadTable("/home/programData/reverseLevelMaintainer.data")
-                tbl[args.location].amount=args.amount
+                table.remove(tbl, k)
+                rlm.display:clearDisplayedItems()
+                rlm.display = nil
                 gimpHelper.saveTable(tbl, "/home/programData/reverseLevelMaintainer.data")
-                event.listen("hud_keyboard", handleKeyboardWrapper)
-                return
-            elseif widgetsAreUs.isPointInBox(x, y, v.batch.background) then
-                event.ignore("hud_keyboard", handleKeyboardWrapper)
-                local args = v.batch.onClick()
-                local tbl = gimpHelper.loadTable("/home/programData/reverseLevelMaintainer.data")
-                print(args.location)
-                print(args.batch)
-                tbl[args.location].batch=args.batch
-                gimpHelper.saveTable(tbl, "/home/programData/reverseLevelMaintainer.data")
-                event.listen("hud_keyboard", handleKeyboardWrapper)
-                return
+                if tbl[1] then
+                    rlm.display = PagedWindow.new(tbl, 150, 30, {x1=335, y1=83, x2=490, y2=238}, 5, widgetsAreUs.levelMaintainer)
+                    rlm.display:displayItems()
+                end
             end
         end
     end
