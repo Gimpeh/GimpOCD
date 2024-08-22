@@ -5,6 +5,7 @@ local PagedWindow = require("PagedWindow")
 local event = require("event")
 local itemElements = require("itemElements")
 local metricsDisplays = require("metricsDisplays")
+local scrappad = require("scrappad")
 
 local configurations = {}
 local activeConfigs = {}
@@ -83,7 +84,6 @@ local function saveConfigs()
     tbl = nil
     os.sleep(0)
 end
-
 
 local function loadConfig(_, path, index)
     local tbl = gimpHelper.loadTable(path)
@@ -189,7 +189,7 @@ end
 
 function configurations.initDisplays()
     local tbl = gimpHelper.loadTable("/home/programData/levelMaintainer.data")
-    displays.levelMaintainer = PagedWindow.new(tbl, 150, 30, {x1=25, x2=175, y1=85, y2=195}, 5, widgetsAreUs.levelMaintainerOptions)
+    displays.levelMaintainer = PagedWindow.new(tbl, 150, 30, {x1=25, x2=175, y1=85, y2=195}, 5, widgetsAreUs.attachOnClick(widgetsAreUs.levelMaintainer))
     displays.levelMaintainer:displayItems()
     tbl = nil
     os.sleep(0)
@@ -226,41 +226,28 @@ end
 function configurations.createLevelMaintainerConfig(x, y, index)
     pcall(removeConfig, "lm")
     lm = {}
-    lm.priority = widgetsAreUs.configSingleString(x+5, y+5, 50, "Priority", index)
+    lm.priority = scrappad.numberBox(x, y, "priority", "Priority:")
+    lm.maxInstances = scrappad.numberBox(x + 80, y, "maxCrafters", "Max Conc:")
 
-    lm.minCPU = widgetsAreUs.configSingleString(x+5, y+30, 60, "Min CPU", index)
-    lm.maxCPU = widgetsAreUs.configSingleString(x+70, y+30, 60, "Max CPU", index)
+    lm.minCPU = scrappad.numberBox(x, y+25, "minCpu", "Min CPU:")
+    lm.maxCPU = scrappad.numberBox(x+80, y+25, "maxCpu", "Max CPU:")
 
-    lm.maxInstances = widgetsAreUs.configSingleString(x+5, y+55, 80, "Max Instances", index)
     os.sleep(0)
-    lm.alertBelow = widgetsAreUs.configSingleString(x+5, y+80, 80, "Alert Below", index)
-    lm.alertStalled = widgetsAreUs.configCheck(x+100, y+105, index)
-    lm.alertStalledName = widgetsAreUs.staticText(x+5, y+105, "Alert Stalled", 1.3)
+    --[[
+    lm.alertStalled = widgetsAreUs.configCheck(x+100, y+105)
+    lm.alertStalledName = widgetsAreUs.text(x+5, y+105, "Alert Stalled", 1.3)
     lm.alertResources = widgetsAreUs.configCheck(x+100, y+130, index)
     os.sleep(0)
-    lm.alertResourcesName = widgetsAreUs.staticText(x+5, y+130, "Alert Can't Craft", 1.3)
+    lm.alertResourcesName = widgetsAreUs.text(x+5, y+130, "Alert Can't Craft", 1.3)
+    ]]
     activeConfigs["lm"] = {index = index, elements = lm}
-end
-
-function configurations.createItemManagerConfig(x, y, index)
-    pcall(removeConfig, "im")
-    im = {}
-    im.alertAbove = widgetsAreUs.configSingleString(390, 65, 80, "Alert Above")
-    im.alertBelow = widgetsAreUs.configSingleString(390, 90, 80, "Alert Below")
-    os.sleep(0)
-    im.showOnHUD = widgetsAreUs.configCheck(470, 115, index)
-    im.showOnHudName = widgetsAreUs.staticText(390, 115, "Show on HUD", 1.3)
-    im.trackMetrics = widgetsAreUs.configCheck(470, 140, index)
-    im.trackMetricsName = widgetsAreUs.staticText(390, 140, "Track Metrics", 1.3)
-    os.sleep(0)
-    activeConfigs["im"] = {index = index, elements = im}
 end
 
 function configurations.createMachineManagerConfig(x, y, tbl, index)
     pcall(removeConfig, "mm")
     mm = {}
     mm.name = widgetsAreUs.configSingleString(335, 310, 90, "Name")
-    mm.name.option.setText(tbl.newName) 
+    mm.name.option.setText(tbl.newName)
     mm.group = widgetsAreUs.configSingleString(355, 335, 90, "Group")
     os.sleep(0)
     mm.group.option.setText(tbl.groupName)
@@ -268,12 +255,12 @@ function configurations.createMachineManagerConfig(x, y, tbl, index)
     mm.autoTurnOff = widgetsAreUs.configSingleString(480, 360, 120, "Auto Off Min")
     mm.alertIdle = widgetsAreUs.configSingleString(355, 385, 120, "Alert Idle Min")
     mm.alertDisabled = widgetsAreUs.configCheck(455, 410, index)
-    mm.alertDisabledName = widgetsAreUs.staticText(355, 410, "Alert Disabled", 1.3)
+    mm.alertDisabledName = widgetsAreUs.text(355, 410, "Alert Disabled", 1.3)
     mm.alertEnabled = widgetsAreUs.configCheck(555, 435, index)
     os.sleep(0)
-    mm.alertEnabledName = widgetsAreUs.staticText(460, 435, "Alert Enabled", 1.3)
+    mm.alertEnabledName = widgetsAreUs.text(460, 435, "Alert Enabled", 1.3)
     mm.trackMetrics = widgetsAreUs.configCheck(455, 460, index)
-    mm.trackMetricsName = widgetsAreUs.staticText(355, 460, "Track Metrics", 1.3)
+    mm.trackMetricsName = widgetsAreUs.text(355, 460, "Track Metrics", 1.3)
     mm.xyz = tbl.xyz
 
     activeConfigs["mm"] = {index = index, elements = mm}
@@ -281,23 +268,24 @@ end
 
 local function createGeneralConfig()
     gc.showHelp = widgetsAreUs.configCheck(590, 320, 99)
-    gc.showHelpName = widgetsAreUs.staticText(525, 320, "Show Help", 1.3)
+    gc.showHelpName = widgetsAreUs.text(525, 320, "Show Help", 1.3)
     gc.ResetHUD = widgetsAreUs.configCheck(650, 345, 99)
     gc.screenSize = widgetsAreUs.textBox(525, 345, 75, 25, "Set Screen Dim")
     gc.screenSizeWidth = widgetsAreUs.textBox(600, 345, 40, 25, "click set")
     gc.screenSizeHeight = widgetsAreUs.textBox(670, 345, 40, 25, "click set")
     os.sleep(0)
     gc.highlightDisabled = widgetsAreUs.configCheck(600, 370, 99)
-    gc.highlightDisabledName = widgetsAreUs.staticText(525, 370, "Highlight Disabled", 1.3)
+    gc.highlightDisabledName = widgetsAreUs.text(525, 370, "Highlight Disabled", 1.3)
     gc.maintenanceBeacons = widgetsAreUs.configCheck(700, 395, 99)
-    gc.maintenanceBeaconsName = widgetsAreUs.staticText(625, 395, "Maintenance Beacons", 1.3)
+    gc.maintenanceBeaconsName = widgetsAreUs.text(625, 395, "Maintenance Beacons", 1.3)
     gc.spazIntensity = widgetsAreUs.configSingleString(525, 420, 80, "SPAZ Intensity", 99)
     gc.alertDisconnected = widgetsAreUs.configCheck(720, 445, 99, "alertDisconnected")
     os.sleep(0)
-    gc.alertDisconnectedName = widgetsAreUs.staticText(630, 445, "Disconnected", 1.3)
+    gc.alertDisconnectedName = widgetsAreUs.text(630, 445, "Disconnected", 1.3)
     gc.alertReconnected = widgetsAreUs.configCheck(610, 445, 99, "alertReconnected")
-    gc.alertReconnectedName = widgetsAreUs.staticText(525, 445, "Connected", 1.3)
-    
+    gc.alertReconnectedName = widgetsAreUs.text(525, 445, "Connected", 1.3)
+    --**************MaxGlobalCPU usage for level maintainers needs to be set88888888**************
+
     activeConfigs["gc"] = {index = 1, elements = gc}
 end
 

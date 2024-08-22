@@ -11,16 +11,30 @@ local widgetsAreUs = {}
 ---Factory Functions
 
 function widgetsAreUs.attachCoreFunctions(obj)
-    obj.remove = function()
-        for k, v in pairs(obj) do
-            component.glasses.removeObject(v.getID())
-            v = nil
+    if obj.getID then
+        obj.remove = function()
+            component.glasses.removeObject(obj.getID())
+            obj = nil
+        end
+    elseif type(obj) == "table" then
+        obj.remove = function()
+            for k, v in pairs(obj) do
+                if type(v) == "table" and v.remove then
+                    v.remove()
+                    obj[k] = nil
+                else
+                    obj[k] = nil
+                end
+            end
+            obj = nil
         end
     end
-    obj.setVisible = function(visible)
-        for k, v in pairs(obj) do
-            if type(v) == "table" and v.setVisible then
-                v.setVisible(visible)
+    if not obj.setVisible then
+        obj.setVisible = function(visible)
+            for k, v in pairs(obj) do
+                if type(v) == "table" and v.setVisible then
+                    v.setVisible(visible)
+                end
             end
         end
     end
@@ -28,12 +42,16 @@ function widgetsAreUs.attachCoreFunctions(obj)
 end
 
 function widgetsAreUs.attachOnClick(obj, func)
-    obj.onClick = func
+    obj.onClick = function(...)
+        return func(obj, ...)
+    end
     return obj
 end
 
 function widgetsAreUs.attachUpdate(obj, func)
-    obj.update = func
+    obj.update = function(...)
+        return func(obj, ...)
+    end
     return obj
 end
 
@@ -72,8 +90,8 @@ end
 -----------------------------------------
 ---Specific Abstractions
 
-function widgetsAreUs.check(x, y, index, keyName)
-    local box = widgetsAreUs.createBox(x, y, 22, 22, {0, 0, 0}, 0.8)
+function widgetsAreUs.check(x, y)
+    local box = widgetsAreUs.createBox(x, y, 25, 25, {0, 0, 0}, 0.8)
     local backgroundInterior = widgetsAreUs.createBox(x+3, y+3, 16, 16, {1, 1, 1}, 0.8)
     local check = component.glasses.addTextLabel()
     check.setScale(1.0)
@@ -92,10 +110,8 @@ end
 function widgetsAreUs.symbolBox(x, y, symbolText, colorOrGreen, func)
     if not colorOrGreen then colorOrGreen = {0, 0, 1} end
     local box = widgetsAreUs.createBox(x, y, 20, 20, colorOrGreen, 0.8)
-    local symbol = component.glasses.addTextLabel()
-    symbol.setText(symbolText)
-    symbol.setScale(2)
-    symbol.setPosition(x+3, y+3)
+    local symbol = widgetsAreUs.text(x+3, y+3, symbolText, 2)
+    box.onClick = func
     return widgetsAreUs.attachCoreFunctions{box = box, symbol = symbol}
 end
 
@@ -132,47 +148,31 @@ end
 -----------------------------------------
 ---Specific
 
-function widgetsAreUs.levelMaintainer(x, y, argsTable, arrayIndex)
+function widgetsAreUs.levelMaintainer(x, y, argsTable)
     local itemStack = argsTable.itemStack
     local box = widgetsAreUs.titleBox(x, y, 150, 30, {1, 0.2, 1}, 0.8, itemStack.label)
 
     local batchText = widgetsAreUs.titleBox(x + 5, y + 5, 60, 20, {1, 1, 1}, 0.8, "Batch")
     local batch = widgetsAreUs.text(x + 5, y + 15, tostring(argsTable.batch), 0.9)
     batch.onClick = function()
-        return { location = arrayIndex, batch = gimpHelper.handleTextInput(batch) }
+        batch.setText(gimpHelper.handleTextInput(batch))
     end
 
     local amountText = widgetsAreUs.titleBox(x + 70, y + 10, 75, 20, {1, 1, 1}, 0.8, "Amount")
     local amount = widgetsAreUs.text(x + 70, y + 20, tostring(argsTable.amount), 0.9)
     amount.onClick = function()
-        return { location = arrayIndex, amount = gimpHelper.handleTextInput(amount) }
+        amount.setText(gimpHelper.handleTextInput(amount))
     end
-    return widgetsAreUs.attachCoreFunctions({box = box, batch = batch, amount = amount, itemStack = itemStack})
+    return widgetsAreUs.attachCoreFunctions({box = box, batch = batch, amount = amount, itemStack = itemStack, batchText = batchText, amountText = amountText, onClick = function(x1, y1)
+        if batchText.box.contains(x1, y1) then
+            batch.onClick()
+        elseif amountText.box.contains(x1, y1) then
+            amount.onClick()
+        end
+    end})
 end
 
-function widgetsAreUs.machineConfig(x, y, tbl, index)
-	local background = widgetsAreUs.createBox(x, y, 85, 12, {1, 1, 1}, 0.6)
-	local name = widgetsAreUs.staticText(x+4, y+4, tbl.newMachineName, 1)
-
-	return widgetsAreUs.attachCoreFunctions({box = background, name = name})
-end
-
-function widgetsAreUs.itemOptions(x, y, itemStack, index)
-    local background = widgetsAreUs.createBox(x, y, 120, 40, {1, 0.8, 0.5}, 0.8)
-    local name = widgetsAreUs.text(x+2, y+2, itemStack.label, 0.9)
-
-    local icon = component.glasses.addItem()
-    icon.setPosition(x, y+6)
-    if component.database then
-        component.database.clear(1)
-        component.database.set(1, itemStack.name, itemStack.damage, itemStack.tag)
-        icon.setItem(component.database.address, 1)
-    end
-
-    return widgetsAreUs.attachCoreFunctions({box = background, name = name, icon = icon,})
-end
-
-function widgetsAreUs.ItemBox(x, y, itemStack)
+function widgetsAreUs.itemBox(x, y, itemStack)
     local background = widgetsAreUs.createBox(x, y, 120, 40, {1, 0.8, 0.5}, 0.8)
 
     local name = widgetsAreUs.text(x+2, y+2, itemStack.label, 0.9)
@@ -187,7 +187,7 @@ function widgetsAreUs.ItemBox(x, y, itemStack)
 
     local amount = widgetsAreUs.text(x+30, y+18, tostring(itemStack.size), 1)
 
-    return widgetsAreUs.attachCoreFunctions({background = background, name = name, icon = icon, amount = amount, 
+    return widgetsAreUs.attachCoreFunctions({background = background, name = name, icon = icon, amount = amount, itemStack = itemStack,
     update = function()
         local updatedItemStack = component.me_interface.getItemsInNetwork(itemStack)[1]
         amount.setText(tostring(updatedItemStack.size))
