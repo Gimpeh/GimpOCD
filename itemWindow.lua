@@ -1,7 +1,6 @@
 local widgetsAreUs = require("widgetsAreUs")
 local PagedWindow = require("PagedWindow")
 local component = require("component")
-local itemElements = require("itemElements")
 local event = require("event")
 local gimpHelper = require("gimpHelper")
 local s = require("serialization")
@@ -62,7 +61,7 @@ end
 function itemWindow.init()
     itemWindow.elements.mainStorage.background = widgetsAreUs.createBox(20, 78, 275, 325, {0.5, 0.5, 0.5}, 0.7)
     local items = component.me_interface.getItemsInNetwork()
-    itemWindow.elements.mainStorage.display = PagedWindow.new(items, 120, 40, {x1=25, y1=83, x2=320, y2=403}, 5, itemElements.itemBox.create)
+    itemWindow.elements.mainStorage.display = PagedWindow.new(items, 120, 40, {x1=25, y1=83, x2=320, y2=403}, 5, widgetsAreUs.itemBox)
     itemWindow.elements.mainStorage.display:displayItems()
     itemWindow.elements.mainStorage.previousButton = widgetsAreUs.createBox(150, 55, 20, 20, {0, 1, 0.3}, 0.8)
     itemWindow.elements.mainStorage.nextButton = widgetsAreUs.createBox(150, 405, 20, 20, {0, 1, 0.3}, 0.8)
@@ -150,6 +149,7 @@ function itemWindow.remove()
     event.ignore("hud_keyboard", handleKeyboardWrapper)
 end
 
+--rework the fuck out of this... this is just terrible... almost 200 lines for onClick....
 function itemWindow.onClick(x, y, button)
     for k, v in pairs(itemWindow.elements) do
         os.sleep(0)

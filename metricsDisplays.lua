@@ -355,7 +355,6 @@ function machineIndividual.create(x, y, individualProxy)
 						xyz.x, xyz.y, xyz.z = machine.getCoordinates()
 
 						machinesInterface.setName(newText)
-						modem.broadcast(888, "rename", s.serialize(xyz), newText)
 
 						helpMessage:remove()
 						break
@@ -368,18 +367,16 @@ function machineIndividual.create(x, y, individualProxy)
 				end
 			end
 		end,
-		remove = function(machineInterface)
+		remove = function()
 			component.glasses.removeObject(background.getID())
 			component.glasses.removeObject(name.getID())
 			component.glasses.removeObject(name2.getID())
 			component.glasses.removeObject(state.getID())
-		
+
 			background = nil
 			name = nil
 			name2 = nil
 			state = nil
-		
-			machineInterface = nil
 		end
 	}
 

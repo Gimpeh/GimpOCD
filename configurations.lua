@@ -161,27 +161,27 @@ function configurations.initBoxes()
 end
 
 function configurations.initButtons()
-    buttons.levelMaintainerPrev = widgetsAreUs.symbolBox(85, 58, "^", _, function ()
+    buttons.levelMaintainerPrev = widgetsAreUs.symbolBox(85, 58, "^", nil, function ()
         displays.levelMaintainer:prevPage()
     end)
 
-    buttons.levelMaintainerNext = widgetsAreUs.symbolBox(85, 283, "v", _, function ()
+    buttons.levelMaintainerNext = widgetsAreUs.symbolBox(85, 283, "v", nil, function ()
         displays.levelMaintainer:nextPage()
     end)
 
-    buttons.itemManagerPrev = widgetsAreUs.symbolBox(363, 160, "<", _, function ()
+    buttons.itemManagerPrev = widgetsAreUs.symbolBox(363, 160, "<", nil, function ()
         displays.itemManager:prevPage()
     end)
 
-    buttons.itemManagerNext = widgetsAreUs.symbolBox(548, 160, ">", _, function ()
+    buttons.itemManagerNext = widgetsAreUs.symbolBox(548, 160, ">", nil, function ()
         displays.itemManager:nextPage()
     end)
 
-    buttons.machineManagerPrev = widgetsAreUs.symbolBox(8, 378, "<", _, function ()
+    buttons.machineManagerPrev = widgetsAreUs.symbolBox(8, 378, "<", nil, function ()
         displays.machineManager:prevPage()
     end)
 
-    buttons.machineManagerNext = widgetsAreUs.symbolBox(328, 378, ">", _, function ()
+    buttons.machineManagerNext = widgetsAreUs.symbolBox(328, 378, ">", nil, function ()
         displays.machineManager:nextPage()
     end)
     os.sleep(0)
@@ -245,6 +245,7 @@ end
 
 function configurations.createMachineManagerConfig(x, y, tbl, index)
     pcall(removeConfig, "mm")
+    --[[
     mm = {}
     mm.name = widgetsAreUs.configSingleString(335, 310, 90, "Name")
     mm.name.option.setText(tbl.newName)
@@ -262,11 +263,12 @@ function configurations.createMachineManagerConfig(x, y, tbl, index)
     mm.trackMetrics = widgetsAreUs.configCheck(455, 460, index)
     mm.trackMetricsName = widgetsAreUs.text(355, 460, "Track Metrics", 1.3)
     mm.xyz = tbl.xyz
-
+]]
     activeConfigs["mm"] = {index = index, elements = mm}
 end
 
 local function createGeneralConfig()
+    --[[
     gc.showHelp = widgetsAreUs.configCheck(590, 320, 99)
     gc.showHelpName = widgetsAreUs.text(525, 320, "Show Help", 1.3)
     gc.ResetHUD = widgetsAreUs.configCheck(650, 345, 99)
@@ -285,7 +287,7 @@ local function createGeneralConfig()
     gc.alertReconnected = widgetsAreUs.configCheck(610, 445, 99, "alertReconnected")
     gc.alertReconnectedName = widgetsAreUs.text(525, 445, "Connected", 1.3)
     --**************MaxGlobalCPU usage for level maintainers needs to be set88888888**************
-
+]]
     activeConfigs["gc"] = {index = 1, elements = gc}
 end
 
