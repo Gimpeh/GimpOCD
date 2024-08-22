@@ -3,7 +3,6 @@ local widgetsAreUs = require("widgetsAreUs")
 local gimpHelper = require("gimpHelper")
 local PagedWindow = require("PagedWindow")
 local event = require("event")
-local itemElements = require("itemElements")
 local metricsDisplays = require("metricsDisplays")
 local scrappad = require("scrappad")
 
