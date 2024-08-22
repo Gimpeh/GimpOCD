@@ -56,6 +56,13 @@ function widgetsAreUs.attachUpdate(obj, func)
 end
 
 -----------------------------------------
+---Deprecated, use element.box.contains(x, y) instead
+
+function widgetsAreUs.isPointInBox(x, y, box)
+    return x >= box.x and x <= box.x2 and y >= box.y and y <= box.y2
+end
+
+-----------------------------------------
 ---Abstract
 
 function widgetsAreUs.createBox(x, y, width, height, color, alpha)
@@ -73,11 +80,11 @@ function widgetsAreUs.createBox(x, y, width, height, color, alpha)
     return widgetsAreUs.attachCoreFunctions(box)
 end
 
-function widgetsAreUs.text(x, y, text, scale)
+function widgetsAreUs.text(x, y, text1, scale)
     local text = glasses.addTextLabel()
     text.setPosition(x, y)
     text.setScale(scale)
-    text.setText(text)
+    text.setText(text1)
     return widgetsAreUs.attachCoreFunctions(text)
 end
 
@@ -163,6 +170,7 @@ function widgetsAreUs.levelMaintainer(x, y, argsTable)
     amount.onClick = function()
         amount.setText(gimpHelper.handleTextInput(amount))
     end
+
     return widgetsAreUs.attachCoreFunctions({box = box, batch = batch, amount = amount, itemStack = itemStack, batchText = batchText, amountText = amountText, onClick = function(x1, y1)
         if batchText.box.contains(x1, y1) then
             batch.onClick()
