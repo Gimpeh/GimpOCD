@@ -141,6 +141,7 @@ event.listen("load_config", loadConfig)
 ----------------------------------------------------------
 ---forward declarations
 
+local generateHelperTable
 local boxes = {}
 local buttons = {}
 local displays = {}
@@ -221,6 +222,8 @@ function configurations.init()
 
     local success, error = pcall(configurations.initDisplays)
     if not success then print(error) end
+
+    generateHelperTable()
 
     local success, error = pcall(configurations.setVisible, false)
     if not success then print(error) end
@@ -311,23 +314,27 @@ end
 ---got tired of typing everything 10,000 times
 
 local helperTable = {}
-for k, v in pairs(boxes) do
-    os.sleep(0)
-    table.insert(helperTable, v)
-end
-for k, v in pairs(buttons) do
-    os.sleep(0)
-    table.insert(helperTable, v)
-end
-for k, v in pairs(displays) do
-    os.sleep(0)
-    for i, j in pairs(v.currentlyDisplayed) do
-        table.insert(helperTable, j)
+
+generateHelperTable = function()
+    helperTable = {}
+    for k, v in pairs(boxes) do
+        os.sleep(0)
+        table.insert(helperTable, v)
     end
-end
-for k, v in pairs(configurations.panel.gc) do
-    os.sleep(0)
-    table.insert(helperTable, v)
+    for k, v in pairs(buttons) do
+        os.sleep(0)
+        table.insert(helperTable, v)
+    end
+    for k, v in pairs(displays) do
+        os.sleep(0)
+        for i, j in pairs(v.currentlyDisplayed) do
+            table.insert(helperTable, j)
+        end
+    end
+    for k, v in pairs(configurations.panel.gc) do
+        os.sleep(0)
+        table.insert(helperTable, v)
+    end
 end
 
 ----------------------------------------------------------
