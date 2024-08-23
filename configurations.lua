@@ -112,8 +112,9 @@ function configurations.initDisplays()
             display = PagedWindow.new(tbl, width, height, coords, 5, widget)
             display:displayItems()
             for k, v in ipairs(display.currentlyDisplayed) do
-                display.currentlyDisplayed[k] = widgetsAreUs.attachOnClick(v, function()
-                    callback(k)
+                display.currentlyDisplayed[k] = widgetsAreUs.attachOnClick(v, function(x, y)
+                    local index = k
+                    callback(x, y, index)
                 end)
             end
         end
@@ -122,16 +123,16 @@ function configurations.initDisplays()
         return display
     end
 
-    displays.levelMaintainer = loadAndDisplayTable("/home/programData/levelMaintainer.data", 150, 30, {x1=25, x2=175, y1=85, y2=195}, function(k)
-        configurations.createLevelMaintainerConfig(192, 80, k)
+    displays.levelMaintainer = loadAndDisplayTable("/home/programData/levelMaintainer.data", 150, 30, {x1=25, x2=175, y1=85, y2=195}, function()
+        configurations.createLevelMaintainerConfig(192, 80)
     end, widgetsAreUs.levelMaintainer)
     
-    displays.itemManager = loadAndDisplayTable("/home/programData/monitoredItems", 120, 40, {x1=390, x2=540, y1=65, y2=305}, function(k)
-        configurations.createItemManagerConfig(580, 80, k)
+    displays.itemManager = loadAndDisplayTable("/home/programData/monitoredItems", 120, 40, {x1=390, x2=540, y1=65, y2=305}, function()
+        configurations.createItemManagerConfig(580, 80)
     end, widgetsAreUs.itemBox)
     
-    displays.machineManager = loadAndDisplayTable("/home/programData/machinesNamed.data", 150, 30, {x1=45, x2=295, y1=320, y2=460}, function(k)
-        configurations.createMachineManagerConfig(355, 310, k)
+    displays.machineManager = loadAndDisplayTable("/home/programData/machinesNamed.data", 150, 30, {x1=45, x2=295, y1=320, y2=460}, function()
+        configurations.createMachineManagerConfig(355, 310)
     end, metricsDisplays.machine.create)
 end
 
@@ -285,8 +286,18 @@ end
 ---element functionality
 
 function configurations.update()
-    os.sleep(0)
-    print("configurations.update(hard_reset)")
+    if currentlyDisplayedConfigs["lm"] and currentlyDisplayedConfigs["lm"].index then
+        saveConfigData("lm", "/home/programData/levelMaintainerConfig.data", currentlyDisplayedConfigs["lm"].index)
+    end
+    if currentlyDisplayedConfigs["mm"] and currentlyDisplayedConfigs["mm"].index then
+        saveConfigData("mm", "/home/programData/machineManagerConfig.data", currentlyDisplayedConfigs["mm"].index)
+    end
+    if currentlyDisplayedConfigs["im"] and currentlyDisplayedConfigs["im"].index then
+        saveConfigData("im", "/home/programData/itemManagerConfig.data", currentlyDisplayedConfigs["im"].index)
+    end
+    if currentlyDisplayedConfigs["gc"] and currentlyDisplayedConfigs["gc"].index then
+        saveConfigData("gc", "/home/programData/generalConfig.data", currentlyDisplayedConfigs["gc"].index)
+    end
 end
 
 function configurations.setVisible(visible)

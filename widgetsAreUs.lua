@@ -105,7 +105,7 @@ function widgetsAreUs.check(x, y)
     local backgroundInterior = widgetsAreUs.createBox(x+3, y+3, 16, 16, {1, 1, 1}, 0.8)
     local check = component.glasses.addTextLabel()
     check.setScale(1.0)
-    check.setPosition(x+2, y+2)
+    check.setPosition(x+10, y+10)
     check.setText("")
     return widgetsAreUs.attachCoreFunctions({box = box, check = check, backgroundInterior = backgroundInterior, 
     onClick = function()
@@ -237,8 +237,8 @@ function widgetsAreUs.numberBox(x, y, key, titleText)
 end
 
 function widgetsAreUs.longerNumberBox(x, y, key, titleText)
-    local title = widgetsAreUs.textBox(x, y, 55, 25, {0.8, 0.8, 0.8}, 0.8, titleText, 1, 0, 0)
-    local option = widgetsAreUs.textBox(x + 55, y, 55, 25, {1, 1, 1}, 0.9, "num", 1, 0, 0)
+    local title = widgetsAreUs.textBox(x, y, 60, 25, {0.6, 0.6, 0.6}, 0.8, titleText, 1, 2, 10)
+    local option = widgetsAreUs.textBox(x + 60, y, 55, 25, {0.8, 0.8, 0.8}, 0.9, "num", 1, 2, 10)
     local function setValue(newValue)
         option.text.setText(newValue)
     end
