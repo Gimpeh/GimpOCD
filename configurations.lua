@@ -193,6 +193,11 @@ function configurations.initDisplays()
     if tbl and tbl[1] then
         displays.levelMaintainer = PagedWindow.new(tbl, 150, 30, {x1=25, x2=175, y1=85, y2=195}, 5,widgetsAreUs.levelMaintainer)
         displays.levelMaintainer:displayItems()
+        for k, v in ipairs(displays.levelMaintainer.currentlyDisplayed) do
+           displays.levelMaintainer.currentlyDisplayed[k] = widgetsAreUs.attachOnClick(v, function()
+                configurations.createLevelMaintainerConfig(192, 80, k)
+            end)
+        end
     end
     tbl = nil
     os.sleep(0)
