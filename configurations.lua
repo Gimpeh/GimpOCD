@@ -284,6 +284,15 @@ function configurations.createLevelMaintainerConfig(x, y, index)
     ]]
     activeConfigs["lm"] = {index = index, elements = configurations.panel.lm}
     local tbl = gimpHelper.loadTable("/home/programData/levelMaintainerConfig.data")
+    if tbl and tbl[index] then
+        for k, v in activeConfigs["lm"].elements do
+            for i, j in tbl[index] do
+                if k == i then
+                    v.setValue(j)
+                end
+            end
+        end
+    end
 end
 
 function configurations.createMachineManagerConfig(x, y, tbl, index)
