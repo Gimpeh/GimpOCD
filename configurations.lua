@@ -59,6 +59,7 @@ configurations.panel.mm = {}
 
 local currentlyDisplayedConfigs = {}
 
+local createGeneralConfig
 local generateHelperTable
 local saveConfigData
 local loadConfigData
