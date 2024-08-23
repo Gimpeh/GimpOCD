@@ -184,6 +184,10 @@ function widgetsAreUs.levelMaintainer(x, y, argsTable)
         elseif amountText.box.contains(x1, y1) then
             amount.onClick()
         end
+    end,
+    update = function()
+        batch.setText(tostring(argsTable.batch))
+        amount.setText(tostring(argsTable.amount))
     end})
 end
 
