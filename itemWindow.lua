@@ -41,6 +41,18 @@ local addTo = nil
         end
     end
 
+    local function updateUpdate()
+        for k, v in pairs(rlm.display.currentlyDisplayed) do
+            rlm.display.currentlyDisplayed[k] = widgetsAreUs.attachUpdate(v, function(obj, index)
+                local args = gimpHelper.loadTable("/home/programData/reverseLevelMaintainer.data")
+                if args and args[index] then
+                    obj.batch.setText(tostring(args[index].batch))
+                    obj.amount.setText(tostring(args[index].amount))
+                end
+            end)
+        end
+    end
+
 -----------------------------------------
 ---Event Handlers
 
@@ -102,6 +114,7 @@ function itemWindow.init()
         rlm.display = PagedWindow.new(rvlvlmaint, 150, 30, {x1=335, y1=83, x2=490, y2=238}, 5, widgetsAreUs.levelMaintainer)
         rlm.display:displayItems()
         renameBatch()
+        updateUpdate()
     end
 
     itemWindow.elements.levelMaintainer.background = widgetsAreUs.createBox(500, 78, 160, 160, {0.0, 1.0, 0.0}, 0.7)
@@ -397,8 +410,8 @@ end
 
 function itemWindow.update()
     for k, v in pairs(itemWindow.elements) do
-        if v.display then
-            for i, j in pairs(v.display.currentlyDisplayed) do
+        if v.display and v.display.currentlyDisplayed then
+            for i, j in ipairs(v.display.currentlyDisplayed) do
                 os.sleep(100)
                 j.update(i)
             end
