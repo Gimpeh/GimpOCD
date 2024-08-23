@@ -252,9 +252,9 @@ saveConfigData = function(activeConfigsConfigKey, path, activeConfigsIndex)
     end
     local derp = {}
     for k, v in pairs(activeConfigs[activeConfigsConfigKey].elements) do
-        print(v.option.text.getText())
+        print("255 : " .. v.option.text.getText())
         if v.option then
-            derp[v.key] = v.value
+            derp[v.key] = gimpHelper.trim(v.option.text.getText())
         end
     end
     tbl[activeConfigsIndex] = derp

@@ -29,13 +29,15 @@ function scrappad.longerNumberBox(x, y, key, titleText)
     local function setValue(newValue)
         option.text.setText(newValue)
         value = newValue
+        print("scrappad 32 : " .. value)
+        return value
     end
     return widgetsAreUs.attachCoreFunctions({box = option.box, title = title, key = key, value = value, option = option, setValue = setValue,
     getValue = function()
         return value
     end,
     onClick = function()
-        setValue(gimpHelper.handleTextInput(option.text))
+        print("scrappad 40 : " .. setValue(gimpHelper.handleTextInput(option.text)))
     end})
 end
 
