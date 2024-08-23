@@ -47,6 +47,7 @@ function hud.init()
 		v.remove()
 	end
 	initMessages = nil
+	os.sleep(100)
 end
 
 function hud.hide()
