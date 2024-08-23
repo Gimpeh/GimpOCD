@@ -237,7 +237,8 @@ end
 local function removeConfig(activeConfigsIndex)
     for k, v in pairs(activeConfigs[activeConfigsIndex].elements) do
         if v.remove then
-            v.remove()
+            local success, error = pcall(v.remove)
+            if not success then print(error) end
         end
     end
     activeConfigs[activeConfigsIndex].elements = nil
