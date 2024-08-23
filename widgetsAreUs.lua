@@ -166,12 +166,16 @@ function widgetsAreUs.levelMaintainer(x, y, argsTable)
     local batch = widgetsAreUs.text(x + 5, y + 20, tostring(argsTable.batch), 0.9)
     batch.onClick = function()
         batch.setText(gimpHelper.handleTextInput(batch))
+        local args = {batch = tonumber(batch.getText()), location = argsTable.location}
+        return args
     end
 
     local amountText = widgetsAreUs.titleBox(x + 70, y + 10, 75, 20, {1, 1, 1}, 0.8, "Amount")
     local amount = widgetsAreUs.text(x + 70, y + 20, tostring(argsTable.amount), 0.9)
     amount.onClick = function()
         amount.setText(gimpHelper.handleTextInput(amount))
+        local args = {amount = tonumber(amount.getText()), location = argsTable.location}
+        return args
     end
 
     return widgetsAreUs.attachCoreFunctions({box = box.box, boxText = box.text, batch = batch, amount = amount, itemStack = itemStack, batchText = batchText, amountText = amountText, onClick = function(x1, y1)

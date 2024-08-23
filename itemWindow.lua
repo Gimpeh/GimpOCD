@@ -185,6 +185,7 @@ end
 --rework the fuck out of this... this is just terrible... almost 200 lines for onClick....
 -- and its not even remotely optimized...
 function itemWindow.onClick(x, y, button)
+    --buttons
     for k, v in pairs(itemWindow.elements) do
         os.sleep(0)
         if widgetsAreUs.isPointInBox(x, y, v.previousButton) then
@@ -196,6 +197,7 @@ function itemWindow.onClick(x, y, button)
         end
     end
 
+    --clicking from main storage side
     if itemWindow.elements.mainStorage.background.contains(x, y) then
         for k, v in pairs(itemWindow.elements.mainStorage.display.currentlyDisplayed) do
             os.sleep(0)
@@ -255,6 +257,7 @@ function itemWindow.onClick(x, y, button)
         end
     end
 
+    --clicking from monitored items side
     if itemWindow.elements.monitoredItems.background.contains(x, y) then
         for k, v in ipairs(itemWindow.elements.monitoredItems.display.currentlyDisplayed) do
             os.sleep(0)
@@ -276,6 +279,7 @@ function itemWindow.onClick(x, y, button)
         end
     end
 
+    --levelMaintainers add buttons
     if widgetsAreUs.isPointInBox(x, y, itemWindow.elements.levelMaintainer.addButton) then
         if not addTo or addTo ~= "levelMaintainer" then
             addTo = "levelMaintainer"
@@ -298,6 +302,7 @@ function itemWindow.onClick(x, y, button)
         end
     end
 
+    --clicking from levelMaintainer side
     if lm.background.contains(x, y) then
         for k, v in ipairs(lm.display.currentlyDisplayed) do
             os.sleep(0)
