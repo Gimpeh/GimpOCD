@@ -102,7 +102,7 @@ end
 
 function overlay.onClick(x, y, button)
 	for k, v in pairs(overlay.boxes) do
-		if v.box.contains(x, y, v) then
+		if v.contains(x, y, v) then
 			os.sleep(0)
 			return overlay.loadTab(k)
 		end
