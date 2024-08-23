@@ -159,8 +159,8 @@ function widgetsAreUs.levelMaintainer(x, y, argsTable)
     local itemStack = argsTable.itemStack
     local box = widgetsAreUs.titleBox(x, y, 150, 30, {1, 0.2, 1}, 0.8, itemStack.label)
 
-    local batchText = widgetsAreUs.titleBox(x + 5, y + 5, 60, 20, {1, 1, 1}, 0.8, "Batch")
-    local batch = widgetsAreUs.text(x + 5, y + 15, tostring(argsTable.batch), 0.9)
+    local batchText = widgetsAreUs.titleBox(x + 5, y + 10, 60, 20, {1, 1, 1}, 0.8, "Batch")
+    local batch = widgetsAreUs.text(x + 5, y + 20, tostring(argsTable.batch), 0.9)
     batch.onClick = function()
         batch.setText(gimpHelper.handleTextInput(batch))
     end
