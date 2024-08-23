@@ -373,14 +373,21 @@ function configurations.remove()
 end
 function configurations.onClick(x, y, button)
     for k, v in pairs(helperTable) do
-        if v.onClick then
+        if v.box and v.box.contains(x, y) and v.onClick then
             v.onClick(x, y, button)
             os.sleep(0)
+            return
+        elseif v.contains and v.contains(x, y) and v.onClick then
+            v.onClick(x, y, button)
+            os.sleep(0)
+            return
         end
     end
     for k, v in pairs(activeConfigs) do
         for i, j in pairs(v.elements) do
-            if j.onClick then
+            if j.contains and j.contains(x, y) and j.onClick then
+                j.onClick(x, y, button)
+            elseif j.box and j.box.contains(x, y) and j.onClick then
                 j.onClick(x, y, button)
             end
         end
