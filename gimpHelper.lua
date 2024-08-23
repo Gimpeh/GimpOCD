@@ -15,7 +15,7 @@ function gimpHelper.handleTextInput(textLabel)
             textLabel.setText(textLabel.getText() .. string.char(character))
         end
     end
-    return tonumber(textLabel.getText())
+    return tostring(gimpHelper.trim(textLabel.getText()))
 end
 
 

@@ -165,7 +165,7 @@ function widgetsAreUs.levelMaintainer(x, y, argsTable)
     local batchText = widgetsAreUs.titleBox(x + 5, y + 10, 60, 20, {1, 1, 1}, 0.8, "Batch")
     local batch = widgetsAreUs.text(x + 5, y + 20, tostring(argsTable.batch), 0.9)
     batch.onClick = function()
-        batch.setText(gimpHelper.handleTextInput(batch))
+        batch.setText(tostring(gimpHelper.handleTextInput(batch)))
         local args = {batch = gimpHelper.trim(batch.getText()), location = argsTable.location}
         return args
     end
@@ -173,7 +173,7 @@ function widgetsAreUs.levelMaintainer(x, y, argsTable)
     local amountText = widgetsAreUs.titleBox(x + 70, y + 10, 75, 20, {1, 1, 1}, 0.8, "Amount")
     local amount = widgetsAreUs.text(x + 70, y + 20, tostring(argsTable.amount), 0.9)
     amount.onClick = function()
-        amount.setText(gimpHelper.handleTextInput(amount))
+        amount.setText(tostring(gimpHelper.handleTextInput(amount)))
         local args = {amount = gimpHelper.trim(amount.getText()), location = argsTable.location}
         return args
     end
