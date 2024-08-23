@@ -75,6 +75,7 @@ end
 
 --pcall wrapper for keyboard event handler
 local function handleKeyboardWrapper(_, _, _, character, _)
+    print("keyboard event : " .. character)
     local success, error = pcall(handleKeyboard, character)
 end
 
