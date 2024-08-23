@@ -12,7 +12,7 @@ function scrappad.numberBox(x, y, key, titleText)
         option.text.setText(newValue)
         value = newValue
     end
-    return widgetsAreUs.attachCoreFunctions({box = option.box, title = title, key = key, value = value, option = option, setValue = setValue,
+    return widgetsAreUs.attachCoreFunctions({title = title, key = key, value = value, option = option, setValue = setValue,
     getValue = function()
         return value
     end,
