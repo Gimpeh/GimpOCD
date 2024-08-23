@@ -59,7 +59,8 @@ local function handleKeyboard(character)
         if trimmedStr == "" then 
             items = component.me_interface.getItemsInNetwork()
         else
-            items = component.me_interface.getItemsInNetwork({label = trimmedStr})
+            local capString = gimpHelper.capitalizeWords(trimmedStr)
+            items = component.me_interface.getItemsInNetwork({label = capString})
         end
         itemWindow.elements.mainStorage.display = PagedWindow.new(items, 120, 40, {x1=25, y1=83, x2=320, y2=403}, 5, widgetsAreUs.itemBox)
         itemWindow.elements.mainStorage.display:displayItems()

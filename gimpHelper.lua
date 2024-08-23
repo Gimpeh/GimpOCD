@@ -129,4 +129,10 @@ function gimpHelper.trim(s)
     return (s:gsub("^%s*(.-)%s*$", "%1")):gsub("%c", "")
 end
 
+function gimpHelper.capitalizeWords(str)
+    return str:gsub("(%a)([%w_']*)", function(first, rest)
+        return first:upper() .. rest:lower()
+    end)
+end
+
 return gimpHelper
