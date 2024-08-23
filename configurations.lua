@@ -196,10 +196,7 @@ function configurations.initDisplays()
         displays.levelMaintainer:displayItems()
         for k, v in ipairs(displays.levelMaintainer.currentlyDisplayed) do
            displays.levelMaintainer.currentlyDisplayed[k] = widgetsAreUs.attachOnClick(v, function()
-                if activeConfigs["lm"] then
-                    saveConfigData("lm", "/home/programData/levelMaintainerConfig.data", activeConfigs["lm"].index)
-                end
-                configurations.createLevelMaintainerConfig(192, 80, k)
+                configurations.createLevelMaintainerConfig(192, 80, k) -- calls save and remove functions for this config at beginning, and attempts to load config at end
             end)
         end
     end
@@ -261,14 +258,15 @@ saveConfigData = function(activeConfigsConfigKey, path, activeConfigsIndex)
     end
     tbl[activeConfigsIndex] = derp
     gimpHelper.saveTable(tbl, path)
-    
 end
 
 function configurations.createLevelMaintainerConfig(x, y, index)
-    local success, error = pcall(saveConfigData, "lm", "/home/programData/levelMaintainerConfig.data", activeConfigs["lm"].index)
-    if not success then print(error) end
-    local success, error = pcall(removeConfig, "lm")
-    if not success then print(error) end
+    if activeConfigs["lm"] and activeConfigs["lm"].index then
+        local success, error = pcall(saveConfigData, "lm", "/home/programData/levelMaintainerConfig.data", activeConfigs["lm"].index)
+        if not success then print(error) end
+        local success, error = pcall(removeConfig, "lm")
+        if not success then print(error) end
+    end
     configurations.panel.lm = {}
     configurations.panel.lm.priority = scrappad.numberBox(x, y, "priority", "Priority:")
     configurations.panel.lm.maxInstances = scrappad.numberBox(x + 80, y, "maxCrafters", "Max Conc:")
