@@ -85,7 +85,7 @@ function overlay.setVisible(visible)
 end
 
 function overlay.hide()
-	overlay.tabs.setVisible(false)
+	overlay.setVisible(false)
 	if active and active.setVisible then
 		active.setVisible(false)
 	end
