@@ -347,6 +347,7 @@ function configurations.update()
 end
 
 function configurations.setVisible(visible)
+    generateHelperTable()
     for k, v in pairs(helperTable) do
         if v.setVisible then
             v.setVisible(visible)
@@ -362,6 +363,7 @@ function configurations.setVisible(visible)
     end
 end
 function configurations.remove()
+    generateHelperTable()
     for k, v in pairs(helperTable) do
         if v.remove then
             v.remove()
@@ -377,6 +379,7 @@ function configurations.remove()
     end
 end
 function configurations.onClick(x, y, button)
+    generateHelperTable()
     for k, v in pairs(helperTable) do
         if v.box and v.box.contains(x, y) and v.onClick then
             v.onClick(x, y, button)
