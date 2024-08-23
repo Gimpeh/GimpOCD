@@ -198,7 +198,7 @@ function configurations.initDisplays()
     os.sleep(0)
     tbl = gimpHelper.loadTable("/home/programData/monitoredItems")
     if tbl and tbl[1] then
-        displays.itemManager = PagedWindow.new(tbl, 120, 30, {x1=390, x2=540, y1=65, y2=305}, 5, widgetsAreUs.itemBox)
+        displays.itemManager = PagedWindow.new(tbl, 120, 40, {x1=390, x2=540, y1=65, y2=305}, 5, widgetsAreUs.itemBox)
         displays.itemManager:displayItems()
     end
     tbl = nil

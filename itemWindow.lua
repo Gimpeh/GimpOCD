@@ -46,7 +46,7 @@ local addTo = nil
 
     --keyboard event handler
 local function handleKeyboard(character)
-    if trim(itemWindow.searchText.getText()) == "Search" then
+    if gimpHelper.trim(itemWindow.searchText.getText()) == "Search" then
         itemWindow.searchText.setText("")
     end
     if character == 13 then  -- Enter key                        
@@ -55,7 +55,7 @@ local function handleKeyboard(character)
         end
         itemWindow.elements.mainStorage.display = nil
         local items
-        local trimmedStr =  trim(itemWindow.searchText.getText())
+        local trimmedStr =  gimpHelper.trim(itemWindow.searchText.getText())
         if trimmedStr == "" then 
             items = component.me_interface.getItemsInNetwork()
         else
@@ -77,6 +77,7 @@ end
 local function handleKeyboardWrapper(_, _, _, character, _)
     print("keyboard event : " .. character)
     local success, error = pcall(handleKeyboard, character)
+    if not success then print(error) end
 end
 
 -----------------------------------------
