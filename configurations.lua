@@ -149,7 +149,7 @@ local displays = {}
 ---initalization
 
 function configurations.initBoxes()
-    boxes.background = widgetsAreUs.createBox(10, 70, 750, 430, {0.2, 0.2, 0.2}, 0.8)
+    boxes.background = widgetsAreUs.createBox(10, 50, 750, 400, {0.2, 0.2, 0.2}, 0.8)
     boxes.levelMaintainer = widgetsAreUs.createBox(20, 80, 160, 200, {0.6, 1, 0.6}, 1)
     boxes.levelMaintainerConfig = widgetsAreUs.createBox(192, 80, 160, 200, {1, 1, 1}, 1)
     boxes.itemManager = widgetsAreUs.createBox(385, 60, 160, 240, {1, 1, 0.6}, 1)
