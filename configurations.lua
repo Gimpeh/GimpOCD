@@ -7,11 +7,12 @@ local metricsDisplays = require("metricsDisplays")
 local scrappad = require("scrappad")
 
 local configurations = {}
+configurations.panel = {}
 local activeConfigs = {}
-local lm = {}
-local im = {}
-local gc = {}
-local mm = {}
+configurations.panel.lm = {}
+configurations.panel.im = {}
+configurations.panel.gc = {}
+configurations.panel.mm = {}
 
 ----------------------------------------------------------
 ---event handlers
@@ -40,45 +41,45 @@ end
 local function saveConfigs()
     local tbl = gimpHelper.loadTable("/home/programData/levelMaintainerConfig.data")
     local derp = {}
-    for k, v in pairs(activeConfigs.lm.elements) do
+    for k, v in pairs(activeConfigs.configurations.panel.lm.elements) do
         if v.option then
             derp[k] = v.option.getText()
         end
     end
-    tbl[activeConfigs.lm.index] = derp
+    tbl[activeConfigs.configurations.panel.lm.index] = derp
     gimpHelper.saveTable(tbl, "/home/programData/levelMaintainerConfig.data")
     tbl = nil
     os.sleep(0)
     tbl = gimpHelper.loadTable("/home/programData/itemConfig.data")
     derp = {}
-    for k, v in pairs(activeConfigs.im.elements) do
+    for k, v in pairs(activeConfigs.configurations.panel.im.elements) do
         if v.option then
             derp[k] = v.option.getText()
         end
     end
-    tbl[activeConfigs.im.index] = derp
+    tbl[activeConfigs.configurations.panel.im.index] = derp
     gimpHelper.saveTable(tbl, "/home/programData/itemConfig.data")
     tbl = nil
     os.sleep(0)
     tbl = gimpHelper.loadTable("/home/programData/machineConfig.data")
     derp = {}
-    for k, v in pairs(activeConfigs.mm.elements) do
+    for k, v in pairs(activeConfigs.configurations.panel.mm.elements) do
         if v.option then
             derp[k] = v.option.getText()
         end
     end
-    tbl[activeConfigs.mm.index] = derp
+    tbl[activeConfigs.configurations.panel.mm.index] = derp
     gimpHelper.saveTable(tbl, "/home/programData/machineConfig.data")
     tbl = nil
     os.sleep(0)
     tbl = gimpHelper.loadTable("/home/programData/generalConfig.data")
     derp = {}
-    for k, v in pairs(activeConfigs.gc.elements) do
+    for k, v in pairs(activeConfigs.configurations.panel.gc.elements) do
         if v.option then
             derp[k] = v.option.getText()
         end
     end
-    tbl[activeConfigs.gc.index] = derp
+    tbl[activeConfigs.configurations.panel.gc.index] = derp
     gimpHelper.saveTable(tbl, "/home/programData/generalConfig.data")
     tbl = nil
     os.sleep(0)
@@ -223,71 +224,71 @@ local function removeConfig(activeConfigsIndex)
 end
 
 function configurations.createLevelMaintainerConfig(x, y, index)
-    pcall(removeConfig, "lm")
-    lm = {}
-    lm.priority = scrappad.numberBox(x, y, "priority", "Priority:")
-    lm.maxInstances = scrappad.numberBox(x + 80, y, "maxCrafters", "Max Conc:")
+    pcall(removeConfig, "configurations.panel.lm")
+    configurations.panel.lm = {}
+    configurations.panel.lm.priority = scrappad.numberBox(x, y, "priority", "Priority:")
+    configurations.panel.lm.maxInstances = scrappad.numberBox(x + 80, y, "maxCrafters", "Max Conc:")
 
-    lm.minCPU = scrappad.numberBox(x, y+25, "minCpu", "Min CPU:")
-    lm.maxCPU = scrappad.numberBox(x+80, y+25, "maxCpu", "Max CPU:")
+    configurations.panel.lm.minCPU = scrappad.numberBox(x, y+25, "minCpu", "Min CPU:")
+    configurations.panel.lm.maxCPU = scrappad.numberBox(x+80, y+25, "maxCpu", "Max CPU:")
 
     os.sleep(0)
     --[[
-    lm.alertStalled = widgetsAreUs.configCheck(x+100, y+105)
-    lm.alertStalledName = widgetsAreUs.text(x+5, y+105, "Alert Stalled", 1.3)
-    lm.alertResources = widgetsAreUs.configCheck(x+100, y+130, index)
+    configurations.panel.lm.alertStalled = widgetsAreUs.configCheck(x+100, y+105)
+    configurations.panel.lm.alertStalledName = widgetsAreUs.text(x+5, y+105, "Alert Stalled", 1.3)
+    configurations.panel.lm.alertResources = widgetsAreUs.configCheck(x+100, y+130, index)
     os.sleep(0)
-    lm.alertResourcesName = widgetsAreUs.text(x+5, y+130, "Alert Can't Craft", 1.3)
+    configurations.panel.lm.alertResourcesName = widgetsAreUs.text(x+5, y+130, "Alert Can't Craft", 1.3)
     ]]
-    activeConfigs["lm"] = {index = index, elements = lm}
+    activeConfigs["configurations.panel.lm"] = {index = index, elements = configurations.panel.lm}
 end
 
 function configurations.createMachineManagerConfig(x, y, tbl, index)
-    pcall(removeConfig, "mm")
+    pcall(removeConfig, "configurations.panel.mm")
     --[[
-    mm = {}
-    mm.name = widgetsAreUs.configSingleString(335, 310, 90, "Name")
-    mm.name.option.setText(tbl.newName)
-    mm.group = widgetsAreUs.configSingleString(355, 335, 90, "Group")
+    configurations.panel.mm = {}
+    configurations.panel.mm.name = widgetsAreUs.configSingleString(335, 310, 90, "Name")
+    configurations.panel.mm.name.option.setText(tbl.newName)
+    configurations.panel.mm.group = widgetsAreUs.configSingleString(355, 335, 90, "Group")
     os.sleep(0)
-    mm.group.option.setText(tbl.groupName)
-    mm.autoTurnOn = widgetsAreUs.configSingleString(355, 360, 120, "Auto On Min")
-    mm.autoTurnOff = widgetsAreUs.configSingleString(480, 360, 120, "Auto Off Min")
-    mm.alertIdle = widgetsAreUs.configSingleString(355, 385, 120, "Alert Idle Min")
-    mm.alertDisabled = widgetsAreUs.configCheck(455, 410, index)
-    mm.alertDisabledName = widgetsAreUs.text(355, 410, "Alert Disabled", 1.3)
-    mm.alertEnabled = widgetsAreUs.configCheck(555, 435, index)
+    configurations.panel.mm.group.option.setText(tbl.groupName)
+    configurations.panel.mm.autoTurnOn = widgetsAreUs.configSingleString(355, 360, 120, "Auto On Min")
+    configurations.panel.mm.autoTurnOff = widgetsAreUs.configSingleString(480, 360, 120, "Auto Off Min")
+    configurations.panel.mm.alertIdle = widgetsAreUs.configSingleString(355, 385, 120, "Alert Idle Min")
+    configurations.panel.mm.alertDisabled = widgetsAreUs.configCheck(455, 410, index)
+    configurations.panel.mm.alertDisabledName = widgetsAreUs.text(355, 410, "Alert Disabled", 1.3)
+    configurations.panel.mm.alertEnabled = widgetsAreUs.configCheck(555, 435, index)
     os.sleep(0)
-    mm.alertEnabledName = widgetsAreUs.text(460, 435, "Alert Enabled", 1.3)
-    mm.trackMetrics = widgetsAreUs.configCheck(455, 460, index)
-    mm.trackMetricsName = widgetsAreUs.text(355, 460, "Track Metrics", 1.3)
-    mm.xyz = tbl.xyz
+    configurations.panel.mm.alertEnabledName = widgetsAreUs.text(460, 435, "Alert Enabled", 1.3)
+    configurations.panel.mm.trackMetrics = widgetsAreUs.configCheck(455, 460, index)
+    configurations.panel.mm.trackMetricsName = widgetsAreUs.text(355, 460, "Track Metrics", 1.3)
+    configurations.panel.mm.xyz = tbl.xyz
 ]]
-    activeConfigs["mm"] = {index = index, elements = mm}
+    activeConfigs["configurations.panel.mm"] = {index = index, elements = configurations.panel.mm}
 end
 
 local function createGeneralConfig()
     --[[
-    gc.showHelp = widgetsAreUs.configCheck(590, 320, 99)
-    gc.showHelpName = widgetsAreUs.text(525, 320, "Show Help", 1.3)
-    gc.ResetHUD = widgetsAreUs.configCheck(650, 345, 99)
-    gc.screenSize = widgetsAreUs.textBox(525, 345, 75, 25, "Set Screen Dim")
-    gc.screenSizeWidth = widgetsAreUs.textBox(600, 345, 40, 25, "click set")
-    gc.screenSizeHeight = widgetsAreUs.textBox(670, 345, 40, 25, "click set")
+    configurations.panel.gc.showHelp = widgetsAreUs.configCheck(590, 320, 99)
+    configurations.panel.gc.showHelpName = widgetsAreUs.text(525, 320, "Show Help", 1.3)
+    configurations.panel.gc.ResetHUD = widgetsAreUs.configCheck(650, 345, 99)
+    configurations.panel.gc.screenSize = widgetsAreUs.textBox(525, 345, 75, 25, "Set Screen Dim")
+    configurations.panel.gc.screenSizeWidth = widgetsAreUs.textBox(600, 345, 40, 25, "click set")
+    configurations.panel.gc.screenSizeHeight = widgetsAreUs.textBox(670, 345, 40, 25, "click set")
     os.sleep(0)
-    gc.highlightDisabled = widgetsAreUs.configCheck(600, 370, 99)
-    gc.highlightDisabledName = widgetsAreUs.text(525, 370, "Highlight Disabled", 1.3)
-    gc.maintenanceBeacons = widgetsAreUs.configCheck(700, 395, 99)
-    gc.maintenanceBeaconsName = widgetsAreUs.text(625, 395, "Maintenance Beacons", 1.3)
-    gc.spazIntensity = widgetsAreUs.configSingleString(525, 420, 80, "SPAZ Intensity", 99)
-    gc.alertDisconnected = widgetsAreUs.configCheck(720, 445, 99, "alertDisconnected")
+    configurations.panel.gc.highlightDisabled = widgetsAreUs.configCheck(600, 370, 99)
+    configurations.panel.gc.highlightDisabledName = widgetsAreUs.text(525, 370, "Highlight Disabled", 1.3)
+    configurations.panel.gc.maintenanceBeacons = widgetsAreUs.configCheck(700, 395, 99)
+    configurations.panel.gc.maintenanceBeaconsName = widgetsAreUs.text(625, 395, "Maintenance Beacons", 1.3)
+    configurations.panel.gc.spazIntensity = widgetsAreUs.configSingleString(525, 420, 80, "SPAZ Intensity", 99)
+    configurations.panel.gc.alertDisconnected = widgetsAreUs.configCheck(720, 445, 99, "alertDisconnected")
     os.sleep(0)
-    gc.alertDisconnectedName = widgetsAreUs.text(630, 445, "Disconnected", 1.3)
-    gc.alertReconnected = widgetsAreUs.configCheck(610, 445, 99, "alertReconnected")
-    gc.alertReconnectedName = widgetsAreUs.text(525, 445, "Connected", 1.3)
+    configurations.panel.gc.alertDisconnectedName = widgetsAreUs.text(630, 445, "Disconnected", 1.3)
+    configurations.panel.gc.alertReconnected = widgetsAreUs.configCheck(610, 445, 99, "alertReconnected")
+    configurations.panel.gc.alertReconnectedName = widgetsAreUs.text(525, 445, "Connected", 1.3)
     --**************MaxGlobalCPU usage for level maintainers needs to be set88888888**************
 ]]
-    activeConfigs["gc"] = {index = 1, elements = gc}
+    activeConfigs["configurations.panel.gc"] = {index = 1, elements = configurations.panel.gc}
 end
 
 ----------------------------------------------------------
@@ -308,7 +309,7 @@ for k, v in pairs(displays) do
         table.insert(helperTable, j)
     end
 end
-for k, v in pairs(configurations) do
+for k, v in pairs(configurations.panel.gc) do
     os.sleep(0)
     table.insert(helperTable, v)
 end
