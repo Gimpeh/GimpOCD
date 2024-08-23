@@ -258,7 +258,7 @@ createGeneralConfig = function(x, y)
     configurations.panel.gc.maintenanceBeacons = widgetsAreUs.checkboxFullLine(x, y+90, "maintenanceBeacons", "Maintenance Beacons")
     configurations.panel.gc.alertDisconnected = widgetsAreUs.checkboxFullLine(x, y+120, "alertDisconnected", "Alert Disconnected")
     configurations.panel.gc.alertReconnected = widgetsAreUs.checkboxFullLine(x, y+150, "alertReconnected", "Alert Reconnected")
-    configurations.panel.gc.maxCpusAllLevelMaintainers = widgetsAreUs.numberBoxLongText(x, y+180, "maxCpusAllLevelMaintainers", "Max CPUs for Maintainers")
+    configurations.panel.gc.maxCpusAllLevelMaintainers = widgetsAreUs.numberBoxLongerText(x, y+180, "maxCpusAllLevelMaintainers", "Max CPUs for Maintainers")
     currentlyDisplayedConfigs["gc"] = {index = 1, elements = configurations.panel.gc}
     pcall(loadConfigData, "gc", "/home/programData/generalConfig.data", 1)
 end
