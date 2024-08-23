@@ -273,10 +273,10 @@ generateHelperTable = function()
     for k, v in pairs(boxes) do os.sleep(0) table.insert(helperTable, v) end
     for k, v in pairs(buttons) do os.sleep(0) table.insert(helperTable, v) end
     for k, v in pairs(displays) do os.sleep(0) --second loop contained below, every group of displayed objects, then every object in display
-        for i, j in pairs(displays[k].currentlyDisplayed) do table.insert(helperTable, j) end
+        for i, j in pairs(displays[k].currentlyDisplayed) do table.insert(helperTable, displays[k].currentlyDisplayed[i]) end
     end
     for k, v in pairs(configurations.panel) do os.sleep(0) 
-        for i, j in pairs(configurations.panel[k]) do table.insert(helperTable, j) end
+        for i, j in pairs(configurations.panel[k]) do table.insert(helperTable, configurations.panel[k][i]) end
     end
 end
 
