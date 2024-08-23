@@ -352,7 +352,7 @@ function itemWindow.onClick(x, y, button)
                         event.ignore("hud_keyboard", handleKeyboardWrapper)
                         local args = v.amount.onClick()
                         local tbl = gimpHelper.loadTable("/home/programData/reverseLevelMaintainer.data")
-                        tbl[args.location].amount=args.amount
+                        tbl[k].amount=tostring(args.amount)
                         gimpHelper.saveTable(tbl, "/home/programData/reverseLevelMaintainer.data")
                         event.listen("hud_keyboard", handleKeyboardWrapper)
                         return
@@ -360,7 +360,7 @@ function itemWindow.onClick(x, y, button)
                         event.ignore("hud_keyboard", handleKeyboardWrapper)
                         local args = v.batch.onClick()
                         local tbl = gimpHelper.loadTable("/home/programData/reverseLevelMaintainer.data")
-                        tbl[args.location].batch=args.batch
+                        tbl[k].batch=tostring(args.batch)
                         gimpHelper.saveTable(tbl, "/home/programData/reverseLevelMaintainer.data")
                         event.listen("hud_keyboard", handleKeyboardWrapper)
                         return
