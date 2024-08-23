@@ -143,7 +143,7 @@ function configurations.init()
     local success, error = pcall(configurations.initDisplays)
     if not success then print(error) end
 
-    configurations.createGeneralConfig(525, 320)
+    createGeneralConfig(525, 320)
 
     generateHelperTable()
 end
@@ -247,7 +247,7 @@ function configurations.createItemManagerConfig(x, y, index)
     pcall(loadConfigData, "im", "/home/programData/itemManagerConfig.data", index)
 end
 
-local function createGeneralConfig(x, y)
+createGeneralConfig = function(x, y)
 
     configurations.panel.gc = {}
     configurations.panel.gc.showHelp = widgetsAreUs.checkboxFullLine(x, y, "showHelp", "Show Help")
