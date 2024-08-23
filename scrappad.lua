@@ -18,6 +18,7 @@ function scrappad.numberBox(x, y, key, titleText)
     end,
     onClick = function()
         setValue(gimpHelper.handleTextInput(option.text))
+        print(option.text.getText())
     end})
 end
 

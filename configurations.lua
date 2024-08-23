@@ -252,6 +252,7 @@ saveConfigData = function(activeConfigsConfigKey, path, activeConfigsIndex)
     end
     local derp = {}
     for k, v in pairs(activeConfigs[activeConfigsConfigKey].elements) do
+        print(v.option.text.getText())
         if v.option then
             derp[v.key] = v.value
         end
@@ -286,7 +287,7 @@ function configurations.createLevelMaintainerConfig(x, y, index)
     local tbl = gimpHelper.loadTable("/home/programData/levelMaintainerConfig.data")
     if tbl and tbl[index] then
         for k, v in pairs(activeConfigs["lm"].elements) do
-            for i, j in pairs(tbl[index].derp) do
+            for i, j in pairs(tbl[index]) do
                 if v.key == i then
                     activeConfigs["lm"].elements[k].setValue(j)
                 end
