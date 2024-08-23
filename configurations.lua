@@ -265,6 +265,8 @@ saveConfigData = function(activeConfigsConfigKey, path, activeConfigsIndex)
 end
 
 function configurations.createLevelMaintainerConfig(x, y, index)
+    local success, error = pcall(saveConfigData, "lm", "/home/programData/levelMaintainerConfig.data", activeConfigs["lm"].index)
+    if not success then print(error) end
     local success, error = pcall(removeConfig, "lm")
     if not success then print(error) end
     configurations.panel.lm = {}
