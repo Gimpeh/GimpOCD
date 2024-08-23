@@ -381,7 +381,7 @@ function configurations.onClick(x, y, button)
             v.onClick(x, y, button)
             os.sleep(0)
             return
-        elseif v.option and v.option.box and v.option.box.contains(x, y) and v.option.onClick then
+        elseif v.option and v.option.box and v.option.box.contains(x, y) and v.onClick then
             v.onClick(x, y, button)
             os.sleep(0)
             return
