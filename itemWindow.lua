@@ -312,7 +312,7 @@ function itemWindow.onClick(x, y, button)
                         event.ignore("hud_keyboard", handleKeyboardWrapper)
                         local args = v.amount.onClick()
                         local tbl = gimpHelper.loadTable("/home/programData/levelMaintainer.data")
-                        tbl[args.location].amount=args.amount
+                        tbl[k].amount=args.amount
                         gimpHelper.saveTable(tbl, "/home/programData/levelMaintainer.data")
                         event.listen("hud_keyboard", handleKeyboardWrapper)
                         return
