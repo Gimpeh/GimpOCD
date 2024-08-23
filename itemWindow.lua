@@ -197,23 +197,19 @@ function itemWindow.onClick(x, y, button)
         for k, v in pairs(itemWindow.elements.mainStorage.display.currentlyDisplayed) do
             os.sleep(0)
             if widgetsAreUs.isPointInBox(x, y, v.box) then
-                print("200: detected in box")
                 if not addTo then
-                    print("202: not addTo")
                     if button == 0 then
                         if itemWindow.elements.monitoredItems.display then
                             itemWindow.elements.monitoredItems.display:clearDisplayedItems()
                             itemWindow.elements.monitoredItems.display = nil
                         end
                         local tbl = gimpHelper.loadTable("/home/programData/monitoredItems")
-                        print("209: loaded table")
                         if not tbl and not tbl[1] then
                             tbl = {}
                         end
                         table.insert(tbl, v.itemStack)
                         gimpHelper.saveTable(tbl, "/home/programData/monitoredItems")
                         event.push("add_index", "/home/programData/itemConfig.data")
-                        print("217: saved table")
                         itemWindow.elements.monitoredItems.display = PagedWindow.new(tbl, 120, 40, {x1=355, y1=270, x2=630, y2=421}, 5, widgetsAreUs.itemBox)
                         itemWindow.elements.monitoredItems.display:displayItems()
                         return
