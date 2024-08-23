@@ -45,7 +45,7 @@ local function onOverlayEvent(eventType, ...)
 		os.sleep(0)
 		overlay.update()
 		os.sleep(0)
-		overlayUpdateEvent = event.timer(1000, updateOverlay, math.huge)
+		overlayUpdateEvent = event.timer(3000, updateOverlay, math.huge)
 	elseif eventType == "overlay_closed" then
 		event.ignore("hud_click", handleClick)
 		overlay.hide()
