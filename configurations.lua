@@ -308,7 +308,7 @@ for k, v in pairs(displays) do
         table.insert(helperTable, j)
     end
 end
-for k, v in pairs(configurations.gc) do
+for k, v in pairs(configurations) do
     os.sleep(0)
     table.insert(helperTable, v)
 end
