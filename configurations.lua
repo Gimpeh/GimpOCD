@@ -395,6 +395,7 @@ function configurations.onClick(x, y, button)
             return
         end
     end
+    --[[
     for k, v in pairs(configurations.panel) do
         for i, j in pairs(configurations.panel[k]) do
             if j.contains and j.contains(x, y) and j.onClick then
@@ -404,6 +405,7 @@ function configurations.onClick(x, y, button)
             end
         end
     end
+    ]]
 end
 
 ----------------------------------------------------------
