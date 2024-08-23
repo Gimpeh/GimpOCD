@@ -4,15 +4,6 @@ local gimpHelper = require("gimpHelper")
 local PagedWindow = require("PagedWindow")
 local event = require("event")
 local metricsDisplays = require("metricsDisplays")
-local scrappad = require("scrappad")
-
-local configurations = {}
-configurations.panel = {}
-local activeConfigs = {}
-configurations.panel.lm = {}
-configurations.panel.im = {}
-configurations.panel.gc = {}
-configurations.panel.mm = {}
 
 ----------------------------------------------------------
 ---event handlers
@@ -38,74 +29,6 @@ local function stockPileData(_, config)
     os.sleep(0)
 end
 
-local function saveConfigs()
-    local tbl = gimpHelper.loadTable("/home/programData/levelMaintainerConfig.data")
-    local derp = {}
-    for k, v in pairs(activeConfigs.configurations.panel.lm.elements) do
-        if v.option then
-            derp[k] = v.option.getText()
-        end
-    end
-    tbl[activeConfigs.configurations.panel.lm.index] = derp
-    gimpHelper.saveTable(tbl, "/home/programData/levelMaintainerConfig.data")
-    tbl = nil
-    os.sleep(0)
-    tbl = gimpHelper.loadTable("/home/programData/itemConfig.data")
-    derp = {}
-    for k, v in pairs(activeConfigs.configurations.panel.im.elements) do
-        if v.option then
-            derp[k] = v.option.getText()
-        end
-    end
-    tbl[activeConfigs.configurations.panel.im.index] = derp
-    gimpHelper.saveTable(tbl, "/home/programData/itemConfig.data")
-    tbl = nil
-    os.sleep(0)
-    tbl = gimpHelper.loadTable("/home/programData/machineConfig.data")
-    derp = {}
-    for k, v in pairs(activeConfigs.configurations.panel.mm.elements) do
-        if v.option then
-            derp[k] = v.option.getText()
-        end
-    end
-    tbl[activeConfigs.configurations.panel.mm.index] = derp
-    gimpHelper.saveTable(tbl, "/home/programData/machineConfig.data")
-    tbl = nil
-    os.sleep(0)
-    tbl = gimpHelper.loadTable("/home/programData/generalConfig.data")
-    derp = {}
-    for k, v in pairs(activeConfigs.configurations.panel.gc.elements) do
-        if v.option then
-            derp[k] = v.option.getText()
-        end
-    end
-    tbl[activeConfigs.configurations.panel.gc.index] = derp
-    gimpHelper.saveTable(tbl, "/home/programData/generalConfig.data")
-    tbl = nil
-    os.sleep(0)
-end
-
-local function loadConfig(_, path, index)
-    local tbl = gimpHelper.loadTable(path)
-    if not tbl then
-        tbl = {}
-    end
-    os.sleep(0)
-    if table[index] and table[index] ~= "placeholder" then
-        for k, v in pairs(tbl[index].derp) do
-            os.sleep(0)
-            for i, j in pairs(activeConfigs) do
-                for b, m in pairs(j.elements) do
-                    os.sleep(0)
-                    if b == k then
-                        m.option.setText(v)
-                    end
-                end
-            end
-        end
-    end
-end
-
 local function removeIndex(_, path, index)
     local tbl = gimpHelper.loadTable(path)
     if not tbl then
@@ -119,30 +42,26 @@ local function removeIndex(_, path, index)
     os.sleep(0)
 end
 
-local function addIndex(_, path)
-    local tbl = gimpHelper.loadTable(path)
-    if not tbl then
-        os.sleep(0)
-        tbl = {}
-    end
-    table.insert(tbl, "placeholder")
-    gimpHelper.saveTable(tbl, path)
-end
-
 ----------------------------------------------------------
 ---event listeners
 
-event.listen("add_index", addIndex)
 event.listen("remove_index", removeIndex)
-event.listen("config_change", saveConfigs)
 event.listen("machine_named", stockPileData)
-event.listen("load_config", loadConfig)
-
 ----------------------------------------------------------
 ---forward declarations
 
+local configurations = {}
+configurations.panel = {}
+configurations.panel.lm = {}
+configurations.panel.im = {}
+configurations.panel.gc = {}
+configurations.panel.mm = {}
+
+local currentlyDisplayedConfigs = {}
+
 local generateHelperTable
 local saveConfigData
+local loadConfigData
 local boxes = {}
 local buttons = {}
 local displays = {}
@@ -166,23 +85,18 @@ function configurations.initButtons()
     buttons.levelMaintainerPrev = widgetsAreUs.symbolBox(85, 58, "^", nil, function ()
         displays.levelMaintainer:prevPage()
     end)
-
     buttons.levelMaintainerNext = widgetsAreUs.symbolBox(85, 283, "v", nil, function ()
         displays.levelMaintainer:nextPage()
     end)
-
     buttons.itemManagerPrev = widgetsAreUs.symbolBox(363, 160, "<", nil, function ()
         displays.itemManager:prevPage()
     end)
-
     buttons.itemManagerNext = widgetsAreUs.symbolBox(548, 160, ">", nil, function ()
         displays.itemManager:nextPage()
     end)
-
     buttons.machineManagerPrev = widgetsAreUs.symbolBox(8, 378, "<", nil, function ()
         displays.machineManager:prevPage()
     end)
-
     buttons.machineManagerNext = widgetsAreUs.symbolBox(328, 378, ">", nil, function ()
         displays.machineManager:nextPage()
     end)
@@ -190,31 +104,32 @@ function configurations.initButtons()
 end
 
 function configurations.initDisplays()
-    local tbl = gimpHelper.loadTable("/home/programData/levelMaintainer.data")
-    if tbl and tbl[1] then
-        displays.levelMaintainer = PagedWindow.new(tbl, 150, 30, {x1=25, x2=175, y1=85, y2=195}, 5,widgetsAreUs.levelMaintainer)
-        displays.levelMaintainer:displayItems()
-        for k, v in ipairs(displays.levelMaintainer.currentlyDisplayed) do
-           displays.levelMaintainer.currentlyDisplayed[k] = widgetsAreUs.attachOnClick(v, function()
-                configurations.createLevelMaintainerConfig(192, 80, k) -- calls save and remove functions for this config at beginning, and attempts to load config at end
-            end)
+    local function loadAndDisplayTable(path, width, height, coords, callback, widget)
+        local tbl = gimpHelper.loadTable(path)
+        if tbl and tbl[1] then
+            local display = PagedWindow.new(tbl, width, height, coords, 5, widget)
+            display:displayItems()
+            for k, v in ipairs(display.currentlyDisplayed) do
+                display.currentlyDisplayed[k] = widgetsAreUs.attachOnClick(v, function()
+                    callback(k)
+                end)
+            end
         end
+        tbl = nil
+        os.sleep(0)
     end
-    tbl = nil
-    os.sleep(0)
-    tbl = gimpHelper.loadTable("/home/programData/monitoredItems")
-    if tbl and tbl[1] then
-        displays.itemManager = PagedWindow.new(tbl, 120, 40, {x1=390, x2=540, y1=65, y2=305}, 5, widgetsAreUs.itemBox)
-        displays.itemManager:displayItems()
-    end
-    tbl = nil
-    os.sleep(0)
-    tbl = gimpHelper.loadTable("/home/programData/machinesNamed.data")
-    if tbl and tbl[1] then
-        displays.machineManager = PagedWindow.new(tbl, 150, 30, {x1=45, x2=295, y1=320, y2=460}, 5, metricsDisplays.machine.create)
-        displays.machineManager:displayItems()
-    end
-    tbl = nil
+
+    loadAndDisplayTable("/home/programData/levelMaintainer.data", 150, 30, {x1=25, x2=175, y1=85, y2=195}, function(k)
+        configurations.createLevelMaintainerConfig(192, 80, k)
+    end, widgetsAreUs.levelMaintainer)
+    
+    loadAndDisplayTable("/home/programData/monitoredItems", 120, 40, {x1=390, x2=540, y1=65, y2=305}, function(k)
+        configurations.createItemManagerConfig(580, 80, k)
+    end, widgetsAreUs.itemBox)
+    
+    loadAndDisplayTable("/home/programData/machinesNamed.data", 150, 30, {x1=45, x2=295, y1=320, y2=460}, function(k)
+        configurations.createMachineManagerConfig(355, 310, k)
+    end, metricsDisplays.machine.create)
 end
 
 function configurations.init()
@@ -223,8 +138,6 @@ function configurations.init()
 
     local success, error = pcall(configurations.initButtons)
     if not success then print(error) end 
-
-    os.sleep(0)
 
     local success, error = pcall(configurations.initDisplays)
     if not success then print(error) end
@@ -235,14 +148,14 @@ end
 ----------------------------------------------------------
 ---configs factory
 
-local function removeConfig(activeConfigsIndex)
-    for k, v in pairs(activeConfigs[activeConfigsIndex].elements) do
+local function removeConfigDisplay(activeConfigsIndex)
+    for k, v in pairs(currentlyDisplayedConfigs[activeConfigsIndex].elements) do
         if v.remove then
             local success, error = pcall(v.remove)
             if not success then print(error) end
         end
     end
-    activeConfigs[activeConfigsIndex].elements = nil
+    currentlyDisplayedConfigs[activeConfigsIndex].elements = nil
 end
 
 saveConfigData = function(activeConfigsConfigKey, path, activeConfigsIndex)
@@ -251,7 +164,7 @@ saveConfigData = function(activeConfigsConfigKey, path, activeConfigsIndex)
         tbl = {}
     end
     local derp = {}
-    for k, v in pairs(activeConfigs[activeConfigsConfigKey].elements) do
+    for k, v in pairs(currentlyDisplayedConfigs[activeConfigsConfigKey].elements) do
         if v.option then
             derp[v.key] = gimpHelper.trim(v.option.text.getText())
         end
@@ -260,50 +173,53 @@ saveConfigData = function(activeConfigsConfigKey, path, activeConfigsIndex)
     gimpHelper.saveTable(tbl, path)
 end
 
-function configurations.createLevelMaintainerConfig(x, y, index)
-    if activeConfigs["lm"] and activeConfigs["lm"].index then
-        local success, error = pcall(saveConfigData, "lm", "/home/programData/levelMaintainerConfig.data", activeConfigs["lm"].index)
-        if not success then print(error) end
-        local success, error = pcall(removeConfig, "lm")
-        if not success then print(error) end
-    end
-    configurations.panel.lm = {}
-    configurations.panel.lm.priority = scrappad.numberBox(x, y, "priority", "Priority:")
-    configurations.panel.lm.maxInstances = scrappad.numberBox(x + 80, y, "maxCrafters", "Max Conc:")
 
-    configurations.panel.lm.minCPU = scrappad.numberBox(x, y+30, "minCpu", "Min CPU:")
-    configurations.panel.lm.maxCPU = scrappad.numberBox(x+80, y+30, "maxCpu", "Max CPU:")
-
-    os.sleep(0)
-    --[[
-    configurations.panel.lm.alertStalled = widgetsAreUs.configCheck(x+100, y+105)
-    configurations.panel.lm.alertStalledName = widgetsAreUs.text(x+5, y+105, "Alert Stalled", 1.3)
-    configurations.panel.lm.alertResources = widgetsAreUs.configCheck(x+100, y+130, index)
-    os.sleep(0)
-    configurations.panel.lm.alertResourcesName = widgetsAreUs.text(x+5, y+130, "Alert Can't Craft", 1.3)
-    ]]
-    activeConfigs["lm"] = {index = index, elements = configurations.panel.lm}
-    local tbl = gimpHelper.loadTable("/home/programData/levelMaintainerConfig.data")
-    if tbl and tbl[index] then
-        for k, v in pairs(activeConfigs["lm"].elements) do
-            for i, j in pairs(tbl[index]) do
+loadConfigData = function(currentlyDisplayedConfigsRef, path, configIndex)
+    local tbl = gimpHelper.loadTable(path)
+    if tbl and tbl[configIndex] then
+        for k, v in pairs(currentlyDisplayedConfigs[currentlyDisplayedConfigsRef].elements) do
+            for i, j in pairs(tbl[configIndex]) do
                 if v.key == i then
-                    activeConfigs["lm"].elements[k].setValue(j)
+                    currentlyDisplayedConfigs[currentlyDisplayedConfigsRef].elements[k].setValue(j)
                 end
             end
         end
     end
 end
 
-function configurations.createMachineManagerConfig(x, y, tbl, index)
-    pcall(removeConfig, "mm")
-    --[[
-    configurations.panel.mm = {}
-    configurations.panel.mm.name = widgetsAreUs.configSingleString(335, 310, 90, "Name")
-    configurations.panel.mm.name.option.setText(tbl.newName)
-    configurations.panel.mm.group = widgetsAreUs.configSingleString(355, 335, 90, "Group")
+function configurations.createLevelMaintainerConfig(x, y, index)
+    if currentlyDisplayedConfigs["lm"] and currentlyDisplayedConfigs["lm"].index then
+        local success, error = pcall(saveConfigData, "lm", "/home/programData/levelMaintainerConfig.data", currentlyDisplayedConfigs["lm"].index) --saves the currently displayed config
+        if not success then print(error) end
+        local success, error = pcall(removeConfigDisplay, "lm")    --deletes the currently displayed config
+        if not success then print(error) end
+    end
+    configurations.panel.lm = {} --table for specific references
+    configurations.panel.lm.priority = widgetsAreUs.numberBox(x, y, "priority", "Priority:")
+    configurations.panel.lm.maxInstances = widgetsAreUs.numberBox(x + 80, y, "maxCrafters", "Max Conc:")
+    configurations.panel.lm.minCPU = widgetsAreUs.numberBox(x, y+30, "minCpu", "Min CPU")
+    configurations.panel.lm.minCpuTitle2 = widgetsAreUs.text(x+5, y+45, "Available:", 0.9)
+    configurations.panel.lm.maxCPU = widgetsAreUs.numberBox(x+80, y+30, "maxCpu", "Max CPU")
+    configurations.panel.lm.maxCpuTitle2 = widgetsAreUs.text(x+90, y+45, "Usage:", 1)
+    configurations.panel.lm.alertStalled = widgetsAreUs.checkboxFullLine(x, y+60, "alertStalled", "Alert Stalled")
+    configurations.panel.lm.alertResources = widgetsAreUs.checkboxFullLine(x, y+90, "alertResources", "Alert Can't Craft")
     os.sleep(0)
-    configurations.panel.mm.group.option.setText(tbl.groupName)
+
+    currentlyDisplayedConfigs["lm"] = {index = index, elements = configurations.panel.lm} --lm short for level maintainer
+    loadConfigData("lm", "/home/programData/levelMaintainerConfig.data", index)
+end
+
+function configurations.createMachineManagerConfig(x, y, index)
+    if currentlyDisplayedConfigs["mm"] and currentlyDisplayedConfigs["mm"].index then
+        local success, error = pcall(saveConfigData, "mm", "/home/programData/machineManagerConfig.data", currentlyDisplayedConfigs["mm"].index)
+        if not success then print(error) end
+        local success, error = pcall(removeConfigDisplay, "mm")
+        if not success then print(error) end
+    end
+    configurations.panel.mm = {}
+    configurations.panel.mm.name = widgetsAreUs.textBoxWithTitle(x, y, "name", "Name")
+    configurations.panel.mm.group = widgetsAreUs.textBoxWithTitle(x, y+30, "group", "Group") os.sleep(0)
+    --[[
     configurations.panel.mm.autoTurnOn = widgetsAreUs.configSingleString(355, 360, 120, "Auto On Min")
     configurations.panel.mm.autoTurnOff = widgetsAreUs.configSingleString(480, 360, 120, "Auto Off Min")
     configurations.panel.mm.alertIdle = widgetsAreUs.configSingleString(355, 385, 120, "Alert Idle Min")
@@ -316,7 +232,7 @@ function configurations.createMachineManagerConfig(x, y, tbl, index)
     configurations.panel.mm.trackMetricsName = widgetsAreUs.text(355, 460, "Track Metrics", 1.3)
     configurations.panel.mm.xyz = tbl.xyz
 ]]
-    activeConfigs["mm"] = {index = index, elements = configurations.panel.mm}
+    currentlyDisplayedConfigs["mm"] = {index = index, elements = configurations.panel.mm}
 end
 
 local function createGeneralConfig()
@@ -340,7 +256,7 @@ local function createGeneralConfig()
     configurations.panel.gc.alertReconnectedName = widgetsAreUs.text(525, 445, "Connected", 1.3)
     --**************MaxGlobalCPU usage for level maintainers needs to be set88888888**************
 ]]
-    activeConfigs["gc"] = {index = 1, elements = configurations.panel.gc}
+    currentlyDisplayedConfigs["gc"] = {index = 1, elements = configurations.panel.gc}
 end
 
 ----------------------------------------------------------
@@ -350,28 +266,13 @@ local helperTable = {}
 
 generateHelperTable = function()
     helperTable = {}
-    for k, v in pairs(boxes) do
-        os.sleep(0)
-        table.insert(helperTable, v)
+    for k, v in pairs(boxes) do os.sleep(0) table.insert(helperTable, v) end
+    for k, v in pairs(buttons) do os.sleep(0) table.insert(helperTable, v) end
+    for k, v in pairs(displays) do os.sleep(0) --second loop contained below, every group of displayed objects, then every object in display
+        for i, j in pairs(v.currentlyDisplayed) do table.insert(helperTable, j) end
     end
-    for k, v in pairs(buttons) do
-        os.sleep(0)
-        table.insert(helperTable, v)
-    end
-    for k, v in pairs(displays) do
-        os.sleep(0)
-        for i, j in pairs(v.currentlyDisplayed) do
-            table.insert(helperTable, j)
-        end
-    end
-    for k, v in pairs(configurations.panel.gc) do
-        os.sleep(0)
-        table.insert(helperTable, v)
-    end
-    for k, v in pairs(configurations.panel.lm) do
-        os.sleep(0)
-        table.insert(helperTable, v)
-    end
+    for k, v in pairs(configurations.panel.gc) do os.sleep(0) table.insert(helperTable, v) end
+    for k, v in pairs(configurations.panel.lm) do os.sleep(0) table.insert(helperTable, v) end
 end
 
 ----------------------------------------------------------
@@ -386,8 +287,7 @@ function configurations.setVisible(visible)
     generateHelperTable()
     for k, v in pairs(helperTable) do
         if v.setVisible then
-            v.setVisible(visible)
-            os.sleep(0)
+            v.setVisible(visible) os.sleep(0)
         end
     end
 end
@@ -395,8 +295,7 @@ function configurations.remove()
     generateHelperTable()
     for k, v in pairs(helperTable) do
         if v.remove then
-            v.remove()
-            os.sleep(0)
+            v.remove() os.sleep(0)
         end
     end
 end
@@ -404,16 +303,13 @@ function configurations.onClick(x, y, button)
     generateHelperTable()
     for k, v in pairs(helperTable) do
         if v.box and v.box.contains(x, y) and v.onClick then
-            v.onClick(x, y, button)
-            os.sleep(0)
+            v.onClick(x, y, button) os.sleep(0)
             return
         elseif v.contains and v.contains(x, y) and v.onClick then
-            v.onClick(x, y, button)
-            os.sleep(0)
+            v.onClick(x, y, button) os.sleep(0)
             return
         elseif v.option and v.option.box and v.option.box.contains(x, y) and v.onClick then
-            v.onClick(x, y, button)
-            os.sleep(0)
+            v.onClick(x, y, button) os.sleep(0)
             return
         end
     end

@@ -216,9 +216,64 @@ function widgetsAreUs.itemBox(x, y, itemStack)
 end
 
 function widgetsAreUs.initText(x, y, text1)
-    local text = widgetsAreUs.text(x+5, y+5, text1, 1.5)
-    local box = widgetsAreUs.createBox(x, y, 400, 200, {0.8, 0, 0}, 0.7)
+    local text = widgetsAreUs.text(x+10, y+10, text1, 1.5)
+    local box = widgetsAreUs.createBox(x, y, 200, 50, {0.8, 0, 0}, 0.7)
     return widgetsAreUs.attachCoreFunctions({text = text, box = box})
+end
+
+-----------------------------------------
+---Configs
+
+function widgetsAreUs.numberBox(x, y, key, titleText)
+    local title = widgetsAreUs.textBox(x, y, 55, 25, {0.8, 0.8, 0.8}, 0.8, titleText, 1, 5, 5)
+    local option = widgetsAreUs.textBox(x+55, y, 25, 25, {1, 1, 1}, 0.9, "num", 1, 5, 5)
+    local function setValue(newValue)
+        option.text.setText(newValue)
+    end
+    return widgetsAreUs.attachCoreFunctions({title = title, key = key, option = option, setValue = setValue,
+    onClick = function()
+        setValue(gimpHelper.handleTextInput(option.text))
+    end})
+end
+
+function widgetsAreUs.longerNumberBox(x, y, key, titleText)
+    local title = widgetsAreUs.textBox(x, y, 55, 25, {0.8, 0.8, 0.8}, 0.8, titleText, 1, 0, 0)
+    local option = widgetsAreUs.textBox(x + 55, y, 55, 25, {1, 1, 1}, 0.9, "num", 1, 0, 0)
+    local function setValue(newValue)
+        option.text.setText(newValue)
+    end
+    return widgetsAreUs.attachCoreFunctions({box = option.box, title = title, key = key, option = option, setValue = setValue,
+    onClick = function()
+       setValue(gimpHelper.handleTextInput(option.text))
+    end})
+end
+
+function widgetsAreUs.checkboxFullLine(x, y, key, titleText)
+    local title = widgetsAreUs.textBox(x, y, 135, 25, {0.8, 0.8, 0.8}, 0.8, titleText, 1, 0, 0)
+    local option = widgetsAreUs.check(x + 135, y)
+    local function setValue()
+        if gimpHelper.trim(option.check.getText()) == "" then
+            option.check.setText("X")
+        else
+            option.check.setText("")
+        end
+    end
+    return widgetsAreUs.attachCoreFunctions({box = check.box, title = title, key = key, option = option, setValue = setValue,
+    onClick = function()
+        setValue()
+    end})
+end
+
+function widgetsAreUs.textBoxWithTitle(x, y, key, titleText)
+    local title = widgetsAreUs.titleBox(x, y, 160, 25, {0.8, 0.8, 0.8}, 0.8, titleText)
+    local option = widgetsAreUs.text(x + 10, y+10, "Click to set", 1)
+    local function setValue(newValue)
+        option.setText(newValue)
+    end
+    return widgetsAreUs.attachCoreFunctions({title = title, key = key, option = option, setValue = setValue,
+    onClick = function()
+        setValue(gimpHelper.handleTextInput(option))
+    end})
 end
 
 return widgetsAreUs

@@ -32,8 +32,8 @@ function gimpHelper.extractNumbers(str)
   return numbers
 end
 
-function gimpHelper.shorthandNumber(numberToConver)
-    local num = numberToConver
+function gimpHelper.shorthandNumber(numberToConvert)
+    local num = numberToConvert
     local units = {"", "k", "M", "B", "T", "Qua", "E", "Z", "Y"}
     local unitIndex = 1
   while num >= 1000 and unitIndex < #units do
@@ -53,13 +53,13 @@ function gimpHelper.distanceApartXZ(coordsOne, coordsTwo)
   return distance
 end
 
-function gimpHelper.cleanNumberString(numberStr)
+function gimpHelper.cleanBatteryStorageString(numberStr)
     local cleanStr = numberStr:gsub(",", ""):gsub("EU Stored: ", ""):gsub("EU", "")
     return tonumber(cleanStr)
 end
 
 function gimpHelper.calculatePercentage(currentAmountStr, maxAmount)
-    local currentAmount = gimpHelper.cleanNumberString(currentAmountStr)
+    local currentAmount = gimpHelper.cleanBatteryStorageString(currentAmountStr)
     local maxAmountNum = tonumber(maxAmount)
 
     -- Check if numbers are too large

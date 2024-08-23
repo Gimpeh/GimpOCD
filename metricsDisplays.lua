@@ -87,7 +87,7 @@ function batteryMetrics.create(x, y)
 			local powerMax = unserializedTable.max
 
 			local percent = gimpHelper.calculatePercentage(euStored, powerMax)
-			storedNumber.setText(gimpHelper.shorthandNumber(gimpHelper.cleanNumberString(euStored)))
+			storedNumber.setText(gimpHelper.shorthandNumber(gimpHelper.cleanBatteryStorageString(euStored)))
 
 			local fillWidth = math.ceil(74 * (percent / 100))
 			fillBarForeground.setSize(20, fillWidth)

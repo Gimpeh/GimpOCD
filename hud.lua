@@ -13,7 +13,7 @@ hud.show = nil
 local initMessages = {}
 function hud.init()
 	table.insert(initMessages, widgetsAreUs.initText(250, 162, "Left or Right click to set location"))
-	table.insert(initMessages, widgetsAreUs.initText(250, 182, "Middle click to accept"))
+	table.insert(initMessages, widgetsAreUs.initText(250, 212, "Middle click to accept"))
 	hud.elements.battery = metricsDisplays.battery.create(1, 1)
 	while true do
 		local eventType, _, _, x, y, button = event.pull(nil, "hud_click")
