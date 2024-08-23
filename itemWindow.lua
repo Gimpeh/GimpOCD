@@ -399,7 +399,7 @@ function itemWindow.update()
     for k, v in pairs(itemWindow.elements) do
         if v.display then
             for i, j in pairs(v.display.currentlyDisplayed) do
-                os.sleep(0)
+                os.sleep(100)
                 j.update(i)
             end
         end
