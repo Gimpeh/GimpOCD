@@ -17,7 +17,7 @@ local active
 -----------------------------------------
 ----Initialization and Swap Functions
 
-function overlay.tabs.loadTab(tab)
+function overlay.loadTab(tab)
     if active and active.remove then pcall(active.remove) end
     overlay.tabs[tab].init()
     local tbl = {tab = tab}
@@ -66,7 +66,7 @@ function overlay.init()
 	local success, config = pcall(gimpHelper.loadTable, "/home/programData/overlay.data")
 	if success and config then
 		local tab = config.tab
-		overlay.tabs.loadTab(tab)
+		overlay.loadTab(tab)
 	else
 		overlay.tabs.machines.init()
 	end
@@ -92,7 +92,7 @@ function overlay.hide()
 end
 
 function overlay.show()
-	overlay.tabs.setVisible(true)
+	overlay.setVisible(true)
 	if active and active.setVisible then
 		active.setVisible(true)
 	end
@@ -104,7 +104,7 @@ function overlay.onClick(x, y, button)
 	for k, v in pairs(overlay.boxes) do
 		if v.box.contains(x, y, v) then
 			os.sleep(0)
-			return overlay.tabs.loadTab(k)
+			return overlay.loadTab(k)
 		end
 	end
 	active.onClick(x, y, button)
