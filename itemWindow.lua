@@ -244,7 +244,7 @@ function itemWindow.onClick(x, y, button)
                     end
                     table.insert(lvlmaint, {itemStack = v.itemStack, batch = 0, amount = 0})
                     gimpHelper.saveTable(lvlmaint, "/home/programData/levelMaintainer.data")
-                    lm.display = PagedWindow.new(lvlmaint, 150, 30, {x1=505, y1=83, x2=490, y2=665}, 5, widgetsAreUs.levelMaintainer)
+                    lm.display = PagedWindow.new(lvlmaint, 150, 30, {x1=505, y1=83, x2=665, y2=238}, 5, widgetsAreUs.levelMaintainer)
                     lm.display:displayItems()
                     event.push("add_index", "/home/programData/levelMaintainerConfig.data")
                 end
