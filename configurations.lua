@@ -195,6 +195,14 @@ function configurations.initDisplays()
         displays.levelMaintainer:displayItems()
         for k, v in ipairs(displays.levelMaintainer.currentlyDisplayed) do
            displays.levelMaintainer.currentlyDisplayed[k] = widgetsAreUs.attachOnClick(v, function()
+                if activeConfigs["lm"] then
+                    tbl = gimpHelper.loadTable("/home/programData/levelMaintainerConfig.data")
+                    if not tbl then
+                        tbl = {}
+                    end
+                    tbl[activeConfigs["lm"].index] = activeConfigs["lm"].elements
+                    gimpHelper.saveTable(tbl, "/home/programData/levelMaintainerConfig.data")
+                end
                 configurations.createLevelMaintainerConfig(192, 80, k)
             end)
         end
@@ -244,6 +252,22 @@ local function removeConfig(activeConfigsIndex)
     activeConfigs[activeConfigsIndex].elements = nil
 end
 
+local function saveConfigData(activeConfigsConfigKey, path, activeConfigsIndex)
+    local tbl = gimpHelper.loadTable(path)
+    if not tbl then
+        tbl = {}
+    end
+    local derp = {}
+    for k, v in pairs(activeConfigs[activeConfigsConfigKey].elements) do
+        if v.option then
+            derp[v.key] = v.value
+        end
+    end
+    tbl[activeConfigsIndex] = derp
+    gimpHelper.saveTable(tbl, path)
+    
+end
+
 function configurations.createLevelMaintainerConfig(x, y, index)
     local success, error = pcall(removeConfig, "lm")
     if not success then print(error) end
@@ -263,6 +287,7 @@ function configurations.createLevelMaintainerConfig(x, y, index)
     configurations.panel.lm.alertResourcesName = widgetsAreUs.text(x+5, y+130, "Alert Can't Craft", 1.3)
     ]]
     activeConfigs["lm"] = {index = index, elements = configurations.panel.lm}
+    local tbl = gimpHelper.loadTable("/home/programData/levelMaintainerConfig.data")
 end
 
 function configurations.createMachineManagerConfig(x, y, tbl, index)
