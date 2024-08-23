@@ -391,11 +391,11 @@ function configurations.onClick(x, y, button)
             return
         end
     end
-    for k, v in pairs(activeConfigs) do
-        for i, j in pairs(v.elements) do
+    for k, v in pairs(configurations.panel) do
+        for i, j in pairs(configurations.panel[k]) do
             if j.contains and j.contains(x, y) and j.onClick then
                 j.onClick(x, y, button)
-            elseif j.box and j.box.contains(x, y) and j.onClick then
+            elseif j.box and widgetsAreUs.isPointInBox(x, y, j.box) and j.onClick then
                 j.onClick(x, y, button)
             end
         end
