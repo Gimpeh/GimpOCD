@@ -202,20 +202,28 @@ function configurations.initDisplays()
     end
     tbl = nil
     os.sleep(0)
-    --[[
     tbl = gimpHelper.loadTable("/home/programData/machinesNamed.data")
-    displays.machineManager = PagedWindow.new(tbl, 150, 30, {x1=45, x2=295, y1=320, y2=460}, 5, metricsDisplays.machine.create)
-    displays.machineManager:displayItems()
+    if tbl and tbl[1] then
+        displays.machineManager = PagedWindow.new(tbl, 150, 30, {x1=45, x2=295, y1=320, y2=460}, 5, metricsDisplays.machine.create)
+        displays.machineManager:displayItems()
+    end
     tbl = nil
-    ]]
 end
 
 function configurations.init()
-    configurations.initBoxes()
-    configurations.initButtons()
+    local success, error = pcall(configurations.initBoxes)
+    if not success then print(error) end
+
+    local success, error = pcall(configurations.initButtons)
+    if not success then print(error) end 
+
     os.sleep(0)
-    configurations.initDisplays()
-    configurations.setVisible(false)
+
+    local success, error = pcall(configurations.initDisplays)
+    if not success then print(error) end
+
+    local success, error = pcall(configurations.setVisible, false)
+    if not success then print(error) end
 end
 
 ----------------------------------------------------------
@@ -231,7 +239,7 @@ local function removeConfig(activeConfigsIndex)
 end
 
 function configurations.createLevelMaintainerConfig(x, y, index)
-    pcall(removeConfig, "configurations.panel.lm")
+    pcall(removeConfig, "lm")
     configurations.panel.lm = {}
     configurations.panel.lm.priority = scrappad.numberBox(x, y, "priority", "Priority:")
     configurations.panel.lm.maxInstances = scrappad.numberBox(x + 80, y, "maxCrafters", "Max Conc:")
@@ -247,11 +255,11 @@ function configurations.createLevelMaintainerConfig(x, y, index)
     os.sleep(0)
     configurations.panel.lm.alertResourcesName = widgetsAreUs.text(x+5, y+130, "Alert Can't Craft", 1.3)
     ]]
-    activeConfigs["configurations.panel.lm"] = {index = index, elements = configurations.panel.lm}
+    activeConfigs["lm"] = {index = index, elements = configurations.panel.lm}
 end
 
 function configurations.createMachineManagerConfig(x, y, tbl, index)
-    pcall(removeConfig, "configurations.panel.mm")
+    pcall(removeConfig, "mm")
     --[[
     configurations.panel.mm = {}
     configurations.panel.mm.name = widgetsAreUs.configSingleString(335, 310, 90, "Name")
@@ -271,7 +279,7 @@ function configurations.createMachineManagerConfig(x, y, tbl, index)
     configurations.panel.mm.trackMetricsName = widgetsAreUs.text(355, 460, "Track Metrics", 1.3)
     configurations.panel.mm.xyz = tbl.xyz
 ]]
-    activeConfigs["configurations.panel.mm"] = {index = index, elements = configurations.panel.mm}
+    activeConfigs["mm"] = {index = index, elements = configurations.panel.mm}
 end
 
 local function createGeneralConfig()
@@ -295,7 +303,7 @@ local function createGeneralConfig()
     configurations.panel.gc.alertReconnectedName = widgetsAreUs.text(525, 445, "Connected", 1.3)
     --**************MaxGlobalCPU usage for level maintainers needs to be set88888888**************
 ]]
-    activeConfigs["configurations.panel.gc"] = {index = 1, elements = configurations.panel.gc}
+    activeConfigs["gc"] = {index = 1, elements = configurations.panel.gc}
 end
 
 ----------------------------------------------------------
@@ -331,34 +339,46 @@ end
 
 function configurations.setVisible(visible)
     for k, v in pairs(helperTable) do
-        v.setVisible(visible)
-        os.sleep(0)
+        if v.setVisible then
+            v.setVisible(visible)
+            os.sleep(0)
+        end
     end
     for k, v in pairs(activeConfigs) do
         for i, j in pairs(v.elements) do
-            j.setVisible(visible)
+            if j.setVisible then
+                j.setVisible(visible)
+            end
         end
     end
 end
 function configurations.remove()
     for k, v in pairs(helperTable) do
-        v.remove()
-        os.sleep(0)
+        if v.remove then
+            v.remove()
+            os.sleep(0)
+        end
     end
     for k, v in pairs(activeConfigs) do
         for i, j in pairs(v.elements) do
-            j.remove()
+            if j.remove then
+                j.remove()
+            end
         end
     end
 end
 function configurations.onClick(x, y, button)
     for k, v in pairs(helperTable) do
-        v.onClick(x, y, button)
-        os.sleep(0)
+        if v.onClick then
+            v.onClick(x, y, button)
+            os.sleep(0)
+        end
     end
     for k, v in pairs(activeConfigs) do
         for i, j in pairs(v.elements) do
-            j.onClick(x, y, button)
+            if j.onClick then
+                j.onClick(x, y, button)
+            end
         end
     end
 end
