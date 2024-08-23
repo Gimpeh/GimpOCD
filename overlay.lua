@@ -77,7 +77,7 @@ end
 -----------------------------------------
 ---element functionality
 
-function overlay.tabs.setVisible(visible)
+function overlay.setVisible(visible)
 	for k, v in pairs(overlay.tabs) do
 		v.box.setVisible(visible)
 		v.title.setVisible(visible)
