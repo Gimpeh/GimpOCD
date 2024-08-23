@@ -252,15 +252,14 @@ end
 createGeneralConfig = function(x, y)
 
     configurations.panel.gc = {}
-    configurations.panel.gc.showHelp = widgetsAreUs.checkboxFullLine(x, y, "showHelp", "Show Help")
-    configurations.panel.gc.resetHud = widgetsAreUs.configsButtonLong(x, y+30, "Reset HUD", "Reset", {0.8, 0, 0}, function()
+    configurations.panel.gc.showHelp = widgetsAreUs.checkBoxHalf(x, y, "showHelp", "Show Help")
+    configurations.panel.gc.resetHud = widgetsAreUs.configsButtonHalf(x+80, y, "Reset HUD", "Reset", {0.8, 0, 0}, function()
         event.push("reset_hud")
     end) os.sleep(0)
-    configurations.panel.gc.highlightDisabled = widgetsAreUs.checkboxFullLine(x, y+60, "highlightDisabled", "Highlight Disabled Mach's")
-    configurations.panel.gc.maintenanceBeacons = widgetsAreUs.checkboxFullLine(x, y+90, "maintenanceBeacons", "Maintenance Beacons")
-    configurations.panel.gc.alertDisconnected = widgetsAreUs.checkboxFullLine(x, y+120, "alertDisconnected", "Alert Disconnected")
-    configurations.panel.gc.alertReconnected = widgetsAreUs.checkboxFullLine(x, y+150, "alertReconnected", "Alert Reconnected")
-    configurations.panel.gc.maxCpusAllLevelMaintainers = widgetsAreUs.numberBoxLongerText(x, y+180, "maxCpusAllLevelMaintainers", "Max CPUs for Maintainers")
+    configurations.panel.gc.highlightDisabled = widgetsAreUs.checkboxFullLine(x, y+30, "highlightDisabled", "Highlight Disabled Mach's")
+    configurations.panel.gc.maintenanceBeacons = widgetsAreUs.checkboxFullLine(x, y+60, "maintenanceBeacons", "Maintenance Beacons")
+    configurations.panel.gc.alertDisconnected = widgetsAreUs.checkboxFullLine(x, y+90, "alertDisconnectedReconnected", "Alert DC'd/Reconnected")
+    configurations.panel.gc.maxCpusAllLevelMaintainers = widgetsAreUs.numberBoxLongerText(x, y+120, "maxCpusAllLevelMaintainers", "Max CPUs for Maintainers")
     currentlyDisplayedConfigs["gc"] = {index = 1, elements = configurations.panel.gc}
     pcall(loadConfigData, "gc", "/home/programData/generalConfig.data", 1)
 end

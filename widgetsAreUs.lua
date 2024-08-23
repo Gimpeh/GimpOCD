@@ -292,9 +292,9 @@ function widgetsAreUs.textBoxWithTitle(x, y, key, titleText)
     end})
 end
 
-function widgetsAreUs.configsButtonLong(x, y, text1, text2, color, func)
-    local title = widgetsAreUs.textBox(x, y, 110, 25, {0.8, 0.8, 0.8}, 0.8, text1, 1, 5, 5)
-    local button = widgetsAreUs.textBox(x + 110, y, 50, 25, color, 0.9, text2, 1, 5, 5)
+function widgetsAreUs.configsButtonHalf(x, y, text1, text2, color, func)
+    local title = widgetsAreUs.textBox(x, y, 60, 25, {0.8, 0.8, 0.8}, 0.8, text1, 1, 5, 5)
+    local button = widgetsAreUs.textBox(x + 60, y, 42, 25, color, 0.9, text2, 1, 5, 5)
     return widgetsAreUs.attachCoreFunctions({title = title, option = button, onClick = func})
 end
 
