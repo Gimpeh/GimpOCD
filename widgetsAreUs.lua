@@ -122,9 +122,9 @@ function widgetsAreUs.symbolBox(x, y, symbolText, colorOrGreen, func)
     return widgetsAreUs.attachCoreFunctions{box = box, symbol = symbol}
 end
 
-function widgetsAreUs.titleBox(x, y, width, height, color, alpha, text)
+function widgetsAreUs.titleBox(x, y, width, height, color, alpha, text1)
     local box = widgetsAreUs.createBox(x, y, width, height, color, alpha)
-    local text = widgetsAreUs.text(x + 20, y + 2, text, 0.9)
+    local text = widgetsAreUs.text(x + 20, y + 2, text1, 0.9)
     return widgetsAreUs.attachCoreFunctions{box = box, text = text}
 end
 

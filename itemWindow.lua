@@ -37,7 +37,7 @@ local addTo = nil
 --helper function to lazily rename the batch subtitle to "Speed" for reverseLevelMaintainer
     local function renameBatch()
         for k, v in ipairs(rlm.display.currentlyDisplayed) do
-            v.batchText.setText("Speed")
+            v.batchText.text.setText("Speed")
         end
     end
 
