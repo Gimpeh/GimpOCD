@@ -107,8 +107,9 @@ end
 function configurations.initDisplays()
     local function loadAndDisplayTable(path, width, height, coords, callback, widget)
         local tbl = gimpHelper.loadTable(path)
+        local display = nil
         if tbl and tbl[1] then
-            local display = PagedWindow.new(tbl, width, height, coords, 5, widget)
+            display = PagedWindow.new(tbl, width, height, coords, 5, widget)
             display:displayItems()
             for k, v in ipairs(display.currentlyDisplayed) do
                 display.currentlyDisplayed[k] = widgetsAreUs.attachOnClick(v, function()
@@ -118,17 +119,18 @@ function configurations.initDisplays()
         end
         tbl = nil
         os.sleep(0)
+        return display
     end
 
-    loadAndDisplayTable("/home/programData/levelMaintainer.data", 150, 30, {x1=25, x2=175, y1=85, y2=195}, function(k)
+    displays.levelMaintainer = loadAndDisplayTable("/home/programData/levelMaintainer.data", 150, 30, {x1=25, x2=175, y1=85, y2=195}, function(k)
         configurations.createLevelMaintainerConfig(192, 80, k)
     end, widgetsAreUs.levelMaintainer)
     
-    loadAndDisplayTable("/home/programData/monitoredItems", 120, 40, {x1=390, x2=540, y1=65, y2=305}, function(k)
+    displays.itemManager = loadAndDisplayTable("/home/programData/monitoredItems", 120, 40, {x1=390, x2=540, y1=65, y2=305}, function(k)
         configurations.createItemManagerConfig(580, 80, k)
     end, widgetsAreUs.itemBox)
     
-    loadAndDisplayTable("/home/programData/machinesNamed.data", 150, 30, {x1=45, x2=295, y1=320, y2=460}, function(k)
+    displays.machineManager = loadAndDisplayTable("/home/programData/machinesNamed.data", 150, 30, {x1=45, x2=295, y1=320, y2=460}, function(k)
         configurations.createMachineManagerConfig(355, 310, k)
     end, metricsDisplays.machine.create)
 end
