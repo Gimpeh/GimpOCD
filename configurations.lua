@@ -285,10 +285,10 @@ function configurations.createLevelMaintainerConfig(x, y, index)
     activeConfigs["lm"] = {index = index, elements = configurations.panel.lm}
     local tbl = gimpHelper.loadTable("/home/programData/levelMaintainerConfig.data")
     if tbl and tbl[index] then
-        for k, v in activeConfigs["lm"].elements do
-            for i, j in tbl[index] do
+        for k, v in pairs(activeConfigs["lm"].elements) do
+            for i, j in pairs(tbl[index]) do
                 if k == i then
-                    v.setValue(j)
+                    activeConfigs["lm"].elements[k].setValue(j)
                 end
             end
         end
