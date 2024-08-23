@@ -388,7 +388,7 @@ function itemWindow.update()
         if v.display then
             for i, j in pairs(v.display.currentlyDisplayed) do
                 os.sleep(0)
-                j.update()
+                j.update(i)
             end
         end
     end

@@ -185,9 +185,12 @@ function widgetsAreUs.levelMaintainer(x, y, argsTable)
             amount.onClick()
         end
     end,
-    update = function()
-        batch.setText(tostring(argsTable.batch))
-        amount.setText(tostring(argsTable.amount))
+    update = function(index)
+        local args = gimpHelper.loadTable("/home/programData/levelMaintainer.data")
+        if args and args[1] then
+            batch.setText(tostring(args[index].batch))
+            amount.setText(tostring(args[index].amount))
+        end
     end})
 end
 
