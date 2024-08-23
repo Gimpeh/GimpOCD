@@ -189,13 +189,17 @@ end
 
 function configurations.initDisplays()
     local tbl = gimpHelper.loadTable("/home/programData/levelMaintainer.data")
-    displays.levelMaintainer = PagedWindow.new(tbl, 150, 30, {x1=25, x2=175, y1=85, y2=195}, 5,widgetsAreUs.levelMaintainer)
-    displays.levelMaintainer:displayItems()
+    if tbl and tbl[1] then
+        displays.levelMaintainer = PagedWindow.new(tbl, 150, 30, {x1=25, x2=175, y1=85, y2=195}, 5,widgetsAreUs.levelMaintainer)
+        displays.levelMaintainer:displayItems()
+    end
     tbl = nil
     os.sleep(0)
     tbl = gimpHelper.loadTable("/home/programData/monitoredItems")
-    displays.itemManager = PagedWindow.new(tbl, 120, 30, {x1=390, x2=540, y1=65, y2=305}, 5, widgetsAreUs.itemBox)
-    displays.itemManager:displayItems()
+    if tbl and tbl[1] then
+        displays.itemManager = PagedWindow.new(tbl, 120, 30, {x1=390, x2=540, y1=65, y2=305}, 5, widgetsAreUs.itemBox)
+        displays.itemManager:displayItems()
+    end
     tbl = nil
     os.sleep(0)
     --[[
