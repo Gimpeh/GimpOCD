@@ -209,6 +209,7 @@ function configurations.init()
     configurations.initButtons()
     os.sleep(0)
     configurations.initDisplays()
+    configurations.setVisible(false)
 end
 
 ----------------------------------------------------------
