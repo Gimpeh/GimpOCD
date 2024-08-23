@@ -358,13 +358,6 @@ function configurations.setVisible(visible)
             os.sleep(0)
         end
     end
-    for k, v in pairs(activeConfigs) do
-        for i, j in pairs(v.elements) do
-            if j.setVisible then
-                j.setVisible(visible)
-            end
-        end
-    end
 end
 function configurations.remove()
     generateHelperTable()
@@ -372,13 +365,6 @@ function configurations.remove()
         if v.remove then
             v.remove()
             os.sleep(0)
-        end
-    end
-    for k, v in pairs(activeConfigs) do
-        for i, j in pairs(v.elements) do
-            if j.remove then
-                j.remove()
-            end
         end
     end
 end
@@ -395,17 +381,6 @@ function configurations.onClick(x, y, button)
             return
         end
     end
-    --[[
-    for k, v in pairs(configurations.panel) do
-        for i, j in pairs(configurations.panel[k]) do
-            if j.contains and j.contains(x, y) and j.onClick then
-                j.onClick(x, y, button)
-            elseif j.box and widgetsAreUs.isPointInBox(x, y, j.box) and j.onClick then
-                j.onClick(x, y, button)
-            end
-        end
-    end
-    ]]
 end
 
 ----------------------------------------------------------
