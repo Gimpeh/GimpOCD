@@ -142,6 +142,8 @@ function configurations.init()
     local success, error = pcall(configurations.initDisplays)
     if not success then print(error) end
 
+    configurations.createGeneralConfig(525, 320)
+
     generateHelperTable()
 end
 
@@ -206,7 +208,7 @@ function configurations.createLevelMaintainerConfig(x, y, index)
     os.sleep(0)
 
     currentlyDisplayedConfigs["lm"] = {index = index, elements = configurations.panel.lm} --lm short for level maintainer
-    loadConfigData("lm", "/home/programData/levelMaintainerConfig.data", index)
+    pcall(loadConfigData, "lm", "/home/programData/levelMaintainerConfig.data", index)
 end
 
 function configurations.createMachineManagerConfig(x, y, index)
@@ -219,44 +221,45 @@ function configurations.createMachineManagerConfig(x, y, index)
     configurations.panel.mm = {}
     configurations.panel.mm.name = widgetsAreUs.textBoxWithTitle(x, y, "name", "Name")
     configurations.panel.mm.group = widgetsAreUs.textBoxWithTitle(x, y+30, "group", "Group") os.sleep(0)
-    --[[
-    configurations.panel.mm.autoTurnOn = widgetsAreUs.configSingleString(355, 360, 120, "Auto On Min")
-    configurations.panel.mm.autoTurnOff = widgetsAreUs.configSingleString(480, 360, 120, "Auto Off Min")
-    configurations.panel.mm.alertIdle = widgetsAreUs.configSingleString(355, 385, 120, "Alert Idle Min")
-    configurations.panel.mm.alertDisabled = widgetsAreUs.configCheck(455, 410, index)
-    configurations.panel.mm.alertDisabledName = widgetsAreUs.text(355, 410, "Alert Disabled", 1.3)
-    configurations.panel.mm.alertEnabled = widgetsAreUs.configCheck(555, 435, index)
-    os.sleep(0)
-    configurations.panel.mm.alertEnabledName = widgetsAreUs.text(460, 435, "Alert Enabled", 1.3)
-    configurations.panel.mm.trackMetrics = widgetsAreUs.configCheck(455, 460, index)
-    configurations.panel.mm.trackMetricsName = widgetsAreUs.text(355, 460, "Track Metrics", 1.3)
-    configurations.panel.mm.xyz = tbl.xyz
-]]
+    configurations.panel.mm.autoTurnOn = widgetsAreUs.numberBox(x, y+60, "autoTurnOn", "Auto On")
+    configurations.panel.mm.autoTurnOff = widgetsAreUs.numberBox(x+80, y+60, "autoTurnOff", "Auto Off")
+    configurations.panel.mm.alertIdle = widgetsAreUs.longerNumberBox(x, y+120, "alertIdle", "Alert Idle Timer")
+    configurations.panel.mm.alertDisabled = widgetsAreUs.checkboxFullLine(x, y+150, "alertDisabled", "Alert Disabled")
+    configurations.panel.mm.alertEnabled = widgetsAreUs.checkboxFullLine(x+80, y+150, "alertEnabled", "Alert Enabled")
     currentlyDisplayedConfigs["mm"] = {index = index, elements = configurations.panel.mm}
+    pcall(loadConfigData, "mm", "/home/programData/machineManagerConfig.data", index)
 end
 
-local function createGeneralConfig()
-    --[[
-    configurations.panel.gc.showHelp = widgetsAreUs.configCheck(590, 320, 99)
-    configurations.panel.gc.showHelpName = widgetsAreUs.text(525, 320, "Show Help", 1.3)
-    configurations.panel.gc.ResetHUD = widgetsAreUs.configCheck(650, 345, 99)
-    configurations.panel.gc.screenSize = widgetsAreUs.textBox(525, 345, 75, 25, "Set Screen Dim")
-    configurations.panel.gc.screenSizeWidth = widgetsAreUs.textBox(600, 345, 40, 25, "click set")
-    configurations.panel.gc.screenSizeHeight = widgetsAreUs.textBox(670, 345, 40, 25, "click set")
-    os.sleep(0)
-    configurations.panel.gc.highlightDisabled = widgetsAreUs.configCheck(600, 370, 99)
-    configurations.panel.gc.highlightDisabledName = widgetsAreUs.text(525, 370, "Highlight Disabled", 1.3)
-    configurations.panel.gc.maintenanceBeacons = widgetsAreUs.configCheck(700, 395, 99)
-    configurations.panel.gc.maintenanceBeaconsName = widgetsAreUs.text(625, 395, "Maintenance Beacons", 1.3)
-    configurations.panel.gc.spazIntensity = widgetsAreUs.configSingleString(525, 420, 80, "SPAZ Intensity", 99)
-    configurations.panel.gc.alertDisconnected = widgetsAreUs.configCheck(720, 445, 99, "alertDisconnected")
-    os.sleep(0)
-    configurations.panel.gc.alertDisconnectedName = widgetsAreUs.text(630, 445, "Disconnected", 1.3)
-    configurations.panel.gc.alertReconnected = widgetsAreUs.configCheck(610, 445, 99, "alertReconnected")
-    configurations.panel.gc.alertReconnectedName = widgetsAreUs.text(525, 445, "Connected", 1.3)
-    --**************MaxGlobalCPU usage for level maintainers needs to be set88888888**************
-]]
+function configurations.createItemManagerConfig(x, y, index)
+    if currentlyDisplayedConfigs["im"] and currentlyDisplayedConfigs["im"].index then
+        local success, error = pcall(saveConfigData, "im", "/home/programData/itemManagerConfig.data", currentlyDisplayedConfigs["im"].index)
+        if not success then print(error) end
+        local success, error = pcall(removeConfigDisplay, "im")
+        if not success then print(error) end
+    end
+    configurations.panel.im = {}
+    configurations.panel.im.alertAbove = widgetsAreUs.longerNumberBox(x, y, "alertAbove", "Alert Above")
+    configurations.panel.im.alertBelow = widgetsAreUs.longerNumberBox(x, y+30, "alertBelow", "Alert Below")
+    configurations.panel.im.showOnHud = widgetsAreUs.checkboxFullLine(x, y+60, "showOnHud", "Show On HUD")
+    --configurations.panel.im.monitorMetrics = widgetsAreUs.checkboxFullLine(x, y+90, "monitorMetrics", "Monitor Metrics on Slave")
+    currentlyDisplayedConfigs["im"] = {index = index, elements = configurations.panel.im}
+    pcall(loadConfigData, "im", "/home/programData/itemManagerConfig.data", index)
+end
+
+local function createGeneralConfig(x, y)
+
+    configurations.panel.gc = {}
+    configurations.panel.gc.showHelp = widgetsAreUs.checkboxFullLine(x, y, "showHelp", "Show Help")
+    configurations.panel.gc.resetHud = widgetsAreUs.configsButtonLong(x, y+30, "Reset HUD", "Reset", {0.8, 0, 0}, function()
+        event.push("reset_hud")
+    end) os.sleep(0)
+    configurations.panel.gc.highlightDisabled = widgetsAreUs.checkboxFullLine(x, y+60, "highlightDisabled", "Highlight Disabled Mach's")
+    configurations.panel.gc.maintenanceBeacons = widgetsAreUs.checkboxFullLine(x, y+90, "maintenanceBeacons", "Maintenance Beacons")
+    configurations.panel.gc.alertDisconnected = widgetsAreUs.checkboxFullLine(x, y+120, "alertDisconnected", "Alert Disconnected")
+    configurations.panel.gc.alertReconnected = widgetsAreUs.checkboxFullLine(x, y+150, "alertReconnected", "Alert Reconnected")
+    configurations.panel.gc.maxCpusAllLevelMaintainers = widgetsAreUs.numberBoxLongText(x, y+180, "maxCpusAllLevelMaintainers", "Max CPUs for Maintainers")
     currentlyDisplayedConfigs["gc"] = {index = 1, elements = configurations.panel.gc}
+    pcall(loadConfigData, "gc", "/home/programData/generalConfig.data", 1)
 end
 
 ----------------------------------------------------------
@@ -293,6 +296,18 @@ function configurations.setVisible(visible)
 end
 function configurations.remove()
     generateHelperTable()
+    if currentlyDisplayedConfigs["lm"] and currentlyDisplayedConfigs["lm"].index then
+        saveConfigData("lm", "/home/programData/levelMaintainerConfig.data", currentlyDisplayedConfigs["lm"].index)
+    end
+    if currentlyDisplayedConfigs["mm"] and currentlyDisplayedConfigs["mm"].index then
+        saveConfigData("mm", "/home/programData/machineManagerConfig.data", currentlyDisplayedConfigs["mm"].index)
+    end
+    if currentlyDisplayedConfigs["im"] and currentlyDisplayedConfigs["im"].index then
+        saveConfigData("im", "/home/programData/itemManagerConfig.data", currentlyDisplayedConfigs["im"].index)
+    end
+    if currentlyDisplayedConfigs["gc"] and currentlyDisplayedConfigs["gc"].index then
+        saveConfigData("gc", "/home/programData/generalConfig.data", currentlyDisplayedConfigs["gc"].index)
+    end
     for k, v in pairs(helperTable) do
         if v.remove then
             v.remove() os.sleep(0)

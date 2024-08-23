@@ -242,7 +242,7 @@ function widgetsAreUs.longerNumberBox(x, y, key, titleText)
     local function setValue(newValue)
         option.text.setText(newValue)
     end
-    return widgetsAreUs.attachCoreFunctions({box = option.box, title = title, key = key, option = option, setValue = setValue,
+    return widgetsAreUs.attachCoreFunctions({title = title, key = key, option = option, setValue = setValue,
     onClick = function()
        setValue(gimpHelper.handleTextInput(option.text))
     end})
@@ -258,7 +258,23 @@ function widgetsAreUs.checkboxFullLine(x, y, key, titleText)
             option.check.setText("")
         end
     end
-    return widgetsAreUs.attachCoreFunctions({box = check.box, title = title, key = key, option = option, setValue = setValue,
+    return widgetsAreUs.attachCoreFunctions({title = title, key = key, option = option, setValue = setValue,
+    onClick = function()
+        setValue()
+    end})
+end
+
+function widgetsAreUs.checkBoxHalf(x, y, key, titleText)
+    local title = widgetsAreUs.textBox(x, y, 55, 25, {0.8, 0.8, 0.8}, 0.8, titleText, 0.8, 5, 5)
+    local option = widgetsAreUs.check(x + 55, y)
+    local function setValue()
+        if gimpHelper.trim(option.check.getText()) == "" then
+            option.check.setText("X")
+        else
+            option.check.setText("")
+        end
+    end
+    return widgetsAreUs.attachCoreFunctions({title = title, key = key, option = option, setValue = setValue,
     onClick = function()
         setValue()
     end})
@@ -270,9 +286,27 @@ function widgetsAreUs.textBoxWithTitle(x, y, key, titleText)
     local function setValue(newValue)
         option.setText(newValue)
     end
-    return widgetsAreUs.attachCoreFunctions({title = title, key = key, option = option, setValue = setValue,
+    return widgetsAreUs.attachCoreFunctions({box = title.box, title = title.text, key = key, option = option, setValue = setValue,
     onClick = function()
         setValue(gimpHelper.handleTextInput(option))
+    end})
+end
+
+function widgetsAreUs.configsButtonLong(x, y, text1, text2, color, func)
+    local title = widgetsAreUs.textBox(x, y, 110, 25, {0.8, 0.8, 0.8}, 0.8, text1, 1, 5, 5)
+    local button = widgetsAreUs.textBox(x + 110, y, 50, 25, color, 0.9, text2, 1, 5, 5)
+    return widgetsAreUs.attachCoreFunctions({title = title, option = button, onClick = func})
+end
+
+function widgetsAreUs.numberBoxLongerText(x, y, key, titleText)
+    local title = widgetsAreUs.textBox(x, y, 125, 25, {0.8, 0.8, 0.8}, 0.8, titleText, 1, 5, 5)
+    local option = widgetsAreUs.textBox(x+125, y, 35, 25, {1, 1, 1}, 0.9, "num", 1, 5, 5)
+    local function setValue(newValue)
+        option.text.setText(newValue)
+    end
+    return widgetsAreUs.attachCoreFunctions({title = title, key = key, option = option, setValue = setValue,
+    onClick = function()
+        setValue(gimpHelper.handleTextInput(option.text))
     end})
 end
 

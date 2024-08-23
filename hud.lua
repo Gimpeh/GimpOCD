@@ -67,4 +67,6 @@ function hud.modemMessageHandler(port, message)
 	end
 end
 
+event.listen("reset_hud", hud.init)
+
 return hud
