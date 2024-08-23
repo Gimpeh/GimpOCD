@@ -198,10 +198,12 @@ function configurations.initDisplays()
     displays.itemManager:displayItems()
     tbl = nil
     os.sleep(0)
+    --[[
     tbl = gimpHelper.loadTable("/home/programData/machinesNamed.data")
     displays.machineManager = PagedWindow.new(tbl, 150, 30, {x1=45, x2=295, y1=320, y2=460}, 5, metricsDisplays.machine.create)
     displays.machineManager:displayItems()
     tbl = nil
+    ]]
 end
 
 function configurations.init()
