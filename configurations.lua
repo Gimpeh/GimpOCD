@@ -235,6 +235,7 @@ function configurations.createMachineManagerConfig(x, y, index)
 end
 
 function configurations.createItemManagerConfig(x, y, index)
+    print("238: " .. index)
     if currentlyDisplayedConfigs["im"] and currentlyDisplayedConfigs["im"].index then
         local success, error = pcall(saveConfigData, "im", "/home/programData/itemManagerConfig.data", currentlyDisplayedConfigs["im"].index)
         if not success then print(error) end
@@ -251,7 +252,6 @@ function configurations.createItemManagerConfig(x, y, index)
 end
 
 createGeneralConfig = function(x, y)
-
     configurations.panel.gc = {}
     configurations.panel.gc.showHelp = widgetsAreUs.checkBoxHalf(x, y, "showHelp", "Show Help")
     configurations.panel.gc.resetHud = widgetsAreUs.configsButtonHalf(x+80, y, "Reset HUD", "Reset", {0.8, 0, 0}, function()
