@@ -189,17 +189,17 @@ end
 
 function configurations.initDisplays()
     local tbl = gimpHelper.loadTable("/home/programData/levelMaintainer.data")
-    displays.levelMaintainer = PagedWindow.new(tbl, 150, 30, {x1=25, x2=175, y1=85, y2=195}, 5, widgetsAreUs.attachOnClick(widgetsAreUs.levelMaintainer))
+    displays.levelMaintainer = PagedWindow.new(tbl, 150, 30, {x1=25, x2=175, y1=85, y2=195}, 5,widgetsAreUs.levelMaintainer)
     displays.levelMaintainer:displayItems()
     tbl = nil
     os.sleep(0)
     tbl = gimpHelper.loadTable("/home/programData/monitoredItems")
-    displays.itemManager = PagedWindow.new(tbl, 120, 30, {x1=390, x2=540, y1=65, y2=305}, 5, itemElements.itemBox.itemOptions)
+    displays.itemManager = PagedWindow.new(tbl, 120, 30, {x1=390, x2=540, y1=65, y2=305}, 5, widgetsAreUs.itemBox)
     displays.itemManager:displayItems()
     tbl = nil
     os.sleep(0)
     tbl = gimpHelper.loadTable("/home/programData/machinesNamed.data")
-    displays.machineManager = PagedWindow.new(tbl, 150, 30, {x1=45, x2=295, y1=320, y2=460}, 5, metricsDisplays.machine.machineConfig)
+    displays.machineManager = PagedWindow.new(tbl, 150, 30, {x1=45, x2=295, y1=320, y2=460}, 5, metricsDisplays.machine.create)
     displays.machineManager:displayItems()
     tbl = nil
 end
