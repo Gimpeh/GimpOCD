@@ -210,7 +210,7 @@ function itemWindow.onClick(x, y, button)
                         if not tbl and not tbl[1] then
                             tbl = {}
                         end
-                        table.insert(tbl, v.item)
+                        table.insert(tbl, v.itemStack)
                         gimpHelper.saveTable(tbl, "/home/programData/monitoredItems")
                         event.push("add_index", "/home/programData/itemConfig.data")
                         print("217: saved table")
