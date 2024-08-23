@@ -336,6 +336,10 @@ generateHelperTable = function()
         os.sleep(0)
         table.insert(helperTable, v)
     end
+    for k, v in pairs(configurations.panel.lm) do
+        os.sleep(0)
+        table.insert(helperTable, v)
+    end
 end
 
 ----------------------------------------------------------
