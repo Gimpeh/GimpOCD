@@ -204,7 +204,7 @@ function itemWindow.onClick(x, y, button)
                             itemWindow.elements.monitoredItems.display = nil
                         end
                         local tbl = gimpHelper.loadTable("/home/programData/monitoredItems")
-                        if not tbl and not tbl[1] then
+                        if tbl and not tbl[1] or not tbl then
                             tbl = {}
                         end
                         table.insert(tbl, v.itemStack)
