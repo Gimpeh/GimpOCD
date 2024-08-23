@@ -43,7 +43,7 @@ local addTo = nil
 
     local function updateUpdate()
         for k, v in pairs(rlm.display.currentlyDisplayed) do
-            rlm.display.currentlyDisplayed[k] = widgetsAreUs.attachUpdate(v, function(obj, index)
+            rlm.display.currentlyDisplayed[k] = widgetsAreUs.attachUpdate(rlm.display.currentlyDisplayed[k], function(obj, index)
                 local args = gimpHelper.loadTable("/home/programData/reverseLevelMaintainer.data")
                 if args and args[index] then
                     obj.batch.setText(tostring(args[index].batch))
