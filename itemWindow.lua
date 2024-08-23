@@ -197,6 +197,7 @@ function itemWindow.onClick(x, y, button)
         for k, v in pairs(itemWindow.elements.mainStorage.display.currentlyDisplayed) do
             os.sleep(0)
             if widgetsAreUs.isPointInBox(x, y, v.box) then
+                print("200: detected in box")
                 if not addTo then
                     if button == 0 then
                         if itemWindow.elements.monitoredItems.display then
