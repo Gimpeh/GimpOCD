@@ -300,7 +300,7 @@ function itemWindow.onClick(x, y, button)
             os.sleep(0)
             if widgetsAreUs.isPointInBox(x, y, v.box) then
                 if button == 0 then
-                    if widgetsAreUs.isPointInBox(x, y, v.amount.box) then
+                    if widgetsAreUs.isPointInBox(x, y, v.amountText.box) then
                         event.ignore("hud_keyboard", handleKeyboardWrapper)
                         local args = v.amount.onClick()
                         local tbl = gimpHelper.loadTable("/home/programData/levelMaintainer.data")
@@ -308,7 +308,7 @@ function itemWindow.onClick(x, y, button)
                         gimpHelper.saveTable(tbl, "/home/programData/levelMaintainer.data")
                         event.listen("hud_keyboard", handleKeyboardWrapper)
                         return
-                   elseif widgetsAreUs.isPointInBox(x, y, v.batch.box) then
+                   elseif widgetsAreUs.isPointInBox(x, y, v.batchText.box) then
                         event.ignore("hud_keyboard", handleKeyboardWrapper)
                         local args = v.batch.onClick()
                         local tbl = gimpHelper.loadTable("/home/programData/levelMaintainer.data")
