@@ -22,6 +22,9 @@ function widgetsAreUs.attachCoreFunctions(obj)
                 if type(v) == "table" and v.remove then
                     v.remove()
                     obj[k] = nil
+                elseif v.getID then
+                    component.glasses.removeObject(v.getID())
+                    obj[k] = nil
                 else
                     obj[k] = nil
                 end
