@@ -18,6 +18,7 @@ hud.init()
 
 local overlayUpdateEvent
 local highlighters = {}
+local onModemMessage
 
 -----------------------------------------
 ---event handlers
@@ -37,6 +38,7 @@ end
 
 local function onOverlayEvent(eventType, ...)
 	if eventType == "overlay_opened" then
+		event.ignore("modem_message", onModemMessage)
 		event.listen("hud_click", handleClick)
 		hud.hide()
 		overlay.show()
@@ -50,6 +52,7 @@ local function onOverlayEvent(eventType, ...)
 		hud.show()
 		event.cancel(overlayUpdateEvent)
 		os.sleep(0)
+		event.listen("modem_message", onModemMessage)
 	end
 end
 
@@ -74,7 +77,7 @@ local function onHighlight(_, xyz)
 	os.sleep(0)
 end
 
-local function onModemMessage(_, _, _, port, _, message1)
+onModemMessage = function(_, _, _, port, _, message1)
 	if port == 202 then
 		local success, error = pcall(hud.modemMessageHandler, port, message1)
 		if not success then print(error) end
