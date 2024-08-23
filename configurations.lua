@@ -224,10 +224,6 @@ function configurations.init()
     if not success then print(error) end
 
     generateHelperTable()
-
-    local success, error = pcall(configurations.setVisible, false)
-    if not success then print(error) end
-    if success then print("Executed setVisible") end
 end
 
 ----------------------------------------------------------
