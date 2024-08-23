@@ -121,8 +121,7 @@ function widgetsAreUs.symbolBox(x, y, symbolText, colorOrGreen, func)
     if not colorOrGreen then colorOrGreen = {0, 0, 1} end
     local box = widgetsAreUs.createBox(x, y, 20, 20, colorOrGreen, 0.8)
     local symbol = widgetsAreUs.text(x+3, y+3, symbolText, 2)
-    box.onClick = func
-    return widgetsAreUs.attachCoreFunctions{box = box, symbol = symbol}
+    return widgetsAreUs.attachCoreFunctions{box = box, symbol = symbol, onClick = func}
 end
 
 function widgetsAreUs.titleBox(x, y, width, height, color, alpha, text1)
