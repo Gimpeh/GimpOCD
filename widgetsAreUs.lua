@@ -174,7 +174,7 @@ function widgetsAreUs.levelMaintainer(x, y, argsTable)
         amount.setText(gimpHelper.handleTextInput(amount))
     end
 
-    return widgetsAreUs.attachCoreFunctions({box = box, batch = batch, amount = amount, itemStack = itemStack, batchText = batchText, amountText = amountText, onClick = function(x1, y1)
+    return widgetsAreUs.attachCoreFunctions({box = box.box, batch = batch, amount = amount, itemStack = itemStack, batchText = batchText, amountText = amountText, onClick = function(x1, y1)
         if batchText.box.contains(x1, y1) then
             batch.onClick()
         elseif amountText.box.contains(x1, y1) then
