@@ -287,7 +287,7 @@ function configurations.createLevelMaintainerConfig(x, y, index)
     if tbl and tbl[index] then
         for k, v in pairs(activeConfigs["lm"].elements) do
             for i, j in pairs(tbl[index].derp) do
-                if k == i then
+                if v.key == i then
                     activeConfigs["lm"].elements[k].setValue(j)
                 end
             end
