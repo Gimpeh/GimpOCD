@@ -249,8 +249,8 @@ function configurations.createLevelMaintainerConfig(x, y, index)
     configurations.panel.lm.priority = scrappad.numberBox(x, y, "priority", "Priority:")
     configurations.panel.lm.maxInstances = scrappad.numberBox(x + 80, y, "maxCrafters", "Max Conc:")
 
-    configurations.panel.lm.minCPU = scrappad.numberBox(x, y+25, "minCpu", "Min CPU:")
-    configurations.panel.lm.maxCPU = scrappad.numberBox(x+80, y+25, "maxCpu", "Max CPU:")
+    configurations.panel.lm.minCPU = scrappad.numberBox(x, y+30, "minCpu", "Min CPU:")
+    configurations.panel.lm.maxCPU = scrappad.numberBox(x+80, y+30, "maxCpu", "Max CPU:")
 
     os.sleep(0)
     --[[
