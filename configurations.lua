@@ -244,7 +244,8 @@ local function removeConfig(activeConfigsIndex)
 end
 
 function configurations.createLevelMaintainerConfig(x, y, index)
-    pcall(removeConfig, "lm")
+    local success, error = pcall(removeConfig, "lm")
+    if not success then print(error) end
     configurations.panel.lm = {}
     configurations.panel.lm.priority = scrappad.numberBox(x, y, "priority", "Priority:")
     configurations.panel.lm.maxInstances = scrappad.numberBox(x + 80, y, "maxCrafters", "Max Conc:")
