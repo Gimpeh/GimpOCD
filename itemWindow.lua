@@ -61,7 +61,7 @@ local function handleKeyboard(character)
         else
             items = component.me_interface.getItemsInNetwork({label = trimmedStr})
         end
-        itemWindow.elements.mainStorage.display = PagedWindow.new(items, 120, 40, {x1=25, y1=83, x2=320, y2=403}, 5, itemElements.itemBox.create)
+        itemWindow.elements.mainStorage.display = PagedWindow.new(items, 120, 40, {x1=25, y1=83, x2=320, y2=403}, 5, widgetsAreUs.itemBox)
         itemWindow.elements.mainStorage.display:displayItems()
     elseif character == 8 then  -- Backspace key
         local currentText = itemWindow.searchText.getText()
@@ -196,7 +196,7 @@ function itemWindow.onClick(x, y, button)
     if itemWindow.elements.mainStorage.background.contains(x, y) then
         for k, v in pairs(itemWindow.elements.mainStorage.display.currentlyDisplayed) do
             os.sleep(0)
-            if widgetsAreUs.isPointInBox(x, y, v.background) then
+            if widgetsAreUs.isPointInBox(x, y, v.box) then
                 if not addTo then
                     if button == 0 then
                         if itemWindow.elements.monitoredItems.display then
@@ -255,7 +255,7 @@ function itemWindow.onClick(x, y, button)
     if itemWindow.elements.monitoredItems.background.contains(x, y) then
         for k, v in ipairs(itemWindow.elements.monitoredItems.display.currentlyDisplayed) do
             os.sleep(0)
-            if widgetsAreUs.isPointInBox(x, y, v.background) then
+            if widgetsAreUs.isPointInBox(x, y, v.box) then
                 if not addTo then
                     if itemWindow.elements.monitoredItems.display then
                         itemWindow.elements.monitoredItems.display:clearDisplayedItems()
@@ -298,9 +298,9 @@ function itemWindow.onClick(x, y, button)
     if lm.background.contains(x, y) then
         for k, v in ipairs(lm.display.currentlyDisplayed) do
             os.sleep(0)
-            if widgetsAreUs.isPointInBox(x, y, v.background.background) then
+            if widgetsAreUs.isPointInBox(x, y, v.box) then
                 if button == 0 then
-                    if widgetsAreUs.isPointInBox(x, y, v.amount.background) then
+                    if widgetsAreUs.isPointInBox(x, y, v.amount.box) then
                         event.ignore("hud_keyboard", handleKeyboardWrapper)
                         local args = v.amount.onClick()
                         local tbl = gimpHelper.loadTable("/home/programData/levelMaintainer.data")
@@ -308,7 +308,7 @@ function itemWindow.onClick(x, y, button)
                         gimpHelper.saveTable(tbl, "/home/programData/levelMaintainer.data")
                         event.listen("hud_keyboard", handleKeyboardWrapper)
                         return
-                   elseif widgetsAreUs.isPointInBox(x, y, v.batch.background) then
+                   elseif widgetsAreUs.isPointInBox(x, y, v.batch.box) then
                         event.ignore("hud_keyboard", handleKeyboardWrapper)
                         local args = v.batch.onClick()
                         local tbl = gimpHelper.loadTable("/home/programData/levelMaintainer.data")
@@ -338,9 +338,9 @@ function itemWindow.onClick(x, y, button)
     if rlm.background.contains(x, y) then
         for k, v in ipairs(rlm.display.currentlyDisplayed) do
             os.sleep(0)
-            if widgetsAreUs.isPointInBox(x, y, v.background.background) then
+            if widgetsAreUs.isPointInBox(x, y, v.box) then
                 if button == 0 then
-                    if widgetsAreUs.isPointInBox(x, y, v.amount.background) then
+                    if widgetsAreUs.isPointInBox(x, y, v.amountText.box) then
                         event.ignore("hud_keyboard", handleKeyboardWrapper)
                         local args = v.amount.onClick()
                         local tbl = gimpHelper.loadTable("/home/programData/reverseLevelMaintainer.data")
@@ -348,7 +348,7 @@ function itemWindow.onClick(x, y, button)
                         gimpHelper.saveTable(tbl, "/home/programData/reverseLevelMaintainer.data")
                         event.listen("hud_keyboard", handleKeyboardWrapper)
                         return
-                    elseif widgetsAreUs.isPointInBox(x, y, v.batch.background) then
+                    elseif widgetsAreUs.isPointInBox(x, y, v.batchText.box) then
                         event.ignore("hud_keyboard", handleKeyboardWrapper)
                         local args = v.batch.onClick()
                         local tbl = gimpHelper.loadTable("/home/programData/reverseLevelMaintainer.data")

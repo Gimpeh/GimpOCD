@@ -198,7 +198,7 @@ function widgetsAreUs.itemBox(x, y, itemStack)
 
     local amount = widgetsAreUs.text(x+30, y+18, tostring(itemStack.size), 1)
 
-    return widgetsAreUs.attachCoreFunctions({background = background, name = name, icon = icon, amount = amount, itemStack = itemStack,
+    return widgetsAreUs.attachCoreFunctions({box = background, name = name, icon = icon, amount = amount, itemStack = itemStack,
     update = function()
         local updatedItemStack = component.me_interface.getItemsInNetwork(itemStack)[1]
         amount.setText(tostring(updatedItemStack.size))
