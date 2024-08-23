@@ -85,9 +85,29 @@ onModemMessage = function(_, _, _, port, _, message1)
 	os.sleep(0)
 end
 
+local function onHudReset()
+	event.ignore("modem_message", onModemMessage)
+	event.ignore("highlight", onHighlight)	
+	event.ignore("overlay_opened", onOverlayEvent)
+	event.ignore("overlay_closed", onOverlayEvent)
+	event.cancel(overlayUpdateEvent)
+	
+	hud.show()
+	overlay.hide()
+	hud.init()
+	
+	event.listen("modem_message", onModemMessage)
+	event.listen("highlight", onHighlight)
+	event.listen("overlay_opened", onOverlayEvent)
+	event.listen("overlay_closed", onOverlayEvent)
+end
+
+
+
 -------------------------------------------------------
 ---event listeners
 
+event.listen("reset_hud", onHudReset)
 event.listen("highlight", onHighlight)
 event.listen("modem_message", onModemMessage)
 event.listen("overlay_opened", onOverlayEvent)
