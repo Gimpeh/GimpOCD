@@ -20,14 +20,16 @@ function hud.init()
 		if eventType == "hud_click" then
 			if button == 0 then
 				if hud.elements.battery then
-					hud.elements.battery:remove()
+					hud.elements.battery.remove()
+					os.sleep(0.1)
 					hud.elements.battery = nil
 				end
 				hud.elements.battery = metricsDisplays.battery.create(x, y)
 				os.sleep(1)
 			elseif button == 1 then
 				if hud.elements.battery then
-					hud.elements.battery:remove()
+					hud.elements.battery.remove()
+					os.sleep(0.1)
 					hud.elements.battery = nil
 				end
 				local xModified = x - 203
