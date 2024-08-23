@@ -88,7 +88,6 @@ end
 
 --pcall wrapper for keyboard event handler
 local function handleKeyboardWrapper(_, _, _, character, _)
-    print("keyboard event : " .. character)
     local success, error = pcall(handleKeyboard, character)
     if not success then print(error) end
 end
@@ -296,16 +295,21 @@ function itemWindow.onClick(x, y, button)
     if widgetsAreUs.isPointInBox(x, y, itemWindow.elements.levelMaintainer.addButton) then
         if not addTo or addTo ~= "levelMaintainer" then
             addTo = "levelMaintainer"
+            itemWindow.elements.levelMaintainer.addButton.setColor(0, 1, 0.6)
+            itemWindow.elements.reverseLevelMaintainer.addButton.setColor(1, 1, 0.6)
             print(addTo)
             return
         elseif addTo == "levelMaintainer" then
             addTo = nil
+            itemWindow.elements.levelMaintainer.addButton.setColor(1, 1, 0.6)
             print(addTo)
             return
         end
     elseif widgetsAreUs.isPointInBox(x, y, itemWindow.elements.reverseLevelMaintainer.addButton) then
         if not addTo or addTo ~= "reverseLevelMaintainer" then
             addTo = "reverseLevelMaintainer"
+            itemWindow.elements.reverseLevelMaintainer.addButton.setColor(0, 1, 0.6)
+            itemWindow.elements.levelMaintainer.addButton.setColor(1, 1, 0.6)
             print(addTo)
             return
         elseif addTo == "reverseLevelMaintainer" then
