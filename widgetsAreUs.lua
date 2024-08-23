@@ -202,4 +202,10 @@ function widgetsAreUs.itemBox(x, y, itemStack)
     end})
 end
 
+function widgetsAreUs.initText(x, y, text1)
+    local text = widgetsAreUs.text(x+5, y+5, text1, 1.5)
+    local box = widgetsAreUs.createBox(x, y, 400, 200, {0.8, 0, 0}, 0.7)
+    return widgetsAreUs.attachCoreFunctions({text = text, box = box})
+end
+
 return widgetsAreUs
