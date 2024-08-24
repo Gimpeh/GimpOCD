@@ -221,8 +221,20 @@ function widgetsAreUs.initText(x, y, text1)
     return widgetsAreUs.attachCoreFunctions({text = text, box = box})
 end
 
+-----------------
+---config widgets
+
+function widgetsAreUs.machineElementConfigEdition(x, y, theData, index)
+    local box = widgetsAreUs.createBox(x, y, 85, 34, {0.8039, 0.4980, 0.1961}, 0.8)
+    local name = widgetsAreUs.text(x+5, y+5, theData.newName, 1.5)
+    local xyzTitle = widgetsAreUs.titleBox(x + 3, y + 14, 40, 20, {0.6902, 0.7686, 0.8706}, 0.8, "XYZ")
+    local xyzText = widgetsAreUs.text(x+5, y+21, theData.xyz.x .. ", " .. theData.xyz.y .. ", " .. theData.xyz.z, 0.9)
+    local groupText = widgetsAreUs.text(x+43, y + 14, theData.group, 0.8)
+    return widgetsAreUs.attachCoreFunctions({box = box, name = name, xyzText = xyzText, groupText = groupText, xyzTitle = xyzTitle, index = index})
+end
+
 -----------------------------------------
----Configs
+---Configs Value Widgets
 
 function widgetsAreUs.numberBox(x, y, key, titleText)
     local title = widgetsAreUs.textBox(x, y, 55, 25, {0.8, 0.8, 0.8}, 0.8, titleText, 1, 5, 5)
