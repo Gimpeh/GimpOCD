@@ -212,27 +212,53 @@ end
 
 saveConfigData = function(activeConfigsConfigKey, path, activeConfigsIndex)
     print("Line 214: saveConfigData called with activeConfigsConfigKey =", activeConfigsConfigKey, "path =", path, "activeConfigsIndex =", activeConfigsIndex)
+
     local success, err = pcall(function()
-        print("Line 216:", activeConfigsConfigKey, path, activeConfigsIndex)
+        print("Line 216: Entering pcall block")
+        print("Line 217: activeConfigsConfigKey =", activeConfigsConfigKey, "path =", path, "activeConfigsIndex =", activeConfigsIndex)
+
         local tbl = gimpHelper.loadTable(path)
-        print(s.serialize(tbl))
+        print("Line 220: Loaded tbl from gimpHelper.loadTable(path) =", s.serialize(tbl))
+
         if not tbl then
+            print("Line 222: tbl is nil, initializing as empty table")
             tbl = {}
         end
+
         local derp = {}
+        print("Line 225: Initialized empty table derp =", s.serialize(derp))
+
         for k, v in pairs(currentlyDisplayedConfigs[activeConfigsConfigKey].elements) do
-            print(k, v)
-            if v.getValue and tostring(v.getValue()) ~= "num" and tostring(v.getValue()) ~= "string" then
-                print("Line 225: Saving config for k,v =", v.key, tostring(v.getValue()))
-                derp[v.key] = tostring(v.getValue())
+            print("Line 227: Iterating currentlyDisplayedConfigs elements, k =", k, "v =", s.serialize(v))
+
+            if v.getValue then
+                local value = tostring(v.getValue())
+                print("Line 229: v.getValue() =", value)
+
+                if value ~= "num" and value ~= "string" then
+                    print("Line 231: Saving config for k =", k, "v.key =", v.key, "v.getValue() =", value)
+                    derp[v.key] = value
+                else
+                    print("Line 233: Skipping save for k =", k, "v.key =", v.key, "v.getValue() =", value)
+                end
+            else
+                print("Line 235: v.getValue is nil for k =", k)
             end
         end
+
         tbl[activeConfigsIndex] = derp
-        print(s.serialize(tbl[activeConfigsIndex]))
+        print("Line 238: Updated tbl[activeConfigsIndex] =", s.serialize(tbl[activeConfigsIndex]))
+
+        print("Line 240: Saving updated table to path =", path)
         gimpHelper.saveTable(tbl, path)
+        print("Line 242: Table saved successfully")
+
     end)
+
     if not success then
         print("Error in saveConfigData: " .. err)
+    else
+        print("Line 245: saveConfigData completed successfully")
     end
 end
 
