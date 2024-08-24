@@ -221,7 +221,13 @@ loadConfigData = function(currentlyDisplayedConfigsRef, path, configIndex)
             for k, v in pairs(currentlyDisplayedConfigs[currentlyDisplayedConfigsRef].elements) do
                 for i, j in pairs(tbl[configIndex]) do
                     if v.key and v.key == i then
-                        currentlyDisplayedConfigs[currentlyDisplayedConfigsRef].elements[k].setValue(tostring(j))
+                        if tostring(j) == "true" then
+                            currentlyDisplayedConfigs[currentlyDisplayedConfigsRef].elements[k].setValue("X")
+                        elseif tostring(j) == "false" then
+                            currentlyDisplayedConfigs[currentlyDisplayedConfigsRef].elements[k].setValue("")
+                        else
+                            currentlyDisplayedConfigs[currentlyDisplayedConfigsRef].elements[k].setValue()
+                        end
                     end
                 end
             end
