@@ -7,8 +7,9 @@ local metricsDisplays = require("metricsDisplays")
 ----------------------------------------------------------
 ---event handlers
 
-local function stockPileData(_, config)
+local function stockPileData(derp, machineValues)
     local success, err = pcall(function()
+        print(derp)
         local tbl = gimpHelper.loadTable("/home/programData/machinesNamed.data")
         if not tbl then
             os.sleep(0)
@@ -17,12 +18,12 @@ local function stockPileData(_, config)
         if tbl[1] then
             for k, v in ipairs(tbl) do
                 os.sleep(0)
-                if v.xyz.x == config.xyz.x and v.xyz.y == config.xyz.y and v.xyz.z == config.xyz.z then
+                if v.xyz.x == machineValues.xyz.x and v.xyz.y == machineValues.xyz.y and v.xyz.z == machineValues.xyz.z then
                     table.remove(tbl, k)
                 end
             end
         end
-        table.insert(tbl, config)
+        table.insert(tbl, machineValues)
         gimpHelper.saveTable(tbl, "/home/programData/machinesNamed.data")
         os.sleep(0)
     end)
