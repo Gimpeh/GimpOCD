@@ -230,7 +230,7 @@ function widgetsAreUs.machineElementConfigEdition(x, y, theData, index)
     local xyzTitle = widgetsAreUs.titleBox(x + 3, y + 14, 40, 20, {0.6902, 0.7686, 0.8706}, 0.8, "XYZ")
     local xyzText = widgetsAreUs.text(x+5, y+21, theData.xyz.x .. ", " .. theData.xyz.y .. ", " .. theData.xyz.z, 0.9)
     local groupText = widgetsAreUs.text(x+43, y + 14, theData.group, 0.8)
-    return widgetsAreUs.attachCoreFunctions({box = box, name = name, xyzText = xyzText, groupText = groupText, xyzTitle = xyzTitle, index = index})
+    return widgetsAreUs.attachCoreFunctions({box = box, name = name, xyzText = xyzText, groupText = groupText, xyzTitle = xyzTitle})
 end
 
 -----------------------------------------

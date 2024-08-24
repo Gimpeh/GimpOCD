@@ -170,7 +170,7 @@ function configurations.init()
     if not success then print("Error in configurations.initDisplays: " .. error) end
 
     success, error = pcall(function ()
-        createGeneralConfig(525, 320)
+        createGeneralConfig(525, 320, 1)
         generateHelperTable()
     end)
     if not success then print("Error in configurations.init: " .. error) end
@@ -260,7 +260,7 @@ function configurations.createLevelMaintainerConfig(x, y, index)
 
         currentlyDisplayedConfigs["lm"] = {index = index, elements = configurations.panel.lm}
         local success_load, error_load = pcall(loadConfigData, "lm", "/home/programData/levelMaintainerConfig.data", index)
-        if not success_load then print("Error loading config data: " .. error_load) end
+        if not success_load then print("Line 263 : Configurations  |  Error loading config data: " .. error_load) end
     end)
     if not success then
         print("Error in configurations.createLevelMaintainerConfig: " .. err)
@@ -309,7 +309,7 @@ function configurations.createItemManagerConfig(x, y, index)
         --configurations.panel.im.monitorMetrics = widgetsAreUs.checkboxFullLine(x, y+90, "monitorMetrics", "Monitor Metrics on Slave")
         currentlyDisplayedConfigs["im"] = {index = index, elements = configurations.panel.im}
         local success_load, error_load = pcall(loadConfigData, "im", "/home/programData/itemManagerConfig.data", index)
-        if not success_load then print("Error loading config data: " .. error_load) end
+        if not success_load then print("Line 312 : Configurations  |  Error loading config data: " .. error_load) end
     end)
     if not success then
         print("Error in configurations.createItemManagerConfig: " .. err)
