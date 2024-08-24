@@ -313,7 +313,7 @@ function itemWindow.onClick(x, y, button)
                         gimpHelper.saveTable(tbl, "/home/programData/monitoredItems")
                         itemWindow.elements.monitoredItems.display = PagedWindow.new(tbl, 120, 40, {x1=355, y1=270, x2=630, y2=421}, 5, widgetsAreUs.itemBox)
                         itemWindow.elements.monitoredItems.display:displayItems()  
-                        event.push("remove_index", "/home/programData/itemConfig.data", k)
+                        event.push("remove_index", "/home/programData/itemManagerConfig.data", k)
                         return 
                     end 
                 end
@@ -395,6 +395,7 @@ function itemWindow.onClick(x, y, button)
             end
         end
 
+        --clicking from reverseLevelMaintainer side
         if rlm.background.contains(x, y) then
             for k, v in ipairs(rlm.display.currentlyDisplayed) do
                 os.sleep(0)
