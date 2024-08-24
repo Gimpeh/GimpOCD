@@ -230,7 +230,7 @@ saveConfigData = function(activeConfigsConfigKey, path, activeConfigsIndex)
 
         for k, v in pairs(currentlyDisplayedConfigs[activeConfigsConfigKey].elements) do
             if type(v) ~= "function" then
-                print("Line 227: Iterating currentlyDisplayedConfigs elements, k =", k, "v =", s.serialize(v))
+                print("Line 227: Iterating currentlyDisplayedConfigs elements, k =", k, "v =", tostring(v.getValue()))
             end
             if v.getValue then
                 local value = tostring(v.getValue())
