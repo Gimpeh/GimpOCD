@@ -239,26 +239,48 @@ end
 loadConfigData = function(currentlyDisplayedConfigsRef, path, configIndex)
     print("Line 236: loadConfigData called with currentlyDisplayedConfigsRef =", currentlyDisplayedConfigsRef, "path =", path, "configIndex =", configIndex)
     local success, err = pcall(function()
-        print("line 238", currentlyDisplayedConfigsRef, path, configIndex)
+        print("Line 238: Entering pcall block")
+        print("Line 239: currentlyDisplayedConfigsRef =", currentlyDisplayedConfigsRef, "path =", path, "configIndex =", configIndex)
+
         local tbl = gimpHelper.loadTable(path)
+        print("Line 242: tbl loaded from gimpHelper.loadTable(path) =", tbl)
+
         if tbl and tbl[configIndex] then
+            print("Line 244: tbl and tbl[configIndex] are valid")
             for k, v in pairs(currentlyDisplayedConfigs[currentlyDisplayedConfigsRef].elements) do
+                print("Line 246: Iterating currentlyDisplayedConfigs elements, k =", k, "v =", v)
                 for i, j in pairs(tbl[configIndex]) do
+                    print("Line 248: Iterating tbl[configIndex], i =", i, "j =", j)
+
                     if v.key and v.key == i then
+                        print("Line 250: Found matching key in currentlyDisplayedConfigs element, key =", v.key)
+
                         if j and tostring(j) == "true" then
+                            print("Line 252: j is 'true', setting value to 'X'")
                             currentlyDisplayedConfigs[currentlyDisplayedConfigsRef].elements[k].setValue("X")
                         elseif j and tostring(j) == "false" then
+                            print("Line 254: j is 'false', setting value to ' ' (space)")
                             currentlyDisplayedConfigs[currentlyDisplayedConfigsRef].elements[k].setValue(" ")
                         elseif j then
+                            print("Line 256: j has a different value, setting value to j =", j)
                             currentlyDisplayedConfigs[currentlyDisplayedConfigsRef].elements[k].setValue(j)
+                        else
+                            print("Line 258: j is nil or false")
                         end
+                    else
+                        print("Line 260: No matching key found or v.key is nil")
                     end
                 end
             end
+        else
+            print("Line 263: tbl or tbl[configIndex] is nil or false")
         end
     end)
+
     if not success then
         print("Error in loadConfigData: " .. err)
+    else
+        print("Line 267: loadConfigData completed successfully")
     end
 end
 
