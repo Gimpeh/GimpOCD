@@ -222,9 +222,9 @@ saveConfigData = function(activeConfigsConfigKey, path, activeConfigsIndex)
         local derp = {}
         for k, v in pairs(currentlyDisplayedConfigs[activeConfigsConfigKey].elements) do
             print(k, v)
-            if v.getValue and v.getValue() ~= "num" and v.getValue() ~= "string" then
-                print("Line 225: Saving config for k,v =", v.key, v.getValue())
-                derp[v.key] = v.getValue()
+            if v.getValue and tostring(v.getValue()) ~= "num" and tostring(v.getValue()) ~= "string" then
+                print("Line 225: Saving config for k,v =", v.key, tostring(v.getValue()))
+                derp[v.key] = tostring(v.getValue())
             end
         end
         tbl[activeConfigsIndex] = derp
