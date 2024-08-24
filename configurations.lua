@@ -229,8 +229,9 @@ saveConfigData = function(activeConfigsConfigKey, path, activeConfigsIndex)
         print("Line 225: Initialized empty table derp =", s.serialize(derp))
 
         for k, v in pairs(currentlyDisplayedConfigs[activeConfigsConfigKey].elements) do
-            print("Line 227: Iterating currentlyDisplayedConfigs elements, k =", k, "v =", s.serialize(v))
-
+            if type(v) ~= "function" then
+                print("Line 227: Iterating currentlyDisplayedConfigs elements, k =", k, "v =", s.serialize(v))
+            end
             if v.getValue then
                 local value = tostring(v.getValue())
                 print("Line 229: v.getValue() =", value)
@@ -278,6 +279,7 @@ loadConfigData = function(currentlyDisplayedConfigsRef, path, configIndex)
                 for i, j in pairs(tbl[configIndex]) do
                     print("Line 248: Iterating tbl[configIndex], i =", i, "j =", j)
 
+                    print(tostring(v.key), i)
                     if v.key and v.key == i then
                         print("Line 250: Found matching key in currentlyDisplayedConfigs element, key =", v.key)
 
@@ -301,13 +303,14 @@ loadConfigData = function(currentlyDisplayedConfigsRef, path, configIndex)
         else
             print("Line 263: tbl or tbl[configIndex] is nil or false")
         end
-    --end)
+    --[[end)
 
     if not success then
         print("Error in loadConfigData: " .. err)
     else
         print("Line 267: loadConfigData completed successfully")
     end
+    ]]
 end
 
 function configurations.createLevelMaintainerConfig(x, y, index)
