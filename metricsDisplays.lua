@@ -279,6 +279,20 @@ function machineIndividual.create(x, y, individualProxy)
 	highlightedIndicator.setSize(0, 0)
 	highlightedIndicator.setColor(0, 1, 1)
 
+	local setName = function(newName)
+		if newName then
+			name.setText(newName)
+			name2.setText(" ")
+			local xyz = {}
+			xyz.x, xyz.y, xyz.z = machine.getCoordinates()
+			event.push("nameSet", newName, xyz)
+		else
+			local firstPart, secondPart = string.match(machine.getName(), "([^%.]+)%.([^%.]+)%.?.*")
+			name.setText(firstPart)
+			name2.setText(secondPart)
+		end
+	end
+
 	local machineInterface = {
 		background = background,
 		setVisible = function(visible)
@@ -287,19 +301,7 @@ function machineIndividual.create(x, y, individualProxy)
 			name2.setVisible(visible)
 			state.setVisible(visible)
 		end,
-		setName = function(newName)
-			if newName then
-				name.setText(newName)
-				name2.setText(" ")
-				local xyz = {}
-				xyz.x, xyz.y, xyz.z = machine.getCoordinates()
-				event.push("nameSet", newName, xyz)
-			else
-				local firstPart, secondPart = string.match(machine.getName(), "([^%.]+)%.([^%.]+)%.?.*")
-				name.setText(firstPart)
-				name2.setText(secondPart)
-			end
-		end,
+		setName = setName,
 		getCoords = function()
 			return machine.getCoordinates()
 		end,
@@ -345,26 +347,8 @@ function machineIndividual.create(x, y, individualProxy)
 			elseif button == 2 then
 				name.setText(" ")
 				name2.setText(" ")
-				local newText = ""
-
-				local helpMessage = widgetsAreUs.initText:new(250, 162, "Input New Name")
-				while true do
-					local _, _, _, character = event.pull("hud_keyboard")
-					if character == 13 then -- enter key
-						local xyz = {}
-						xyz.x, xyz.y, xyz.z = machine.getCoordinates()
-
-						machinesInterface.setName(newText)
-
-						helpMessage:remove()
-						break
-					elseif character == 8 then --backspace
-						newText = newText:sub(1, -2)
-					else
-						local letter = string.char(character)
-						newText = newText .. letter
-					end
-				end
+				local helpMessage = widgetsAreUs.initText(250, 162, "Input New Name")
+				setName(gimpHelper.handleTextInput(name))
 			end
 		end,
 		remove = function()

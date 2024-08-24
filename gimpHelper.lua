@@ -3,11 +3,10 @@ local event = require("event")
 local gimpHelper = {}
 
 function gimpHelper.handleTextInput(textLabel)
+    textLabel.setText("")
     while true do
-        if textLabel.getText() == "0" then textLabel.setText("") end
         local _, _, _, character = event.pull("hud_keyboard")
         if character == 13 then  -- Enter key
-            if textLabel.getText() == "" then textLabel.setText("0") end
             break
         elseif character == 8 then  -- Backspace key
             textLabel.setText(textLabel.getText():sub(1, -2))

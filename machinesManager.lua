@@ -147,7 +147,7 @@ function machinesManager.onClick(x, y, button)
 	end
 	for k, v in ipairs(machinesManager[active].display.currentlyDisplayed) do
 		if widgetsAreUs.isPointInBox(x, y, v.background) then
-			v.onClick(button, v)
+			v.onClick(button, v, individualHeader)
 			return
 		end
 	end
@@ -165,7 +165,6 @@ function machinesManager.setVisible(visible)
 	machinesManager.right.setVisible(visible)
 end
 
----@diagnostic disable-next-line: unused-function
 local function saveData(_, newName, xyz)
 	local tbl = gimpHelper.loadTable("/home/programData/" .. individualHeader .. ".data") or {}
 	local data = {}

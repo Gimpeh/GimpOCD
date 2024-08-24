@@ -8,8 +8,6 @@ local metricsDisplays = require("metricsDisplays")
 ----------------------------------------------------------
 ---event handlers
 
---This function should really be moved into machinesManager.
---It's not a configuration, it's a persistance file for machinesManager.
 local function stockPileData(_, config)
     local tbl = gimpHelper.loadTable("/home/programData/machinesNamed.data")
     if not tbl then
@@ -129,7 +127,6 @@ function configurations.initDisplays()
     
     displays.itemManager = loadAndDisplayTable("/home/programData/monitoredItems", 120, 40, {x1=390, x2=540, y1=65, y2=305}, function(index)
         configurations.createItemManagerConfig(580, 80, index)
-        print("132 index : " .. index)
     end, widgetsAreUs.itemBox)
     
     displays.machineManager = loadAndDisplayTable("/home/programData/machinesNamed.data", 150, 30, {x1=45, x2=295, y1=320, y2=460}, function(index)
