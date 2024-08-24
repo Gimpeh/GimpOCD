@@ -220,7 +220,7 @@ loadConfigData = function(currentlyDisplayedConfigsRef, path, configIndex)
             for k, v in pairs(currentlyDisplayedConfigs[currentlyDisplayedConfigsRef].elements) do
                 for i, j in pairs(tbl[configIndex]) do
                     if v.key and v.key == i then
-                        currentlyDisplayedConfigs[currentlyDisplayedConfigsRef].elements[k].setValue(j)
+                        currentlyDisplayedConfigs[currentlyDisplayedConfigsRef].elements[k].setValue(tostring(j))
                     end
                 end
             end
