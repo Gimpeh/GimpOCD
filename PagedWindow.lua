@@ -1,5 +1,4 @@
---v.1.0.1
---local metricsDisplays = require("metricsDisplays")
+-- v.1.0.2
 local PagedWindow = {}
 PagedWindow.__index = PagedWindow
 
@@ -11,9 +10,9 @@ function PagedWindow.new(items, itemWidth, itemHeight, screenBounds, padding, re
     self.itemHeight = itemHeight  -- Height of each item
     self.padding = padding or 5  -- Default padding of 5 pixels if not provided
     self.renderItem = renderItem or function() end  -- Function to render an individual item
-	if array then
-		self.args = array
-	end
+    if array then
+        self.args = array
+    end
 
     -- Define screen bounds from the provided table
     self.screenX1 = screenBounds.x1
@@ -37,69 +36,94 @@ end
 
 -- Function to clear currently displayed items
 function PagedWindow:clearDisplayedItems()
-    for _, element in ipairs(self.currentlyDisplayed) do
-        if element.remove then
-            element.remove()  -- Call the remove method of each element if it exists
+    local success, err = pcall(function()
+        for _, element in ipairs(self.currentlyDisplayed) do
+            if element.remove then
+                element.remove()  -- Call the remove method of each element if it exists
+            end
         end
+        self.currentlyDisplayed = {}
+    end)
+    if not success then
+        print("Error in clearDisplayedItems: " .. err)
     end
-    self.currentlyDisplayed = {}
 end
 
 -- Function to display items for the current page
 function PagedWindow:displayItems()
-    self:clearDisplayedItems()  -- Clear previously displayed items
+    local success, err = pcall(function()
+        self:clearDisplayedItems()  -- Clear previously displayed items
 
-    local startIndex = (self.currentPage - 1) * self.itemsPerPage + 1
-    local endIndex = math.min(self.currentPage * self.itemsPerPage, #self.items)
+        local startIndex = (self.currentPage - 1) * self.itemsPerPage + 1
+        local endIndex = math.min(self.currentPage * self.itemsPerPage, #self.items)
 
-    for i = startIndex, endIndex do
-        os.sleep(0)
-        -- Calculate row and column based on dynamic values
-        local row = math.floor((i - startIndex) / self.itemsPerRow)
-        local col = (i - startIndex) % self.itemsPerRow
-        local x = self.screenX1 + col * (self.itemWidth + self.padding)
-        local y = self.screenY1 + row * (self.itemHeight + self.padding)
-        local item = self.items[i]
-		
-		if self.args and self.args[i] then
-		else
-			self.args = {}
-			self.args[i] = i
-		end
+        for i = startIndex, endIndex do
+            os.sleep(0)
+            -- Calculate row and column based on dynamic values
+            local row = math.floor((i - startIndex) / self.itemsPerRow)
+            local col = (i - startIndex) % self.itemsPerRow
+            local x = self.screenX1 + col * (self.itemWidth + self.padding)
+            local y = self.screenY1 + row * (self.itemHeight + self.padding)
+            local item = self.items[i]
 
-        if item then
-            local displayedItem = self.renderItem(x, y, item, self.args[i])
-            table.insert(self.currentlyDisplayed, displayedItem)
+            if self.args and self.args[i] then
+            else
+                self.args = {}
+                self.args[i] = i
+            end
+
+            if item then
+                local displayedItem = self.renderItem(x, y, item, self.args[i])
+                table.insert(self.currentlyDisplayed, displayedItem)
+            end
         end
+    end)
+    if not success then
+        print("Error in displayItems: " .. err)
     end
 end
 
 -- Function to go to the next page
 function PagedWindow:nextPage()
-    local totalPages = math.ceil(#self.items / self.itemsPerPage)
-    if self.currentPage < totalPages then
-        self.currentPage = self.currentPage + 1
-        self:displayItems()
-    else
-        print("Already on the last page")
+    local success, err = pcall(function()
+        local totalPages = math.ceil(#self.items / self.itemsPerPage)
+        if self.currentPage < totalPages then
+            self.currentPage = self.currentPage + 1
+            self:displayItems()
+        else
+            print("Already on the last page")
+        end
+    end)
+    if not success then
+        print("Error in nextPage: " .. err)
     end
 end
 
 -- Function to go to the previous page
 function PagedWindow:prevPage()
-    if self.currentPage > 1 then
-        self.currentPage = self.currentPage - 1
-        self:displayItems()
-    else
-        print("Already on the first page")
+    local success, err = pcall(function()
+        if self.currentPage > 1 then
+            self.currentPage = self.currentPage - 1
+            self:displayItems()
+        else
+            print("Already on the first page")
+        end
+    end)
+    if not success then
+        print("Error in prevPage: " .. err)
     end
 end
 
 -- Function to update items and refresh the display
 function PagedWindow:setItems(items)
-    self.items = items
-    self.currentPage = 1  -- Reset to the first page when items are updated
-    self:displayItems()
+    local success, err = pcall(function()
+        self.items = items
+        self.currentPage = 1  -- Reset to the first page when items are updated
+        self:displayItems()
+    end)
+    if not success then
+        print("Error in setItems: " .. err)
+    end
 end
 
 return PagedWindow
