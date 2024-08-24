@@ -264,7 +264,7 @@ end
 
 loadConfigData = function(currentlyDisplayedConfigsRef, path, configIndex)
     print("Line 236: loadConfigData called with currentlyDisplayedConfigsRef =", currentlyDisplayedConfigsRef, "path =", path, "configIndex =", configIndex)
-    local success, err = pcall(function()
+    -- local success, err = pcall(function()
         print("Line 238: Entering pcall block")
         print("Line 239: currentlyDisplayedConfigsRef =", currentlyDisplayedConfigsRef, "path =", path, "configIndex =", configIndex)
 
@@ -301,7 +301,7 @@ loadConfigData = function(currentlyDisplayedConfigsRef, path, configIndex)
         else
             print("Line 263: tbl or tbl[configIndex] is nil or false")
         end
-    end)
+    --end)
 
     if not success then
         print("Error in loadConfigData: " .. err)
