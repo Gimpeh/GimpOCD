@@ -236,7 +236,6 @@ function configurations.createMachineManagerConfig(x, y, index)
 end
 
 function configurations.createItemManagerConfig(x, y, index)
-    print("238: " .. index)
     if currentlyDisplayedConfigs["im"] and currentlyDisplayedConfigs["im"].index then
         local success, error = pcall(saveConfigData, "im", "/home/programData/itemManagerConfig.data", currentlyDisplayedConfigs["im"].index)
         if not success then print(error) end

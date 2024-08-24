@@ -32,7 +32,6 @@ function PagedWindow.new(items, itemWidth, itemHeight, screenBounds, padding, re
 
     self.currentPage = 1  -- Start on the first page
     self.currentlyDisplayed = {}  -- Keep track of currently displayed items
-    print(#self.items)
     return self
 end
 
@@ -69,7 +68,6 @@ function PagedWindow:displayItems()
 		end
 
         if item then
-            print("displayItems if item reached")
             local displayedItem = self.renderItem(x, y, item, self.args[i])
             table.insert(self.currentlyDisplayed, displayedItem)
         end

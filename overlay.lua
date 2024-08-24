@@ -18,7 +18,12 @@ local active
 ----Initialization and Swap Functions
 
 function overlay.loadTab(tab)
-    if active and active.remove then pcall(active.remove) end
+    if active and active.remove then 
+		local success, error = pcall(active.remove) 
+		if not success then
+			print("Error removing active tab: " .. error)
+		end
+	end
     overlay.tabs[tab].init()
     local tbl = {tab = tab}
     gimpHelper.saveTable(tbl, "/home/programData/overlay.data")
