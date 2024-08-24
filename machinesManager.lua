@@ -92,9 +92,9 @@ function machinesManager.individuals.init(machinesTable, header)
 	for k, v in pairs(savedNames) do
 		for j, i in pairs(machinesManager.individuals.display.currentlyDisplayed) do
 			local xyzCheck = {}
-			xyzCheck.x, xyzCheck.y, xyzCheck.z = i.getCoords()
-			if v.x == xyzCheck.x and v.y == xyzCheck.y and v.z == xyzCheck.z  then
-				i.setName(k)
+			xyzCheck.x, xyzCheck.y, xyzCheck.z = i.getCoordinates()
+			if v.xyz.x == xyzCheck.x and v.xyz.y == xyzCheck.y and v.xyz.z == xyzCheck.z  then
+				i.setName(v.newName)
 			end
 		end
 	end
