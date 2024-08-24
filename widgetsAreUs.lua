@@ -318,8 +318,8 @@ function widgetsAreUs.configsButtonHalf(x, y, text1, text2, color, func)
 end
 
 function widgetsAreUs.numberBoxLongerText(x, y, key, titleText)
-    local title = widgetsAreUs.textBox(x, y, 125, 25, {0.8, 0.8, 0.8}, 0.8, titleText, 1, 5, 5)
-    local option = widgetsAreUs.textBox(x+125, y, 35, 25, {1, 1, 1}, 0.9, "num", 1, 5, 5)
+    local title = widgetsAreUs.textBox(x, y, 135, 25, {0.8, 0.8, 0.8}, 0.8, titleText, 1, 5, 5)
+    local option = widgetsAreUs.textBox(x+125, y, 25, 25, {1, 1, 1}, 0.9, "num", 1, 5, 5)
     local function setValue(newValue)
         option.text.setText(newValue)
     end
