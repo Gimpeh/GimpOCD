@@ -7,6 +7,7 @@ local widgetsAreUs = require("widgetsAreUs")
 local event = require("event")
 
 local has_been_sorted = false
+local saveData
 local activeIndividualPage
 local individualHeader
 local active = "groups"
@@ -117,6 +118,7 @@ function machinesManager.init()
 end
 
 function machinesManager.remove()
+	saveData()
 	machinesManager[active].remove()
 	component.glasses.removeObject(machinesManager.left.getID())
 	component.glasses.removeObject(machinesManager.right.getID())
@@ -165,8 +167,11 @@ function machinesManager.setVisible(visible)
 	machinesManager.right.setVisible(visible)
 end
 
-local function saveData(_, newName, xyz)
+saveData = function(_, newName, xyz)
 	local tbl = gimpHelper.loadTable("/home/programData/" .. individualHeader .. ".data") or {}
+	if not tbl then
+		tbl = {}
+	end
 	local data = {}
 	local str = newName:gsub("^[\0-\31\127]+", "")
 	data.newName = str
