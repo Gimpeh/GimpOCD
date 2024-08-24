@@ -233,6 +233,9 @@ function widgetsAreUs.numberBox(x, y, key, titleText)
     return widgetsAreUs.attachCoreFunctions({title = title, key = key, option = option, setValue = setValue,
     onClick = function()
         setValue(gimpHelper.handleTextInput(option.text))
+    end,
+    getValue = function()
+        return gimpHelper.trim(option.text.getText())
     end})
 end
 
@@ -245,14 +248,19 @@ function widgetsAreUs.longerNumberBox(x, y, key, titleText)
     return widgetsAreUs.attachCoreFunctions({title = title, key = key, option = option, setValue = setValue,
     onClick = function()
        setValue(gimpHelper.handleTextInput(option.text))
+    end,
+    getValue = function()
+        return gimpHelper.trim(option.text.getText())
     end})
 end
 
 function widgetsAreUs.checkboxFullLine(x, y, key, titleText)
     local title = widgetsAreUs.textBox(x, y, 135, 25, {0.8, 0.8, 0.8}, 0.8, titleText, 1, 0, 0)
     local option = widgetsAreUs.check(x + 135, y)
-    local function setValue()
-        if gimpHelper.trim(option.check.getText()) == "" then
+    local function setValue(absoluteValue)
+        if absoluteValue then
+            option.check.setText(absoluteValue)
+        elseif gimpHelper.trim(option.check.getText()) == "" then
             option.check.setText("X")
         else
             option.check.setText("")
@@ -261,14 +269,19 @@ function widgetsAreUs.checkboxFullLine(x, y, key, titleText)
     return widgetsAreUs.attachCoreFunctions({title = title, key = key, option = option, setValue = setValue,
     onClick = function()
         setValue()
+    end,
+    getValue = function()
+        return gimpHelper.trim(option.check.getText()) == "X"
     end})
 end
 
 function widgetsAreUs.checkBoxHalf(x, y, key, titleText)
     local title = widgetsAreUs.textBox(x, y, 55, 25, {0.8, 0.8, 0.8}, 0.8, titleText, 0.8, 5, 5)
     local option = widgetsAreUs.check(x + 55, y)
-    local function setValue()
-        if gimpHelper.trim(option.check.getText()) == "" then
+    local function setValue(absoluteValue)
+        if absoluteValue then
+            option.check.setText(absoluteValue)
+        elseif gimpHelper.trim(option.check.getText()) == "" then
             option.check.setText("X")
         else
             option.check.setText("")
@@ -277,6 +290,9 @@ function widgetsAreUs.checkBoxHalf(x, y, key, titleText)
     return widgetsAreUs.attachCoreFunctions({title = title, key = key, option = option, setValue = setValue,
     onClick = function()
         setValue()
+    end,
+    getValue = function()
+        return gimpHelper.trim(option.check.getText()) == "X"
     end})
 end
 
@@ -289,13 +305,19 @@ function widgetsAreUs.textBoxWithTitle(x, y, key, titleText)
     return widgetsAreUs.attachCoreFunctions({box = title.box, title = title.text, key = key, option = option, setValue = setValue,
     onClick = function()
         setValue(gimpHelper.handleTextInput(option))
+    end,
+    getValue = function()
+        return gimpHelper.trim(option.getText())
     end})
 end
 
 function widgetsAreUs.configsButtonHalf(x, y, text1, text2, color, func)
     local title = widgetsAreUs.textBox(x, y, 60, 25, {0.8, 0.8, 0.8}, 0.8, text1, 1, 5, 5)
     local button = widgetsAreUs.textBox(x + 60, y, 42, 25, color, 0.9, text2, 1, 5, 5)
-    return widgetsAreUs.attachCoreFunctions({title = title, option = button, onClick = func})
+    return widgetsAreUs.attachCoreFunctions({title = title, option = button, onClick = func,
+    getValue = function()
+        return print("this is a button and has no value")
+    end})
 end
 
 function widgetsAreUs.numberBoxLongerText(x, y, key, titleText)
@@ -307,6 +329,9 @@ function widgetsAreUs.numberBoxLongerText(x, y, key, titleText)
     return widgetsAreUs.attachCoreFunctions({title = title, key = key, option = option, setValue = setValue,
     onClick = function()
         setValue(gimpHelper.handleTextInput(option.text))
+    end,
+    getValue = function()
+        return gimpHelper.trim(option.text.getText())
     end})
 end
 

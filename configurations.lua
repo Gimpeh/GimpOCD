@@ -172,8 +172,10 @@ saveConfigData = function(activeConfigsConfigKey, path, activeConfigsIndex)
     end
     local derp = {}
     for k, v in pairs(currentlyDisplayedConfigs[activeConfigsConfigKey].elements) do
-        if v.option then
+        if v.option and v.option.text then
             derp[v.key] = gimpHelper.trim(v.option.text.getText())
+        elseif v.option and not v.option.text then
+            derp[v.key] = v.option.getValue()
         end
     end
     tbl[activeConfigsIndex] = derp
