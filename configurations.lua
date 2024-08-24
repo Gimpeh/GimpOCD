@@ -2,7 +2,7 @@ local widgetsAreUs = require("widgetsAreUs")
 local gimpHelper = require("gimpHelper")
 local PagedWindow = require("PagedWindow")
 local event = require("event")
-local metricsDisplays = require("metricsDisplays")
+local s = require("serialization")
 
 ----------------------------------------------------------
 ---event handlers
@@ -211,20 +211,24 @@ local function removeConfigDisplay(activeConfigsIndex)
 end
 
 saveConfigData = function(activeConfigsConfigKey, path, activeConfigsIndex)
-    print("Line 176: saveConfigData called with activeConfigsConfigKey =", activeConfigsConfigKey, "path =", path, "activeConfigsIndex =", activeConfigsIndex)
+    print("Line 214: saveConfigData called with activeConfigsConfigKey =", activeConfigsConfigKey, "path =", path, "activeConfigsIndex =", activeConfigsIndex)
     local success, err = pcall(function()
+        print("Line 216:", activeConfigsConfigKey, path, activeConfigsIndex)
         local tbl = gimpHelper.loadTable(path)
+        print(s.serialize(tbl))
         if not tbl then
             tbl = {}
         end
         local derp = {}
         for k, v in pairs(currentlyDisplayedConfigs[activeConfigsConfigKey].elements) do
-            if v.getValue then
-                print("Line 185: Saving config for key =", v.key)
+            print(k, v)
+            if v.getValue and v.getValue() ~= "num" and v.getValue() ~= "string" then
+                print("Line 225: Saving config for k,v =", v.key, v.getValue())
                 derp[v.key] = v.getValue()
             end
         end
         tbl[activeConfigsIndex] = derp
+        print(s.serialize(tbl[activeConfigsIndex]))
         gimpHelper.saveTable(tbl, path)
     end)
     if not success then
@@ -233,12 +237,13 @@ saveConfigData = function(activeConfigsConfigKey, path, activeConfigsIndex)
 end
 
 loadConfigData = function(currentlyDisplayedConfigsRef, path, configIndex)
-    print("Line 196: loadConfigData called with currentlyDisplayedConfigsRef =", currentlyDisplayedConfigsRef, "path =", path, "configIndex =", configIndex)
+    print("Line 236: loadConfigData called with currentlyDisplayedConfigsRef =", currentlyDisplayedConfigsRef, "path =", path, "configIndex =", configIndex)
     local success, err = pcall(function()
+        print("line 238", currentlyDisplayedConfigsRef, path, configIndex)
         local tbl = gimpHelper.loadTable(path)
         if tbl and tbl[configIndex] then
-            for k, v in ipairs(currentlyDisplayedConfigs[currentlyDisplayedConfigsRef].elements) do
-                for i, j in ipairs(tbl[configIndex]) do
+            for k, v in pairs(currentlyDisplayedConfigs[currentlyDisplayedConfigsRef].elements) do
+                for i, j in pairs(tbl[configIndex]) do
                     if v.key and v.key == i then
                         if j and tostring(j) == "true" then
                             currentlyDisplayedConfigs[currentlyDisplayedConfigsRef].elements[k].setValue("X")

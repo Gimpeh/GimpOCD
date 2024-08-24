@@ -283,7 +283,7 @@ function widgetsAreUs.checkboxFullLine(x, y, key, titleText)
         setValue()
     end,
     getValue = function()
-        return gimpHelper.trim(option.check.getText()) == "X"
+        return tostring(gimpHelper.trim(option.check.getText()) == "X")
     end})
 end
 
@@ -304,13 +304,13 @@ function widgetsAreUs.checkBoxHalf(x, y, key, titleText)
         setValue()
     end,
     getValue = function()
-        return gimpHelper.trim(option.check.getText()) == "X"
+        return tostring(gimpHelper.trim(option.check.getText()) == "X")
     end})
 end
 
 function widgetsAreUs.textBoxWithTitle(x, y, key, titleText)
     local title = widgetsAreUs.titleBox(x, y, 160, 25, {0.8, 0.8, 0.8}, 0.8, titleText)
-    local option = widgetsAreUs.text(x + 10, y+10, "Click to set", 1)
+    local option = widgetsAreUs.text(x + 10, y+10, "string", 1)
     local function setValue(newValue)
         option.setText(newValue)
     end
