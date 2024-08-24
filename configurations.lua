@@ -8,8 +8,9 @@ local metricsDisplays = require("metricsDisplays")
 ---event handlers
 
 local function stockPileData(derp, machineValues)
+    print("Line 10: stockPileData called with derp =", derp, "and machineValues =", machineValues)
     local success, err = pcall(function()
-        print(derp)
+        print("Line 12: Inside pcall of stockPileData")
         local tbl = gimpHelper.loadTable("/home/programData/machinesNamed.data")
         if not tbl then
             os.sleep(0)
@@ -19,10 +20,12 @@ local function stockPileData(derp, machineValues)
             for k, v in ipairs(tbl) do
                 os.sleep(0)
                 if v.xyz.x == machineValues.xyz.x and v.xyz.y == machineValues.xyz.y and v.xyz.z == machineValues.xyz.z then
+                    print("Line 23: Removing item from table at index", k)
                     table.remove(tbl, k)
                 end
             end
         end
+        print("Line 27: Inserting machineValues into table")
         table.insert(tbl, machineValues)
         gimpHelper.saveTable(tbl, "/home/programData/machinesNamed.data")
         os.sleep(0)
@@ -33,13 +36,16 @@ local function stockPileData(derp, machineValues)
 end
 
 local function removeIndex(_, path, index)
+    print("Line 36: removeIndex called with path =", path, "and index =", index)
     local success, err = pcall(function()
+        print("Line 38: Inside pcall of removeIndex")
         local tbl = gimpHelper.loadTable(path)
         if not tbl then
             tbl = {}
         end
         os.sleep(0)
         if tbl[index] then
+            print("Line 44: Removing item from table at index", index)
             table.remove(tbl, index)
         end
         gimpHelper.saveTable(tbl, path)
@@ -79,6 +85,7 @@ local displays = {}
 ---initialization
 
 function configurations.initBoxes()
+    print("Line 66: Initializing boxes")
     local success, err = pcall(function()
         boxes.background = widgetsAreUs.createBox(10, 50, 750, 400, {0.2, 0.2, 0.2}, 0.8)
         boxes.levelMaintainer = widgetsAreUs.createBox(20, 80, 160, 200, {0.6, 1, 0.6}, 1)
@@ -96,6 +103,7 @@ function configurations.initBoxes()
 end
 
 function configurations.initButtons()
+    print("Line 86: Initializing buttons")
     local success, err = pcall(function()
         buttons.levelMaintainerPrev = widgetsAreUs.symbolBox(85, 58, "^", nil, function()
             displays.levelMaintainer:prevPage()
@@ -123,8 +131,10 @@ function configurations.initButtons()
 end
 
 function configurations.initDisplays()
+    print("Line 108: Initializing displays")
     local success, err = pcall(function()
         local function loadAndDisplayTable(path, width, height, coords, callback, widget)
+            print("Line 112: loadAndDisplayTable called with path =", path)
             local tbl = gimpHelper.loadTable(path)
             local display = nil
             if tbl and tbl[1] then
@@ -143,14 +153,17 @@ function configurations.initDisplays()
         end
 
         displays.levelMaintainer = loadAndDisplayTable("/home/programData/levelMaintainer.data", 150, 30, {x1=25, x2=175, y1=85, y2=195}, function(index)
+            print("Line 127: levelMaintainer callback called with index =", index)
             configurations.createLevelMaintainerConfig(192, 80, index)
         end, widgetsAreUs.levelMaintainer)
 
         displays.itemManager = loadAndDisplayTable("/home/programData/monitoredItems", 120, 40, {x1=390, x2=540, y1=65, y2=305}, function(index)
+            print("Line 131: itemManager callback called with index =", index)
             configurations.createItemManagerConfig(580, 80, index)
         end, widgetsAreUs.itemBox)
 
         displays.machineManager = loadAndDisplayTable("/home/programData/machinesNamed.data", 120, 34, {x1=45, x2=295, y1=320, y2=460}, function(index)
+            print("Line 135: machineManager callback called with index =", index)
             configurations.createMachineManagerConfig(355, 310, index)
         end, widgetsAreUs.machineElementConfigEdition)
     end)
@@ -160,6 +173,7 @@ function configurations.initDisplays()
 end
 
 function configurations.init()
+    print("Line 141: Initializing configurations")
     local success, error = pcall(configurations.initBoxes)
     if not success then print("Error in configurations.initBoxes: " .. error) end
 
@@ -170,6 +184,7 @@ function configurations.init()
     if not success then print("Error in configurations.initDisplays: " .. error) end
 
     success, error = pcall(function ()
+        print("Line 150: Creating general config and generating helper table")
         createGeneralConfig(525, 320, 1)
         generateHelperTable()
     end)
@@ -180,6 +195,7 @@ end
 ---configs factory
 
 local function removeConfigDisplay(activeConfigsIndex)
+    print("Line 160: removeConfigDisplay called with activeConfigsIndex =", activeConfigsIndex)
     local success, err = pcall(function()
         for k, v in pairs(currentlyDisplayedConfigs[activeConfigsIndex].elements) do
             if v.remove then
@@ -195,6 +211,7 @@ local function removeConfigDisplay(activeConfigsIndex)
 end
 
 saveConfigData = function(activeConfigsConfigKey, path, activeConfigsIndex)
+    print("Line 176: saveConfigData called with activeConfigsConfigKey =", activeConfigsConfigKey, "path =", path, "activeConfigsIndex =", activeConfigsIndex)
     local success, err = pcall(function()
         local tbl = gimpHelper.loadTable(path)
         if not tbl then
@@ -203,6 +220,7 @@ saveConfigData = function(activeConfigsConfigKey, path, activeConfigsIndex)
         local derp = {}
         for k, v in pairs(currentlyDisplayedConfigs[activeConfigsConfigKey].elements) do
             if v.getValue then
+                print("Line 185: Saving config for key =", v.key)
                 derp[v.key] = v.getValue()
             end
         end
@@ -215,6 +233,7 @@ saveConfigData = function(activeConfigsConfigKey, path, activeConfigsIndex)
 end
 
 loadConfigData = function(currentlyDisplayedConfigsRef, path, configIndex)
+    print("Line 196: loadConfigData called with currentlyDisplayedConfigsRef =", currentlyDisplayedConfigsRef, "path =", path, "configIndex =", configIndex)
     local success, err = pcall(function()
         local tbl = gimpHelper.loadTable(path)
         if tbl and tbl[configIndex] then
@@ -239,6 +258,7 @@ loadConfigData = function(currentlyDisplayedConfigsRef, path, configIndex)
 end
 
 function configurations.createLevelMaintainerConfig(x, y, index)
+    print("Line 217: createLevelMaintainerConfig called with x =", x, "y =", y, "index =", index)
     local success, err = pcall(function()
         if currentlyDisplayedConfigs["lm"] and currentlyDisplayedConfigs["lm"].index then
             local success_save, error_save = pcall(saveConfigData, "lm", "/home/programData/levelMaintainerConfig.data", currentlyDisplayedConfigs["lm"].index)
@@ -260,7 +280,7 @@ function configurations.createLevelMaintainerConfig(x, y, index)
 
         currentlyDisplayedConfigs["lm"] = {index = index, elements = configurations.panel.lm}
         local success_load, error_load = pcall(loadConfigData, "lm", "/home/programData/levelMaintainerConfig.data", index)
-        if not success_load then print("Line 263 : Configurations  |  Error loading config data: " .. error_load) end
+        if not success_load then print("Error loading config data: " .. error_load) end
     end)
     if not success then
         print("Error in configurations.createLevelMaintainerConfig: " .. err)
@@ -268,6 +288,7 @@ function configurations.createLevelMaintainerConfig(x, y, index)
 end
 
 function configurations.createMachineManagerConfig(x, y, index)
+    print("Line 248: createMachineManagerConfig called with x =", x, "y =", y, "index =", index)
     local success, err = pcall(function()
         if currentlyDisplayedConfigs["mm"] and currentlyDisplayedConfigs["mm"].index then
             local success_save, error_save = pcall(saveConfigData, "mm", "/home/programData/machineManagerConfig.data", currentlyDisplayedConfigs["mm"].index)
@@ -294,6 +315,7 @@ function configurations.createMachineManagerConfig(x, y, index)
 end
 
 function configurations.createItemManagerConfig(x, y, index)
+    print("Line 276: createItemManagerConfig called with x =", x, "y =", y, "index =", index)
     local success, err = pcall(function()
         if currentlyDisplayedConfigs["im"] and currentlyDisplayedConfigs["im"].index then
             local success_save, error_save = pcall(saveConfigData, "im", "/home/programData/itemManagerConfig.data", currentlyDisplayedConfigs["im"].index)
@@ -309,7 +331,7 @@ function configurations.createItemManagerConfig(x, y, index)
         --configurations.panel.im.monitorMetrics = widgetsAreUs.checkboxFullLine(x, y+90, "monitorMetrics", "Monitor Metrics on Slave")
         currentlyDisplayedConfigs["im"] = {index = index, elements = configurations.panel.im}
         local success_load, error_load = pcall(loadConfigData, "im", "/home/programData/itemManagerConfig.data", index)
-        if not success_load then print("Line 312 : Configurations  |  Error loading config data: " .. error_load) end
+        if not success_load then print("Error loading config data: " .. error_load) end
     end)
     if not success then
         print("Error in configurations.createItemManagerConfig: " .. err)
@@ -317,6 +339,7 @@ function configurations.createItemManagerConfig(x, y, index)
 end
 
 createGeneralConfig = function(x, y)
+    print("Line 301: createGeneralConfig called with x =", x, "y =", y)
     local success, err = pcall(function()
         configurations.panel.gc = {}
         configurations.panel.gc.showHelp = widgetsAreUs.checkBoxHalf(x, y, "showHelp", "Show Help")
@@ -343,6 +366,7 @@ end
 local helperTable = {}
 
 generateHelperTable = function()
+    print("Line 326: generateHelperTable called")
     local success, err = pcall(function()
         helperTable = {}
         for k, v in pairs(boxes) do
@@ -375,6 +399,7 @@ end
 ---element functionality
 
 function configurations.update()
+    print("Line 347: configurations.update called")
     local success, err = pcall(function()
         if currentlyDisplayedConfigs["lm"] and currentlyDisplayedConfigs["lm"].index then
             saveConfigData("lm", "/home/programData/levelMaintainerConfig.data", currentlyDisplayedConfigs["lm"].index)
@@ -395,6 +420,7 @@ function configurations.update()
 end
 
 function configurations.setVisible(visible)
+    print("Line 364: configurations.setVisible called with visible =", visible)
     local success, err = pcall(function()
         generateHelperTable()
         for k, v in pairs(helperTable) do
@@ -410,6 +436,7 @@ function configurations.setVisible(visible)
 end
 
 function configurations.remove()
+    print("Line 376: configurations.remove called")
     local success, err = pcall(function()
         generateHelperTable()
         if currentlyDisplayedConfigs["lm"] and currentlyDisplayedConfigs["lm"].index then
@@ -437,6 +464,7 @@ function configurations.remove()
 end
 
 function configurations.onClick(x, y, button)
+    print("Line 402: configurations.onClick called with x =", x, "y =", y, "button =", button)
     local success, err = pcall(function()
         generateHelperTable()
         for k, v in pairs(helperTable) do
