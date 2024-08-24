@@ -172,10 +172,8 @@ saveConfigData = function(activeConfigsConfigKey, path, activeConfigsIndex)
     end
     local derp = {}
     for k, v in pairs(currentlyDisplayedConfigs[activeConfigsConfigKey].elements) do
-        if v.option and v.option.text then
-            derp[v.key] = gimpHelper.trim(v.option.text.getText())
-        elseif v.option and not v.option.text then
-            derp[v.key] = v.option.getValue()
+        if v.getValue then
+            derp[v.key] = v.getValue()
         end
     end
     tbl[activeConfigsIndex] = derp
@@ -188,7 +186,7 @@ loadConfigData = function(currentlyDisplayedConfigsRef, path, configIndex)
     if tbl and tbl[configIndex] then
         for k, v in pairs(currentlyDisplayedConfigs[currentlyDisplayedConfigsRef].elements) do
             for i, j in pairs(tbl[configIndex]) do
-                if v.key == i then
+                if v.key and v.key == i then
                     currentlyDisplayedConfigs[currentlyDisplayedConfigsRef].elements[k].setValue(j)
                 end
             end
