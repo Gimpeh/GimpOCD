@@ -240,8 +240,8 @@ function widgetsAreUs.numberBox(x, y, key, titleText)
 end
 
 function widgetsAreUs.longerNumberBox(x, y, key, titleText)
-    local title = widgetsAreUs.textBox(x, y, 60, 25, {0.6, 0.6, 0.6}, 0.8, titleText, 1, 2, 10)
-    local option = widgetsAreUs.textBox(x + 60, y, 55, 25, {0.8, 0.8, 0.8}, 0.9, "num", 1, 2, 10)
+    local title = widgetsAreUs.textBox(x, y, 65, 25, {0.6, 0.6, 0.6}, 0.8, titleText, 1, 2, 10)
+    local option = widgetsAreUs.textBox(x + 65, y, 95, 25, {0.8, 0.8, 0.8}, 0.9, "num", 1, 2, 10)
     local function setValue(newValue)
         option.text.setText(newValue)
     end
