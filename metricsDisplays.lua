@@ -349,6 +349,7 @@ function machineIndividual.create(x, y, individualProxy)
 				name2.setText(" ")
 				local helpMessage = widgetsAreUs.initText(250, 162, "Input New Name")
 				setName(gimpHelper.handleTextInput(name))
+				helpMessage.remove()
 			end
 		end,
 		remove = function()
