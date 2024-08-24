@@ -230,10 +230,14 @@ saveData = function(_, newName, xyz)
         table.remove(tbl, k)
       end
     end
-    table.insert(tbl, data)
 
-    gimpHelper.saveTable(tbl, "/home/programData/" .. individualHeader .. ".data")
-    event.push("machine_named", tbl)
+    if data.newName and data.xyz and data.groupName then
+      table.insert(tbl, data)
+      gimpHelper.saveTable(tbl, "/home/programData/" .. individualHeader .. ".data")
+      event.push("machine_named", tbl)
+    else
+      print("Line: 217  |  Error in machinesManager saveData function: data is missing")
+    end
   end)
   if not success then
     print("Error in saveData: " .. err)
