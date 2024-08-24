@@ -150,9 +150,9 @@ function configurations.initDisplays()
             configurations.createItemManagerConfig(580, 80, index)
         end, widgetsAreUs.itemBox)
 
-        displays.machineManager = loadAndDisplayTable("/home/programData/machinesNamed.data", 150, 30, {x1=45, x2=295, y1=320, y2=460}, function(index)
+        displays.machineManager = loadAndDisplayTable("/home/programData/machinesNamed.data", 120, 34, {x1=45, x2=295, y1=320, y2=460}, function(index)
             configurations.createMachineManagerConfig(355, 310, index)
-        end, metricsDisplays.machine.create)
+        end, widgetsAreUs.machineElementConfigEdition)
     end)
     if not success then
         print("Error in configurations.initDisplays: " .. err)
