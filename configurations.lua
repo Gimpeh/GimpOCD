@@ -112,9 +112,9 @@ function configurations.initDisplays()
             display = PagedWindow.new(tbl, width, height, coords, 5, widget)
             display:displayItems()
             for k, v in ipairs(display.currentlyDisplayed) do
-                display.currentlyDisplayed[k] = widgetsAreUs.attachOnClick(v, function(x, y)
-                    local index = k
-                    callback(x, y, index)
+                local index = k
+                display.currentlyDisplayed[k] = widgetsAreUs.attachOnClick(v, function()
+                    callback(index)
                 end)
             end
         end
@@ -123,16 +123,17 @@ function configurations.initDisplays()
         return display
     end
 
-    displays.levelMaintainer = loadAndDisplayTable("/home/programData/levelMaintainer.data", 150, 30, {x1=25, x2=175, y1=85, y2=195}, function()
-        configurations.createLevelMaintainerConfig(192, 80)
+    displays.levelMaintainer = loadAndDisplayTable("/home/programData/levelMaintainer.data", 150, 30, {x1=25, x2=175, y1=85, y2=195}, function(index)
+        configurations.createLevelMaintainerConfig(192, 80, index)
     end, widgetsAreUs.levelMaintainer)
     
-    displays.itemManager = loadAndDisplayTable("/home/programData/monitoredItems", 120, 40, {x1=390, x2=540, y1=65, y2=305}, function()
-        configurations.createItemManagerConfig(580, 80)
+    displays.itemManager = loadAndDisplayTable("/home/programData/monitoredItems", 120, 40, {x1=390, x2=540, y1=65, y2=305}, function(index)
+        configurations.createItemManagerConfig(580, 80, index)
+        print("132 index : " .. index)
     end, widgetsAreUs.itemBox)
     
-    displays.machineManager = loadAndDisplayTable("/home/programData/machinesNamed.data", 150, 30, {x1=45, x2=295, y1=320, y2=460}, function()
-        configurations.createMachineManagerConfig(355, 310)
+    displays.machineManager = loadAndDisplayTable("/home/programData/machinesNamed.data", 150, 30, {x1=45, x2=295, y1=320, y2=460}, function(index)
+        configurations.createMachineManagerConfig(355, 310, index)
     end, metricsDisplays.machine.create)
 end
 
@@ -275,7 +276,7 @@ generateHelperTable = function()
     for k, v in pairs(boxes) do os.sleep(0) table.insert(helperTable, v) end
     for k, v in pairs(buttons) do os.sleep(0) table.insert(helperTable, v) end
     for k, v in pairs(displays) do os.sleep(0) --second loop contained below, every group of displayed objects, then every object in display
-        for i, j in pairs(displays[k].currentlyDisplayed) do table.insert(helperTable, displays[k].currentlyDisplayed[i]) end
+        for i, j in ipairs(displays[k].currentlyDisplayed) do table.insert(helperTable, displays[k].currentlyDisplayed[i]) end
     end
     for k, v in pairs(configurations.panel) do os.sleep(0) 
         for i, j in pairs(configurations.panel[k]) do table.insert(helperTable, configurations.panel[k][i]) end
