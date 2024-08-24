@@ -281,9 +281,9 @@ function configurations.createMachineManagerConfig(x, y, index)
         configurations.panel.mm.group = widgetsAreUs.textBoxWithTitle(x, y+30, "group", "Group") os.sleep(0)
         configurations.panel.mm.autoTurnOn = widgetsAreUs.numberBox(x, y+60, "autoTurnOn", "Auto On")
         configurations.panel.mm.autoTurnOff = widgetsAreUs.numberBox(x+80, y+60, "autoTurnOff", "Auto Off")
-        configurations.panel.mm.alertIdle = widgetsAreUs.longerNumberBox(x, y+120, "alertIdle", "Alert Idle Timer")
-        configurations.panel.mm.alertDisabled = widgetsAreUs.checkboxFullLine(x, y+150, "alertDisabled", "Alert Disabled")
-        configurations.panel.mm.alertEnabled = widgetsAreUs.checkboxFullLine(x+80, y+150, "alertEnabled", "Alert Enabled")
+        configurations.panel.mm.alertIdle = widgetsAreUs.longerNumberBox(x, y+90, "alertIdle", "A: Idle Timer")
+        configurations.panel.mm.alertDisabled = widgetsAreUs.checkBoxHalf(x, y+120, "alertDisabled", "A: Disabled")
+        configurations.panel.mm.alertEnabled = widgetsAreUs.checkBoxHalf(x+80, y+120, "alertEnabled", "A: Enabled")
         currentlyDisplayedConfigs["mm"] = {index = index, elements = configurations.panel.mm}
         local success_load, error_load = pcall(loadConfigData, "mm", "/home/programData/machineManagerConfig.data", index)
         if not success_load then print("Error loading config data: " .. error_load) end
