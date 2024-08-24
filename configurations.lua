@@ -218,15 +218,15 @@ loadConfigData = function(currentlyDisplayedConfigsRef, path, configIndex)
     local success, err = pcall(function()
         local tbl = gimpHelper.loadTable(path)
         if tbl and tbl[configIndex] then
-            for k, v in pairs(currentlyDisplayedConfigs[currentlyDisplayedConfigsRef].elements) do
-                for i, j in pairs(tbl[configIndex]) do
+            for k, v in ipairs(currentlyDisplayedConfigs[currentlyDisplayedConfigsRef].elements) do
+                for i, j in ipairs(tbl[configIndex]) do
                     if v.key and v.key == i then
-                        if tostring(j) == "true" then
+                        if j and tostring(j) == "true" then
                             currentlyDisplayedConfigs[currentlyDisplayedConfigsRef].elements[k].setValue("X")
-                        elseif tostring(j) == "false" then
-                            currentlyDisplayedConfigs[currentlyDisplayedConfigsRef].elements[k].setValue("")
-                        else
-                            currentlyDisplayedConfigs[currentlyDisplayedConfigsRef].elements[k].setValue()
+                        elseif j and tostring(j) == "false" then
+                            currentlyDisplayedConfigs[currentlyDisplayedConfigsRef].elements[k].setValue(" ")
+                        elseif j then
+                            currentlyDisplayedConfigs[currentlyDisplayedConfigsRef].elements[k].setValue(j)
                         end
                     end
                 end
