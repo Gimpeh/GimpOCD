@@ -233,8 +233,9 @@ function itemWindow.remove()
         end
         for k, v in pairs(itemWindow.elements) do
             component.glasses.removeObject(v.background.getID())
-            component.glasses.removeObject(v.previousButton.getID())
-            component.glasses.removeObject(v.nextButton.getID())
+            v.background.remove()
+            v.previousButton.remove()
+            v.nextButton.remove()
             itemWindow.elements[k].previousButton = nil
             itemWindow.elements[k].nextButton = nil
             itemWindow.elements[k].background = nil
