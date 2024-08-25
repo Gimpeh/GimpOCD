@@ -94,4 +94,6 @@ colors.tabs = colors.darkpurple
 
 colors.clicked = colors.yellow
 
+colors.derp = {1.0, 0.8, 0.796}
+
 return colors

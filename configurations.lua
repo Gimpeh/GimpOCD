@@ -3,6 +3,7 @@ local gimpHelper = require("gimpHelper")
 local PagedWindow = require("PagedWindow")
 local event = require("event")
 local s = require("serialization")
+local c = require("colors")
 
 ----------------------------------------------------------
 ---event handlers
@@ -398,9 +399,9 @@ function configurations.createItemManagerConfig(x, y, index)
             if not success_remove then print("configurations - Error removing config display: " .. tostring(error_remove)) end
         end
         configurations.panel.im = {}
-        configurations.panel.im.alertAbove = widgetsAreUs.longerNumberBox(x, y, "alertAbove", "Alert Above")
-        configurations.panel.im.alertBelow = widgetsAreUs.longerNumberBox(x, y+30, "alertBelow", "Alert Below")
-        configurations.panel.im.showOnHud = widgetsAreUs.checkboxFullLine(x, y+60, "showOnHud", "Show On HUD")
+        configurations.panel.im.alertAbove = widgetsAreUs.longerNumberBox(x, y, "alertAbove", "Alert Above", c.alertsettingtitle)
+        configurations.panel.im.alertBelow = widgetsAreUs.longerNumberBox(x, y+30, "alertBelow", "Alert Below", c.alertsettingtitle)
+        configurations.panel.im.showOnHud = widgetsAreUs.checkboxFullLine(x, y+60, "showOnHud", "Show On HUD", c.configsettingtitle)
         --configurations.panel.im.monitorMetrics = widgetsAreUs.checkboxFullLine(x, y+90, "monitorMetrics", "Monitor Metrics on Slave")
         currentlyDisplayedConfigs["im"] = {index = index, elements = configurations.panel.im}
         local success_load, error_load = pcall(loadConfigData, "im", "/home/programData/itemManagerConfig.data", index)
@@ -416,14 +417,14 @@ createGeneralConfig = function(x, y)
     print("configurations - Line 301: createGeneralConfig called with x =", tostring(x), "y =", tostring(y))
     local success, err = pcall(function()
         configurations.panel.gc = {}
-        configurations.panel.gc.showHelp = widgetsAreUs.checkBoxHalf(x, y, "showHelp", "Show Help")
-        configurations.panel.gc.resetHud = widgetsAreUs.configsButtonHalf(x+80, y, "Reset HUD", "Reset", {0.8, 0, 0}, function()
+        configurations.panel.gc.showHelp = widgetsAreUs.checkBoxHalf(x, y, "showHelp", "Show Help", c.configsettingtitle)
+        configurations.panel.gc.resetHud = widgetsAreUs.configsButtonHalf(x+80, y, "Reset HUD", "Reset", c.brightred, function()
             event.push("reset_hud")
         end)
         os.sleep(0)
-        configurations.panel.gc.highlightDisabled = widgetsAreUs.checkboxFullLine(x, y+30, "highlightDisabled", "Highlight Disabled Mach's")
-        configurations.panel.gc.maintenanceBeacons = widgetsAreUs.checkboxFullLine(x, y+60, "maintenanceBeacons", "Maintenance Beacons")
-        configurations.panel.gc.alertDisconnected = widgetsAreUs.checkboxFullLine(x, y+90, "alertDisconnectedReconnected", "A: DC'd/Reconnected")
+        configurations.panel.gc.highlightDisabled = widgetsAreUs.checkboxFullLine(x, y+30, "highlightDisabled", "Highlight Disabled Mach's", c.configsettingtitle)
+        configurations.panel.gc.maintenanceBeacons = widgetsAreUs.checkboxFullLine(x, y+60, "maintenanceBeacons", "Maintenance Beacons", c.configsettingtitle)
+        configurations.panel.gc.alertDisconnected = widgetsAreUs.checkboxFullLine(x, y+90, "alertDisconnectedReconnected", "A: DC'd/Reconnected", c.alertsettingtitle)
         configurations.panel.gc.maxCpusAllLevelMaintainers = widgetsAreUs.numberBoxLongerText(x, y+120, "maxCpusAllLevelMaintainers", "Max CPUs for Maintainers")
         currentlyDisplayedConfigs["gc"] = {index = 1, elements = configurations.panel.gc}
         local success_load, error_load = pcall(loadConfigData, "gc", "/home/programData/generalConfig.data", 1)
