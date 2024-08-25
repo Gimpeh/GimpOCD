@@ -15,10 +15,11 @@ local initMessages = {}
 function hud.init()
     print("hud - Line 15: Initializing HUD.")
     local success, err = pcall(function()
+        gimp_globals.configuringHUD_lock = true
+        print("hud - Line 18: Configuring HUD lock set to true.")
         table.insert(initMessages, widgetsAreUs.initText(200, 162, "Left or Right click to set location"))
         table.insert(initMessages, widgetsAreUs.initText(250, 212, "Middle click to accept"))
         hud.elements.battery = metricsDisplays.battery.create(1, 1)
-
         while true do
             local eventType, _, _, x, y, button = event.pull(nil, "hud_click")
             print("HUD - init : click event detected")
@@ -59,6 +60,8 @@ function hud.init()
         end
         initMessages = nil
         os.sleep(100)
+        gimp_globals.configuringHUD_lock = false
+        print("hud - Line 58: Configuring HUD lock set to false.")
     end)
     if not success then
         print("hud - Line 59: Error in hud.init: " .. tostring(err))
