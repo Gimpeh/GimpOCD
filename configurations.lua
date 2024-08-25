@@ -3,7 +3,7 @@ local gimpHelper = require("gimpHelper")
 local PagedWindow = require("PagedWindow")
 local event = require("event")
 local s = require("serialization")
-local c = require("colors")
+local c = require("gimp_colors")
 
 ----------------------------------------------------------
 ---event handlers

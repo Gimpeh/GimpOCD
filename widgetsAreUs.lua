@@ -1,7 +1,7 @@
 local component = require("component")
 local event = require("event")
 local gimpHelper = require("gimpHelper")
-local c = require("colors")
+local c = require("gimp_colors")
 
 local glasses = component.glasses
 
