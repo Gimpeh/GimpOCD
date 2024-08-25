@@ -111,13 +111,12 @@ end
 
 function widgetsAreUs.check(x, y)
     print("widgetsAreUs - Line 101: Creating a checkbox.")
-    local box = widgetsAreUs.createBox(x, y, 25, 25, {0, 0, 0}, 0.8)
-    local backgroundInterior = widgetsAreUs.createBox(x+3, y+3, 16, 16, {1, 1, 1}, 0.8)
+    local box = widgetsAreUs.createBox(x, y, 25, 25, {0.784, 0.902, 0.788}, 0.8)
     local check = component.glasses.addTextLabel()
     check.setScale(1.0)
     check.setPosition(x+10, y+10)
     check.setText("")
-    return widgetsAreUs.attachCoreFunctions({box = box, check = check, backgroundInterior = backgroundInterior, 
+    return widgetsAreUs.attachCoreFunctions({box = box, check = check, 
     onClick = function()
         if gimpHelper.trim(check.getText()) == "" then
             check.setText("X")
@@ -147,7 +146,7 @@ end
 
 function widgetsAreUs.alertMessage(color, message, timer)
     print("widgetsAreUs - Line 136: Creating an alert message.")
-    local box = widgetsAreUs.createBox(100, 100, 200, 100, color, 0.6)
+    local box = widgetsAreUs.createBox(100, 100, 200, 100, {1.0, 0.8, 0.796}, 0.6)
 
     local text = widgetsAreUs.text(110, 110, message, 1.2)
 
@@ -161,7 +160,7 @@ function widgetsAreUs.beacon(x, y, z, color)
     print("widgetsAreUs - Line 147: Creating a beacon.")
     local element = component.glasses.addDot3D()
     element.set3DPos(x, y, z)
-    element.setColor(255, 0, 0)
+    element.setColor(color)
     element.setViewDistance(500)
     element.setScale(1)
     return widgetsAreUs.attachCoreFunctions({ beacon = element })
@@ -209,7 +208,7 @@ end
 
 function widgetsAreUs.itemBox(x, y, itemStack)
     print("widgetsAreUs - Line 197: Creating an item box.")
-    local background = widgetsAreUs.createBox(x, y, 120, 40, {1, 0.8, 0.5}, 0.8)
+    local background = widgetsAreUs.createBox(x, y, 120, 40, {0.698, 0.875, 0.859}, 0.8)
 
     local name = widgetsAreUs.text(x+2, y+2, itemStack.label, 0.9)
 
@@ -233,7 +232,7 @@ end
 function widgetsAreUs.initText(x, y, text1)
     print("widgetsAreUs - Line 222: Initializing text.")
     local text = widgetsAreUs.text(x+10, y+10, text1, 1.5)
-    local box = widgetsAreUs.createBox(x, y, 200, 50, {0.8, 0, 0}, 0.7)
+    local box = widgetsAreUs.createBox(x, y, 200, 50, {1.0, 0.8, 0.796}, 0.7)
     return widgetsAreUs.attachCoreFunctions({text = text, box = box})
 end
 
@@ -242,9 +241,9 @@ end
 
 function widgetsAreUs.machineElementConfigEdition(x, y, theData, index)
     print("widgetsAreUs - Line 231: Creating machine element config edition.")
-    local box = widgetsAreUs.createBox(x, y, 120, 34, {0.8039, 0.4980, 0.1961}, 0.8)
+    local box = widgetsAreUs.createBox(x, y, 120, 34, {0.698, 0.875, 0.859}, 0.8)
     local name = widgetsAreUs.text(x+5, y+5, theData.newName, 1)
-    local xyzTitle = widgetsAreUs.titleBox(x + 3, y + 14, 55, 20, {0.6902, 0.7686, 0.8706}, 0.8, "XYZ")
+    local xyzTitle = widgetsAreUs.titleBox(x + 3, y + 14, 55, 20, {0.467, 0.533, 0.6}, 0.8, "XYZ")
     local xyzText = widgetsAreUs.text(x+5, y+26, theData.xyz.x .. ", " .. theData.xyz.y .. ", " .. theData.xyz.z, 0.9)
     local groupText = widgetsAreUs.text(x+60, y + 16, theData.groupName, 0.8)
     return widgetsAreUs.attachCoreFunctions({box = box, name = name, xyzText = xyzText, groupText = groupText, xyzTitle = xyzTitle})
@@ -255,8 +254,8 @@ end
 
 function widgetsAreUs.numberBox(x, y, key, titleText)
     print("widgetsAreUs - Line 244: Creating number box.")
-    local title = widgetsAreUs.textBox(x, y, 55, 25, {0.8, 0.8, 0.8}, 0.8, titleText, 1, 5, 5)
-    local option = widgetsAreUs.textBox(x+55, y, 25, 25, {1, 1, 1}, 0.9, "num", 1, 5, 5)
+    local title = widgetsAreUs.textBox(x, y, 55, 25, {1, 0.976, 0.769}, 0.8, titleText, 1, 5, 5)
+    local option = widgetsAreUs.textBox(x+55, y, 25, 25, {0.784, 0.902, 0.788}, 0.9, "num", 1, 5, 5)
     local function setValue(newValue)
         option.text.setText(newValue)
     end
@@ -269,9 +268,9 @@ function widgetsAreUs.numberBox(x, y, key, titleText)
     end})
 end
 
-function widgetsAreUs.longerNumberBox(x, y, key, titleText)
+function widgetsAreUs.longerNumberBox(x, y, key, titleText, color)
     print("widgetsAreUs - Line 261: Creating longer number box.")
-    local title = widgetsAreUs.textBox(x, y, 65, 25, {0.6, 0.6, 0.6}, 0.8, titleText, 1, 2, 10)
+    local title = widgetsAreUs.textBox(x, y, 65, 25, color, 0.8, titleText, 1, 2, 10)
     local option = widgetsAreUs.textBox(x + 65, y, 95, 25, {0.8, 0.8, 0.8}, 0.9, "num", 1, 2, 10)
     local function setValue(newValue)
         option.text.setText(newValue)
@@ -285,9 +284,9 @@ function widgetsAreUs.longerNumberBox(x, y, key, titleText)
     end})
 end
 
-function widgetsAreUs.checkboxFullLine(x, y, key, titleText)
+function widgetsAreUs.checkboxFullLine(x, y, key, titleText, color)
     print("widgetsAreUs - Line 278: Creating checkbox full line.")
-    local title = widgetsAreUs.textBox(x, y, 135, 25, {0.8, 0.8, 0.8}, 0.8, titleText, 1, 0, 0)
+    local title = widgetsAreUs.textBox(x, y, 135, 25, color, 0.8, titleText, 1, 0, 0)
     local option = widgetsAreUs.check(x + 135, y)
     local function setValue(absoluteValue)
         if absoluteValue then
@@ -307,9 +306,9 @@ function widgetsAreUs.checkboxFullLine(x, y, key, titleText)
     end})
 end
 
-function widgetsAreUs.checkBoxHalf(x, y, key, titleText)
+function widgetsAreUs.checkBoxHalf(x, y, key, titleText, color)
     print("widgetsAreUs - Line 295: Creating checkbox half line.")
-    local title = widgetsAreUs.textBox(x, y, 55, 25, {0.8, 0.8, 0.8}, 0.8, titleText, 0.8, 5, 5)
+    local title = widgetsAreUs.textBox(x, y, 55, 25, color, 0.8, titleText, 0.8, 5, 5)
     local option = widgetsAreUs.check(x + 55, y)
     local function setValue(absoluteValue)
         if absoluteValue then
@@ -331,7 +330,7 @@ end
 
 function widgetsAreUs.textBoxWithTitle(x, y, key, titleText)
     print("widgetsAreUs - Line 312: Creating text box with title.")
-    local title = widgetsAreUs.titleBox(x, y, 160, 25, {0.8, 0.8, 0.8}, 0.8, titleText)
+    local title = widgetsAreUs.titleBox(x, y, 160, 25, {0.784, 0.902, 0.788}, 0.8, titleText)
     local option = widgetsAreUs.text(x + 10, y+10, "string", 1)
     local function setValue(newValue)
         option.setText(newValue)
@@ -347,15 +346,15 @@ end
 
 function widgetsAreUs.configsButtonHalf(x, y, text1, text2, color, func)
     print("widgetsAreUs - Line 329: Creating configs button half.")
-    local title = widgetsAreUs.textBox(x, y, 60, 25, {0.8, 0.8, 0.8}, 0.8, text1, 1, 5, 5)
+    local title = widgetsAreUs.textBox(x, y, 60, 25, {1, 0.976, 0.769}, 0.8, text1, 1, 5, 5)
     local button = widgetsAreUs.textBox(x + 60, y, 42, 25, color, 0.9, text2, 1, 5, 5)
     return widgetsAreUs.attachCoreFunctions({title = title, option = button, onClick = func})
 end
 
 function widgetsAreUs.numberBoxLongerText(x, y, key, titleText)
     print("widgetsAreUs - Line 339: Creating number box longer text.")
-    local title = widgetsAreUs.textBox(x, y, 140, 25, {0.8, 0.8, 0.8}, 0.8, titleText, 1, 0, 5)
-    local option = widgetsAreUs.textBox(x+140, y, 20, 25, {1, 1, 1}, 0.9, "num", 1, 5, 5)
+    local title = widgetsAreUs.textBox(x, y, 140, 25, {1, 0.976, 0.769}, 0.8, titleText, 1, 0, 5)
+    local option = widgetsAreUs.textBox(x+140, y, 20, 25, {0.784, 0.902, 0.788}, 0.9, "num", 1, 5, 5)
     local function setValue(newValue)
         option.text.setText(newValue)
     end
