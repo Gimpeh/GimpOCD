@@ -4,8 +4,9 @@ local hud = require("hud")
 local itemWindow = require("itemWindow")
 local machinesManager = require("machinesManager")
 local event = require("event")
-
 local thread = require("thread")
+
+local backend = {}
 
 local threadManager
 local updateThread = nil
@@ -53,3 +54,4 @@ event.listen("update_overlay", onUpdate)
 threadManager = thread.create(manageThreads)
 threadManager:resume()
 
+return backend
