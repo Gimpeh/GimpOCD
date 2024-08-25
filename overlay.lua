@@ -110,6 +110,9 @@ function overlay.init()
             itemWindow = overlay.tabs.itemWindow.box
         }
 
+        --************************* right here should be the getID call to get the last glasses
+        
+
         local success_load, config = pcall(gimpHelper.loadTable, "/home/programData/overlay.data")
         if success_load and config then
             local tab = config.tab

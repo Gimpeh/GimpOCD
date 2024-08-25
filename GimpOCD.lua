@@ -11,7 +11,7 @@ local hud = require("hud")
 component.modem.open(202)
 component.glasses.removeAll()
 hud.init()
---right here is where the getID index should be captured.
+--right here is where the getID first index should be captured.
 --that way we can clean up persisting widgets without reinitializing the hud
 
 overlay.init()
