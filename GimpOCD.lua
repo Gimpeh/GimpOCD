@@ -4,7 +4,6 @@ local overlay = require("overlay")
 local component = require("component")
 local widgetsAreUs = require("widgetsAreUs")
 local hud = require("hud")
-local backend = require("backend")
 
 -----------------------------------------
 -- Start up
@@ -172,6 +171,7 @@ event.listen("overlay_opened", onOverlayEvent)
 event.listen("overlay_closed", onOverlayEvent)
 
 print("GimpOCD - Line 133: Event listeners registered.")
+local backend = require("backend")
 print("") -- Blank line for readability
 
 -------------------------------------------------------
