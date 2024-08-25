@@ -45,11 +45,11 @@ local function onUpdate()
         os.sleep(20)
     end
     print("backend - line 53: Starting updateThread")
-    updateThread:start()
+    updateThread:resume()
 end
 
 event.listen("update_overlay", onUpdate)
 
 threadManager = thread.create(manageThreads)
-threadManager:start()
+threadManager:resume()
 
