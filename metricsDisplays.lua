@@ -279,11 +279,13 @@ function machineIndividual.create(x, y, individualProxy)
 	highlightedIndicator.setSize(0, 0)
 	highlightedIndicator.setColor(0, 1, 1)
 
+	local xyz
+
 	local setName = function(newName)
 		if newName then
 			name.setText(newName)
 			name2.setText(" ")
-			local xyz = {}
+			xyz = {}
 			xyz.x, xyz.y, xyz.z = machine.getCoordinates()
 			event.push("nameSet", newName, xyz)
 		else
