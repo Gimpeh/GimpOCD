@@ -354,9 +354,12 @@ function configurations.createMachineManagerConfig(x, y, index)
             local success_remove, error_remove = pcall(removeConfigDisplay, "mm")
             if not success_remove then print("Error removing config display: " .. error_remove) end
         end
+        local tbl = gimpHelper.loadTable("/home/programData/machinesNamed.data")
         configurations.panel.mm = {}
         configurations.panel.mm.name = widgetsAreUs.textBoxWithTitle(x, y, "name", "Name")
+        configurations.panel.mm.name.setValue(tbl[index].name)
         configurations.panel.mm.group = widgetsAreUs.textBoxWithTitle(x, y+30, "group", "Group") os.sleep(0)
+        configurations.panel.mm.group.setValue(tbl[index].groupName)
         configurations.panel.mm.autoTurnOn = widgetsAreUs.numberBox(x, y+60, "autoTurnOn", "Auto On")
         configurations.panel.mm.autoTurnOff = widgetsAreUs.numberBox(x+80, y+60, "autoTurnOff", "Auto Off")
         configurations.panel.mm.alertIdle = widgetsAreUs.longerNumberBox(x, y+90, "alertIdle", "A: Idle Timer")

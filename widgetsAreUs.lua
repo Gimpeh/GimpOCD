@@ -226,10 +226,10 @@ end
 
 function widgetsAreUs.machineElementConfigEdition(x, y, theData, index)
     local box = widgetsAreUs.createBox(x, y, 120, 34, {0.8039, 0.4980, 0.1961}, 0.8)
-    local name = widgetsAreUs.text(x+5, y+5, theData.newName, 1.5)
-    local xyzTitle = widgetsAreUs.titleBox(x + 3, y + 14, 40, 20, {0.6902, 0.7686, 0.8706}, 0.8, "XYZ")
-    local xyzText = widgetsAreUs.text(x+5, y+21, theData.xyz.x .. ", " .. theData.xyz.y .. ", " .. theData.xyz.z, 0.9)
-    local groupText = widgetsAreUs.text(x+43, y + 14, theData.groupName, 0.8)
+    local name = widgetsAreUs.text(x+5, y+5, theData.newName, 1)
+    local xyzTitle = widgetsAreUs.titleBox(x + 3, y + 14, 55, 20, {0.6902, 0.7686, 0.8706}, 0.8, "XYZ")
+    local xyzText = widgetsAreUs.text(x+5, y+26, theData.xyz.x .. ", " .. theData.xyz.y .. ", " .. theData.xyz.z, 0.9)
+    local groupText = widgetsAreUs.text(x+60, y + 16, theData.groupName, 0.8)
     return widgetsAreUs.attachCoreFunctions({box = box, name = name, xyzText = xyzText, groupText = groupText, xyzTitle = xyzTitle})
 end
 
