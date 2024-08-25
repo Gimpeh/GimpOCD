@@ -229,7 +229,7 @@ saveConfigData = function(activeConfigsConfigKey, path, activeConfigsIndex)
         print("Line 225: Initialized empty table derp =", s.serialize(derp))
 
         for k, v in pairs(currentlyDisplayedConfigs[activeConfigsConfigKey].elements) do
-            if type(v) ~= "function" then
+            if type(v) ~= "function" and v.getValue then
                 print("Line 227: Iterating currentlyDisplayedConfigs elements, k =", k, "v =", tostring(v.getValue()))
             end
             if v.getValue then
