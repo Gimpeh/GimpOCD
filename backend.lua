@@ -14,7 +14,7 @@ local updateThread = nil
 local function manageThreads()
     print("backend - line 21: manageThreads called")
     os.sleep(0)
-    if (gimp_globals.configuringHUD_lock or gimp_globals.initializing_lock) and updateThread and not updateThread:status() == "dead" then
+    if (gimp_globals.configuringHUD_lock or gimp_globals.initializing_lock) and updateThread and updateThread:status() ~= "dead" then
         print("backend - line 24: Killing updateThread due to existing lock")
         updateThread:kill()
     end
@@ -23,13 +23,11 @@ local function manageThreads()
 end
 
 local function update()
-    while true do
-        print("backend - line 33: update called")
-        os.sleep(0)
-        local success, error = pcall(overlay.update)
-        if not success then
-            print("backend - line 37: overlay.update call failed with error : " .. tostring(error))
-        end
+    print("backend - line 33: update called")
+    os.sleep(0)
+    local success, error = pcall(overlay.update)
+    if not success then
+        print("backend - line 37: overlay.update call failed with error : " .. tostring(error))
     end
 end
 

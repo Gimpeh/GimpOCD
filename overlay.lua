@@ -217,12 +217,13 @@ function overlay.onClick(x, y, button)
 end
 
 function overlay.update()
-    print("waiting on init lock")
+    print("overlay - 220 : waiting on init lock")
     while gimp_globals.initializing_lock do
-        os.sleep(10)
+        print("overlay - 222 : still waiting on init lock")
+        os.sleep(200)
     end
-    print("done waiting on init lock")
-    print("overlay.tabs - Line 166: Updating overlay.")
+    print("overlay - 225 : done waiting on init lock")
+    print("overlay.tabs - Line 226: Updating overlay.")
     local success, err = pcall(function()
         if active and active.update then
             os.sleep(0)
@@ -230,7 +231,7 @@ function overlay.update()
         end
     end)
     if not success then
-        print("overlay.tabs - Line 172: Error in overlay.update: " .. tostring(err))
+        print("overlay.tabs - Line 234: Error in overlay.update: " .. tostring(err))
     end
     print("") -- Blank line for readability
 end
