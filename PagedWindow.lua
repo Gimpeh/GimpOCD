@@ -52,34 +52,58 @@ end
 -- Function to display items for the current page
 function PagedWindow:displayItems()
     local success, err = pcall(function()
+        print("Starting displayItems")
         self:clearDisplayedItems()  -- Clear previously displayed items
+        print("Cleared displayed items")
 
         local startIndex = (self.currentPage - 1) * self.itemsPerPage + 1
         local endIndex = math.min(self.currentPage * self.itemsPerPage, #self.items)
+        print("Start index: " .. tostring(startIndex) .. ", End index: " .. tostring(endIndex))
 
         for i = startIndex, endIndex do
             os.sleep(0)
+            print("Displaying item index: " .. tostring(i))
+
             -- Calculate row and column based on dynamic values
             local row = math.floor((i - startIndex) / self.itemsPerRow)
             local col = (i - startIndex) % self.itemsPerRow
             local x = self.screenX1 + col * (self.itemWidth + self.padding)
             local y = self.screenY1 + row * (self.itemHeight + self.padding)
-            local item = self.items[i]
 
-            if self.args and self.args[i] then
+            print(string.format("Item position: row=%d, col=%d, x=%d, y=%d", row, col, x, y))
+
+            local item = self.items[i]
+            if item then
+                print("Item found: " .. tostring(item))
             else
+                print("Item not found at index " .. tostring(i))
+            end
+
+            -- Ensure self.args is initialized correctly
+            if self.args then
+                print("Args exists, checking index: " .. tostring(i))
+                if not self.args[i] then
+                    print("Arg index " .. tostring(i) .. " is nil, initializing")
+                    self.args[i] = i
+                end
+            else
+                print("Args not initialized, creating and initializing at index " .. tostring(i))
                 self.args = {}
                 self.args[i] = i
             end
 
             if item then
+                print("Rendering item at x=" .. tostring(x) .. ", y=" .. tostring(y))
                 local displayedItem = self.renderItem(x, y, item, self.args[i])
                 table.insert(self.currentlyDisplayed, displayedItem)
+                print("Item rendered and stored")
             end
         end
     end)
     if not success then
-        print("Error in displayItems: " .. err)
+        print("Error in displayItems: " .. tostring(err))
+    else
+        print("displayItems completed successfully")
     end
 end
 
