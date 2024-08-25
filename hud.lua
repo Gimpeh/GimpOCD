@@ -15,7 +15,7 @@ local initMessages = {}
 function hud.init()
     print("hud - Line 15: Initializing HUD.")
     local success, err = pcall(function()
-        table.insert(initMessages, widgetsAreUs.initText(250, 162, "Left or Right click to set location"))
+        table.insert(initMessages, widgetsAreUs.initText(200, 162, "Left or Right click to set location"))
         table.insert(initMessages, widgetsAreUs.initText(250, 212, "Middle click to accept"))
         hud.elements.battery = metricsDisplays.battery.create(1, 1)
 

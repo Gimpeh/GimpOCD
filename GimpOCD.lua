@@ -173,7 +173,7 @@ event.listen("overlay_opened", onOverlayEvent)
 event.listen("overlay_closed", onOverlayEvent)
 
 print("GimpOCD - Line 133: Event listeners registered.")
-local backend = require("backend")
+--local backend = require("backend")
 print("") -- Blank line for readability
 
 -------------------------------------------------------
