@@ -369,7 +369,7 @@ function configurations.createMachineManagerConfig(x, y, index)
         local tbl = gimpHelper.loadTable("/home/programData/machinesNamed.data")
         configurations.panel.mm = {}
         configurations.panel.mm.name = widgetsAreUs.textBoxWithTitle(x, y, "name", "Name")
-        configurations.panel.mm.name.setValue(tbl[index].name)
+        configurations.panel.mm.name.setValue(tbl[index].newName)
         configurations.panel.mm.group = widgetsAreUs.textBoxWithTitle(x, y+30, "group", "Group") os.sleep(0)
         configurations.panel.mm.group.setValue(tbl[index].groupName)
         configurations.panel.mm.autoTurnOn = widgetsAreUs.numberBox(x, y+60, "autoTurnOn", "Auto On")
