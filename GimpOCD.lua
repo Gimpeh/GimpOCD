@@ -69,7 +69,7 @@ local function onHighlightActual(xyz)
                 return
             end
         end
-        local beacon = widgetsAreUs.maintenanceBeacon(xyz.x, xyz.y, xyz.z)
+        local beacon = widgetsAreUs.beacon(xyz.x, xyz.y, xyz.z)
         beacon.beacon.setColor(0, 1, 1)
         table.insert(highlighters, beacon)
         os.sleep(0)

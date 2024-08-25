@@ -8,7 +8,7 @@ local s = require("serialization")
 ---event handlers
 
 local function stockPileData(derp, machineValues)
-    print("Line 10: stockPileData called with derp =", derp, "and machineValues =", machineValues)
+    print("Line 10: stockPileData called with derp =", derp, "and machineValues =", s.serialize(machineValues))
     local success, err = pcall(function()
         print("Line 12: Inside pcall of stockPileData")
         local tbl = gimpHelper.loadTable("/home/programData/machinesNamed.data")
