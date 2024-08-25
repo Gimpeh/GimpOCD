@@ -36,17 +36,20 @@ local addTo = nil
 
 --helper function to lazily rename the batch subtitle to "Speed" for reverseLevelMaintainer
 local function renameBatch()
+    print("itemWindow - Line 32: Renaming batch subtitle to 'Speed'.")
     local success, err = pcall(function()
         for k, v in ipairs(rlm.display.currentlyDisplayed) do
             v.batchText.text.setText("Speed")
         end
     end)
     if not success then
-        print("Error in renameBatch: " .. err)
+        print("itemWindow - Line 37: Error in renameBatch: " .. tostring(err))
     end
+    print("") -- Blank line for readability
 end
 
 local function updateUpdate()
+    print("itemWindow - Line 42: Updating reverseLevelMaintainer display elements.")
     local success, err = pcall(function()
         for k, v in pairs(rlm.display.currentlyDisplayed) do
             rlm.display.currentlyDisplayed[k] = widgetsAreUs.attachUpdate(rlm.display.currentlyDisplayed[k], function(obj, index)
@@ -59,8 +62,9 @@ local function updateUpdate()
         end
     end)
     if not success then
-        print("Error in updateUpdate: " .. err)
+        print("itemWindow - Line 54: Error in updateUpdate: " .. tostring(err))
     end
+    print("") -- Blank line for readability
 end
 
 -----------------------------------------
@@ -68,12 +72,14 @@ end
 
 --keyboard event handler
 local function handleKeyboard(character)
+    print("itemWindow - Line 63: Handling keyboard input character =", tostring(character))
     local success, err = pcall(function()
         if gimpHelper.trim(itemWindow.searchText.getText()) == "Search" then
             itemWindow.searchText.setText("")
         end
-        if character == 13 then  -- Enter key                        
-            if itemWindow.elements.mainStorage.display then                  
+        if character == 13 then  -- Enter key
+            print("itemWindow - Line 69: Enter key detected, updating item display.")
+            if itemWindow.elements.mainStorage.display then
                 itemWindow.elements.mainStorage.display:clearDisplayedItems()
             end
             itemWindow.elements.mainStorage.display = nil
@@ -88,29 +94,37 @@ local function handleKeyboard(character)
             itemWindow.elements.mainStorage.display = PagedWindow.new(items, 120, 40, {x1=25, y1=83, x2=320, y2=403}, 5, widgetsAreUs.itemBox)
             itemWindow.elements.mainStorage.display:displayItems()
         elseif character == 8 then  -- Backspace key
+            print("itemWindow - Line 82: Backspace key detected, removing last character.")
             local currentText = itemWindow.searchText.getText()
             itemWindow.searchText.setText(currentText:sub(1, -2))
         else
+            print("itemWindow - Line 86: Character input detected, adding to search text.")
             local letter = string.char(character)
             local currentText = itemWindow.searchText.getText()
             itemWindow.searchText.setText(currentText .. letter)
         end
     end)
     if not success then
-        print("Error in handleKeyboard: " .. err)
+        print("itemWindow - Line 92: Error in handleKeyboard: " .. tostring(err))
     end
+    print("") -- Blank line for readability
 end
 
 --pcall wrapper for keyboard event handler
 local function handleKeyboardWrapper(_, _, _, character, _)
+    print("itemWindow - Line 99: Wrapping keyboard handler.")
     local success, error = pcall(handleKeyboard, character)
-    if not success then print("Error in handleKeyboardWrapper: " .. error) end
+    if not success then
+        print("itemWindow - Line 102: Error in handleKeyboardWrapper: " .. tostring(error))
+    end
+    print("") -- Blank line for readability
 end
 
 -----------------------------------------
 ---Inits
 
 function itemWindow.init()
+    print("itemWindow - Line 109: Initializing itemWindow.")
     local success, err = pcall(function()
         itemWindow.elements.mainStorage.background = widgetsAreUs.createBox(20, 78, 275, 325, {0.5, 0.5, 0.5}, 0.7)
         local items = component.me_interface.getItemsInNetwork()
@@ -126,6 +140,7 @@ function itemWindow.init()
         rlm = itemWindow.elements.reverseLevelMaintainer
         local rvlvlmaint = gimpHelper.loadTable("/home/programData/reverseLevelMaintainer.data")
         if rvlvlmaint and rvlvlmaint[1] then
+            print("itemWindow - Line 127: Initializing reverseLevelMaintainer display.")
             rlm.display = PagedWindow.new(rvlvlmaint, 150, 30, {x1=335, y1=83, x2=490, y2=238}, 5, widgetsAreUs.levelMaintainer)
             rlm.display:displayItems()
             renameBatch()
@@ -139,6 +154,7 @@ function itemWindow.init()
         lm = itemWindow.elements.levelMaintainer
         local lvlmaint = gimpHelper.loadTable("/home/programData/levelMaintainer.data")
         if lvlmaint and lvlmaint[1] then
+            print("itemWindow - Line 140: Initializing levelMaintainer display.")
             lm.display = PagedWindow.new(lvlmaint, 150, 30, {x1=505, y1= 83, x2= 660, y2=238}, 5, widgetsAreUs.levelMaintainer)
             lm.display:displayItems()
         end
@@ -148,6 +164,7 @@ function itemWindow.init()
         itemWindow.elements.monitoredItems.nextButton = widgetsAreUs.createBox(640, 340, 20, 20, {0, 1, 0.3}, 0.8)
         local monItemsData = gimpHelper.loadTable("/home/programData/monitoredItems")
         if monItemsData and monItemsData[1] then
+            print("itemWindow - Line 150: Initializing monitoredItems display.")
             itemWindow.elements.monitoredItems.display = PagedWindow.new(monItemsData, 120, 40, {x1=355, y1=270, x2=630, y2=421}, 5, widgetsAreUs.itemBox)
             itemWindow.elements.monitoredItems.display:displayItems()
         end
@@ -160,14 +177,16 @@ function itemWindow.init()
         event.listen("hud_keyboard", handleKeyboardWrapper)
     end)
     if not success then
-        print("Error in itemWindow.init: " .. err)
+        print("itemWindow - Line 163: Error in itemWindow.init: " .. tostring(err))
     end
+    print("") -- Blank line for readability
 end
 
 -----------------------------------------
 ---UI Functions
 
 function itemWindow.setVisible(visible)
+    print("itemWindow - Line 171: Setting visibility to", tostring(visible))
     local success, err = pcall(function()
         itemWindow.searchBox.setVisible(visible)
         itemWindow.searchText.setVisible(visible)
@@ -186,11 +205,13 @@ function itemWindow.setVisible(visible)
         end
     end)
     if not success then
-        print("Error in itemWindow.setVisible: " .. err)
+        print("itemWindow - Line 187: Error in itemWindow.setVisible: " .. tostring(err))
     end
+    print("") -- Blank line for readability
 end
 
 function itemWindow.remove()
+    print("itemWindow - Line 193: Removing itemWindow elements.")
     local success, err = pcall(function()
         component.glasses.removeObject(itemWindow.searchBox.getID())
         component.glasses.removeObject(itemWindow.searchText.getID())
@@ -220,11 +241,13 @@ function itemWindow.remove()
         event.ignore("hud_keyboard", handleKeyboardWrapper)
     end)
     if not success then
-        print("Error in itemWindow.remove: " .. err)
+        print("itemWindow - Line 217: Error in itemWindow.remove: " .. tostring(err))
     end
+    print("") -- Blank line for readability
 end
 
 function itemWindow.onClick(x, y, button)
+    print("itemWindow - Line 223: Handling onClick event at (", tostring(x), ",", tostring(y), ") with button", tostring(button))
     local success, err = pcall(function()
         --buttons
         for k, v in pairs(itemWindow.elements) do
@@ -245,6 +268,7 @@ function itemWindow.onClick(x, y, button)
                 if widgetsAreUs.isPointInBox(x, y, v.box) then
                     if not addTo then
                         if button == 0 then
+                            print("itemWindow - Line 243: Adding item to monitoredItems.")
                             if itemWindow.elements.monitoredItems.display then
                                 itemWindow.elements.monitoredItems.display:clearDisplayedItems()
                                 itemWindow.elements.monitoredItems.display = nil
@@ -260,12 +284,14 @@ function itemWindow.onClick(x, y, button)
                             itemWindow.elements.monitoredItems.display:displayItems()
                             return
                         elseif button == 1 then
+                            print("itemWindow - Line 256: Broadcasting item via modem.")
                             component.modem.open(300)
                             component.modem.broadcast(300, s.serialize(v.item))
                             component.modem.close(300)
                             return
                         end
                     elseif addTo == "reverseLevelMaintainer" then
+                        print("itemWindow - Line 262: Adding item to reverseLevelMaintainer.")
                         if rlm.display then
                             rlm.display:clearDisplayedItems()
                             rlm.display = nil
@@ -280,6 +306,7 @@ function itemWindow.onClick(x, y, button)
                         rlm.display:displayItems()
                         renameBatch()
                     elseif addTo == "levelMaintainer" then
+                        print("itemWindow - Line 276: Adding item to levelMaintainer.")
                         if lm.display then
                             lm.display:clearDisplayedItems()
                             lm.display = nil
@@ -304,6 +331,7 @@ function itemWindow.onClick(x, y, button)
                 os.sleep(0)
                 if widgetsAreUs.isPointInBox(x, y, v.box) then
                     if not addTo then
+                        print("itemWindow - Line 298: Removing item from monitoredItems.")
                         if itemWindow.elements.monitoredItems.display then
                             itemWindow.elements.monitoredItems.display:clearDisplayedItems()
                             itemWindow.elements.monitoredItems.display = nil
@@ -326,12 +354,12 @@ function itemWindow.onClick(x, y, button)
                 addTo = "levelMaintainer"
                 itemWindow.elements.levelMaintainer.addButton.setColor(0, 1, 0.6)
                 itemWindow.elements.reverseLevelMaintainer.addButton.setColor(1, 1, 0.6)
-                print(addTo)
+                print("itemWindow - Line 315: addTo set to levelMaintainer")
                 return
             elseif addTo == "levelMaintainer" then
                 addTo = nil
                 itemWindow.elements.levelMaintainer.addButton.setColor(1, 1, 0.6)
-                print(addTo)
+                print("itemWindow - Line 320: addTo set to nil")
                 return
             end
         elseif widgetsAreUs.isPointInBox(x, y, itemWindow.elements.reverseLevelMaintainer.addButton) then
@@ -339,11 +367,11 @@ function itemWindow.onClick(x, y, button)
                 addTo = "reverseLevelMaintainer"
                 itemWindow.elements.reverseLevelMaintainer.addButton.setColor(0, 1, 0.6)
                 itemWindow.elements.levelMaintainer.addButton.setColor(1, 1, 0.6)
-                print(addTo)
+                print("itemWindow - Line 327: addTo set to reverseLevelMaintainer")
                 return
             elseif addTo == "reverseLevelMaintainer" then
                 addTo = nil
-                print(addTo)
+                print("itemWindow - Line 331: addTo set to nil")
                 return
             end
         end
@@ -378,8 +406,10 @@ function itemWindow.onClick(x, y, button)
                             return
                         end
                     elseif button == 1 then
-
+                        print("itemWindow - Line 359: Right-click action for levelMaintainer.")
+                        -- Additional code for right-click if needed
                     elseif button == 2 then
+                        print("itemWindow - Line 362: Removing item from levelMaintainer.")
                         local tbl = gimpHelper.loadTable("/home/programData/levelMaintainer.data")
                         table.remove(tbl, k)
                         event.push("remove_index", "/home/programData/levelMaintainerConfig.data", k)
@@ -425,8 +455,10 @@ function itemWindow.onClick(x, y, button)
                             return
                         end
                     elseif button == 1 then
-
+                        print("itemWindow - Line 388: Right-click action for reverseLevelMaintainer.")
+                        -- Additional code for right-click if needed
                     elseif button == 2 then
+                        print("itemWindow - Line 391: Removing item from reverseLevelMaintainer.")
                         local tbl = gimpHelper.loadTable("/home/programData/reverseLevelMaintainer.data")
                         table.remove(tbl, k)
                         rlm.display:clearDisplayedItems()
@@ -442,11 +474,13 @@ function itemWindow.onClick(x, y, button)
         end
     end)
     if not success then
-        print("Error in itemWindow.onClick: " .. err)
+        print("itemWindow - Line 406: Error in itemWindow.onClick: " .. tostring(err))
     end
+    print("") -- Blank line for readability
 end
 
 function itemWindow.update()
+    print("itemWindow - Line 412: Updating itemWindow displays.")
     local success, err = pcall(function()
         for k, v in pairs(itemWindow.elements) do
             if v.display and v.display.currentlyDisplayed then
@@ -458,8 +492,9 @@ function itemWindow.update()
         end
     end)
     if not success then
-        print("Error in itemWindow.update: " .. err)
+        print("itemWindow - Line 421: Error in itemWindow.update: " .. tostring(err))
     end
+    print("") -- Blank line for readability
 end
 
 return itemWindow

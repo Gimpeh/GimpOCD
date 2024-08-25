@@ -1,4 +1,3 @@
---machinesManager
 local metricsDisplays = require("metricsDisplays")
 local component = require("component")
 local gimpHelper = require("gimpHelper")
@@ -17,6 +16,7 @@ machinesManager.groups = {}
 machinesManager.individuals = {}
 
 local function getProxies()
+  print("machinesManager - Line 17: Getting component proxies.")
   local tbl = {}
   local theList = component.list("gt_machine")
   for k, v in pairs(theList) do
@@ -26,6 +26,7 @@ local function getProxies()
 end
 
 local function sortProxies()
+  print("machinesManager - Line 26: Sorting component proxies.")
   local success, err = pcall(function()
     local unsorted = getProxies()
     local config = gimpHelper.loadTable("/home/programData/groups.config")
@@ -46,11 +47,13 @@ local function sortProxies()
     has_been_sorted = true
   end)
   if not success then
-    print("Error in sortProxies: " .. err)
+    print("machinesManager - Line 46: Error in sortProxies: " .. tostring(err))
   end
+  print("") -- Blank line for readability
 end
 
 function machinesManager.groups.init()
+  print("machinesManager - Line 52: Initializing groups.")
   local success, err = pcall(function()
     if not has_been_sorted then
       sortProxies()
@@ -69,11 +72,13 @@ function machinesManager.groups.init()
     machinesManager.update()
   end)
   if not success then
-    print("Error in machinesManager.groups.init: " .. err)
+    print("machinesManager - Line 71: Error in machinesManager.groups.init: " .. tostring(err))
   end
+  print("") -- Blank line for readability
 end
 
 function machinesManager.groups.remove()
+  print("machinesManager - Line 76: Removing groups display.")
   local success, err = pcall(function()
     machinesManager.groups.display:clearDisplayedItems()
     machinesManager.groups.display = nil
@@ -81,11 +86,13 @@ function machinesManager.groups.remove()
     machinesManager.groups.background = nil
   end)
   if not success then
-    print("Error in machinesManager.groups.remove: " .. err)
+    print("machinesManager - Line 83: Error in machinesManager.groups.remove: " .. tostring(err))
   end
+  print("") -- Blank line for readability
 end
 
 function machinesManager.individuals.init(machinesTable, header)
+  print("machinesManager - Line 88: Initializing individuals with header =", tostring(header))
   local success, err = pcall(function()
     if not machinesTable then
       machinesTable = activeIndividualPage
@@ -117,11 +124,13 @@ function machinesManager.individuals.init(machinesTable, header)
     machinesManager.update()
   end)
   if not success then
-    print("Error in machinesManager.individuals.init: " .. err)
+    print("machinesManager - Line 118: Error in machinesManager.individuals.init: " .. tostring(err))
   end
+  print("") -- Blank line for readability
 end
 
 function machinesManager.individuals.remove()
+  print("machinesManager - Line 123: Removing individuals display.")
   local success, err = pcall(function()
     machinesManager.individuals.display:clearDisplayedItems()
     component.glasses.removeObject(machinesManager.individuals.background.getID())
@@ -129,22 +138,26 @@ function machinesManager.individuals.remove()
     machinesManager.individuals.background = nil
   end)
   if not success then
-    print("Error in machinesManager.individuals.remove: " .. err)
+    print("machinesManager - Line 130: Error in machinesManager.individuals.remove: " .. tostring(err))
   end
+  print("") -- Blank line for readability
 end
 
 function machinesManager.init()
+  print("machinesManager - Line 135: Initializing machinesManager.")
   local success, err = pcall(function()
     machinesManager.left = widgetsAreUs.createBox(10, 225, 20, 20, {0, 1, 0}, 0.7)
     machinesManager.right = widgetsAreUs.createBox(750, 225, 20, 20, {0, 1, 0}, 0.7)
     machinesManager[active].init()
   end)
   if not success then
-    print("Error in machinesManager.init: " .. err)
+    print("machinesManager - Line 142: Error in machinesManager.init: " .. tostring(err))
   end
+  print("") -- Blank line for readability
 end
 
 function machinesManager.remove()
+  print("machinesManager - Line 147: Removing machinesManager.")
   local success, err = pcall(function()
     saveData()
     machinesManager[active].remove()
@@ -153,11 +166,13 @@ function machinesManager.remove()
     machinesManager.left = nil
   end)
   if not success then
-    print("Error in machinesManager.remove: " .. err)
+    print("machinesManager - Line 155: Error in machinesManager.remove: " .. tostring(err))
   end
+  print("") -- Blank line for readability
 end
 
 function machinesManager.update()
+  print("machinesManager - Line 160: Updating machinesManager display.")
   local success, err = pcall(function()
     for k, v in ipairs(machinesManager[active].display.currentlyDisplayed) do
       os.sleep(0)
@@ -165,11 +180,13 @@ function machinesManager.update()
     end
   end)
   if not success then
-    print("Error in machinesManager.update: " .. err)
+    print("machinesManager - Line 167: Error in machinesManager.update: " .. tostring(err))
   end
+  print("") -- Blank line for readability
 end
 
 function machinesManager.onClick(x, y, button)
+  print("machinesManager - Line 172: Handling onClick event at (", tostring(x), ",", tostring(y), ") with button", tostring(button))
   local success, err = pcall(function()
     if widgetsAreUs.isPointInBox(x, y, machinesManager.left) then
       machinesManager[active].display:prevPage()
@@ -193,11 +210,13 @@ function machinesManager.onClick(x, y, button)
     end
   end)
   if not success then
-    print("Error in machinesManager.onClick: " .. err)
+    print("machinesManager - Line 191: Error in machinesManager.onClick: " .. tostring(err))
   end
+  print("") -- Blank line for readability
 end
 
 function machinesManager.setVisible(visible)
+  print("machinesManager - Line 197: Setting visibility to", tostring(visible))
   local success, err = pcall(function()
     machinesManager[active].background.setVisible(visible)
     if active == "individuals" then
@@ -210,11 +229,13 @@ function machinesManager.setVisible(visible)
     machinesManager.right.setVisible(visible)
   end)
   if not success then
-    print("Error in machinesManager.setVisible: " .. err)
+    print("machinesManager - Line 209: Error in machinesManager.setVisible: " .. tostring(err))
   end
+  print("") -- Blank line for readability
 end
 
 saveData = function(_, newName, xyz)
+  print("machinesManager - Line 215: Saving data for machine with newName =", tostring(newName))
   local success, err = pcall(function()
     local tbl = gimpHelper.loadTable("/home/programData/" .. individualHeader .. ".data") or {}
     if not tbl then
@@ -239,12 +260,13 @@ saveData = function(_, newName, xyz)
       gimpHelper.saveTable(tbl, "/home/programData/" .. individualHeader .. ".data")
       event.push("machine_named", data, data.xyz)
     else
-      print("Line: 217  |  Error in machinesManager saveData function: data is missing")
+      print("machinesManager - Line 243: Error in saveData: Data is incomplete.")
     end
   end)
   if not success then
-    print("Error in saveData: " .. err)
+    print("machinesManager - Line 246: Error in saveData: " .. tostring(err))
   end
+  print("") -- Blank line for readability
 end
 
 event.listen("nameSet", saveData)

@@ -1,5 +1,3 @@
---metricsDisplays V1.0
-
 local component = require("component")
 local widgetsAreUs = require("widgetsAreUs")
 local gimpHelper = require("gimpHelper")
@@ -17,6 +15,8 @@ local metricsDisplays = {}
 local batteryMetrics = {}
 
 function batteryMetrics.create(x, y)
+    print("metricsDisplays - Line 15: Creating battery metrics display at position (", x, ",", y, ").")
+
     -- Store UI elements and state in the table
     local backgroundBox = widgetsAreUs.createBox(x, y, 203, 183, {0, 0, 0}, 0.8)
 
@@ -75,178 +75,186 @@ function batteryMetrics.create(x, y)
     percentPower.setText(" ")
     percentPower.setScale(2)
 
-	return {
-		update = function(unserializedTable)
-		    local euin = unserializedTable.powerIn
-			local out = unserializedTable.powerOut
+    return {
+        update = function(unserializedTable)
+            print("metricsDisplays - Line 57: Updating battery metrics display.")
+            local euin = unserializedTable.powerIn
+            local out = unserializedTable.powerOut
 
-			euInText.setText(gimpHelper.shorthandNumber(euin))
-			euOutText.setText(gimpHelper.shorthandNumber(out))
+            euInText.setText(gimpHelper.shorthandNumber(euin))
+            euOutText.setText(gimpHelper.shorthandNumber(out))
 
-			local euStored = unserializedTable.stored
-			local powerMax = unserializedTable.max
+            local euStored = unserializedTable.stored
+            local powerMax = unserializedTable.max
 
-			local percent = gimpHelper.calculatePercentage(euStored, powerMax)
-			storedNumber.setText(gimpHelper.shorthandNumber(gimpHelper.cleanBatteryStorageString(euStored)))
+            local percent = gimpHelper.calculatePercentage(euStored, powerMax)
+            storedNumber.setText(gimpHelper.shorthandNumber(gimpHelper.cleanBatteryStorageString(euStored)))
 
-			local fillWidth = math.ceil(74 * (percent / 100))
-			fillBarForeground.setSize(20, fillWidth)
-			percentPower.setText(string.format("%.2f%%", tostring(percent)))
-		end,
-		setVisible = function(visible)
-			backgroundBox.setVisible(visible)
-			backgroundInterior.setVisible(visible)
-			ampsLabel.setVisible(visible)
-			fillBarBackground.setVisible(visible)
-			euOutText.setVisible(visible)
-			euOutLabel.setVisible(visible)
-			euInText.setVisible(visible)
-			euInLabel.setVisible(visible)
-			header.setVisible(visible)
-			fillBarForeground.setVisible(visible)
-			percentPower.setVisible(visible)
-			storedNumber.setVisible(visible)
-		end,
-		remove = function()
-			glasses.removeObject(backgroundBox.getID())
-			glasses.removeObject(backgroundInterior.getID())
-			glasses.removeObject(ampsLabel.getID())
-			glasses.removeObject(fillBarBackground.getID())
-			glasses.removeObject(euOutText.getID())
-			glasses.removeObject(euOutLabel.getID())
-			glasses.removeObject(euInText.getID())
-			glasses.removeObject(euInLabel.getID())
-			glasses.removeObject(header.getID())
-			glasses.removeObject(fillBarForeground.getID())
-			glasses.removeObject(percentPower.getID())
-			glasses.removeObject(storedNumber.getID())
+            local fillWidth = math.ceil(74 * (percent / 100))
+            fillBarForeground.setSize(20, fillWidth)
+            percentPower.setText(string.format("%.2f%%", tostring(percent)))
+        end,
+        setVisible = function(visible)
+            print("metricsDisplays - Line 73: Setting visibility of battery metrics display to", tostring(visible))
+            backgroundBox.setVisible(visible)
+            backgroundInterior.setVisible(visible)
+            ampsLabel.setVisible(visible)
+            fillBarBackground.setVisible(visible)
+            euOutText.setVisible(visible)
+            euOutLabel.setVisible(visible)
+            euInText.setVisible(visible)
+            euInLabel.setVisible(visible)
+            header.setVisible(visible)
+            fillBarForeground.setVisible(visible)
+            percentPower.setVisible(visible)
+            storedNumber.setVisible(visible)
+        end,
+        remove = function()
+            print("metricsDisplays - Line 87: Removing battery metrics display.")
+            glasses.removeObject(backgroundBox.getID())
+            glasses.removeObject(backgroundInterior.getID())
+            glasses.removeObject(ampsLabel.getID())
+            glasses.removeObject(fillBarBackground.getID())
+            glasses.removeObject(euOutText.getID())
+            glasses.removeObject(euOutLabel.getID())
+            glasses.removeObject(euInText.getID())
+            glasses.removeObject(euInLabel.getID())
+            glasses.removeObject(header.getID())
+            glasses.removeObject(fillBarForeground.getID())
+            glasses.removeObject(percentPower.getID())
+            glasses.removeObject(storedNumber.getID())
 
-			-- Set all references to nil
-			backgroundBox = nil
-			backgroundInterior = nil
-			ampsLabel = nil
-			fillBarBackground = nil
-			euOutText = nil
-			euOutLabel = nil
-			euInText = nil
-			euInLabel = nil
-			header = nil
-			fillBarForeground = nil
-			percentPower = nil
-			storedNumber = nil
-		end
-	}
+            -- Set all references to nil
+            backgroundBox = nil
+            backgroundInterior = nil
+            ampsLabel = nil
+            fillBarBackground = nil
+            euOutText = nil
+            euOutLabel = nil
+            euInText = nil
+            euInLabel = nil
+            header = nil
+            fillBarForeground = nil
+            percentPower = nil
+            storedNumber = nil
+        end
+    }
 end
 
-
 metricsDisplays.battery = batteryMetrics
+
 local machinesMetricsElement = {}
 
 function machinesMetricsElement.createElement(x, y, machineTable, header)
-  local machinesTable = machineTable
+    print("metricsDisplays - Line 115: Creating machine metrics element at position (", x, ",", y, ").")
+    local machinesTable = machineTable
 
-  local background = widgetsAreUs.createBox(x, y, 107, 75, {0, 0, 0}, 0.8)
+    local background = widgetsAreUs.createBox(x, y, 107, 75, {0, 0, 0}, 0.8)
 
-  local backgroundInterior = glasses.addRect()
+    local backgroundInterior = glasses.addRect()
     backgroundInterior.setPosition(x + 5, y + 5)
     backgroundInterior.setSize(65, 97)
     backgroundInterior.setColor(13, 255, 255)
     backgroundInterior.setAlpha(0.7)
 
-  local headerText = glasses.addTextLabel()
+    local headerText = glasses.addTextLabel()
     headerText.setScale(1.2)
     headerText.setText(header)
     headerText.setPosition(x + 10, y + 10)
 
-  local numberOfMachines = glasses.addTextLabel()
-  numberOfMachines.setPosition(x+70, y+50)
-  numberOfMachines.setText(" ")
+    local numberOfMachines = glasses.addTextLabel()
+    numberOfMachines.setPosition(x+70, y+50)
+    numberOfMachines.setText(" ")
 
-  local canRunTitle = glasses.addTextLabel()
-  canRunTitle.setText("Allowed:")
-  canRunTitle.setPosition(x+10, y+30)
-  canRunTitle.setScale(1.5)
+    local canRunTitle = glasses.addTextLabel()
+    canRunTitle.setText("Allowed:")
+    canRunTitle.setPosition(x+10, y+30)
+    canRunTitle.setScale(1.5)
 
-  local canRun = glasses.addTextLabel()
-  canRun.setText(" ")
-  canRun.setPosition(x+42, y+50)
-  canRun.setScale(1.5)
+    local canRun = glasses.addTextLabel()
+    canRun.setText(" ")
+    canRun.setPosition(x+42, y+50)
+    canRun.setScale(1.5)
 
-  local workAllowed = true
+    local workAllowed = true
 
-  return {
-    background = background,
-    machines = machinesTable,
-    update = function()
-      numberOfMachines.setText(tostring(#machinesTable))
-	  local allowedToWork = 0
-	  for k, v in ipairs(machinesTable) do
-		if v.isWorkAllowed() then
-			allowedToWork = allowedToWork +1
-			os.sleep(0)
-		end
-	  end
-      local allowed = allowedToWork
-      if allowed == 0 then
-        background.setColor(255, 0, 0)
-        workAllowed = false
-      elseif allowed > 0 and allowed < #machinesTable then
-        background.setColor(1, 0, 1)
-      else
-        background.setColor(0, 0, 0)
-        workAllowed = true
-      end
-      canRun.setText(tostring(allowed))
-    end,
-    setVisible = function(visible)
-      background.setVisible(visible)
-      backgroundInterior.setVisible(visible)
-      headerText.setVisible(visible)
-      numberOfMachines.setVisible(visible)
-      canRunTitle.setVisible(visible)
-      canRun.setVisible(visible)
-    end,
-    onClick = function(button)
-		if button == 0 then
-			for _, machine in ipairs(machinesTable) do
-				os.sleep(0)
-				if workAllowed == true then
-					machine.setWorkAllowed(false)
-				else
-					machine.setWorkAllowed(true)
-				end
-			end
-			if workAllowed == true then
-				workAllowed = false
-				background.setColor(255, 0, 0)
-			else
-				workAllowed = true
-				background.setColor(255, 255, 255)
-			end
-			local machinesManager = require("machinesManager")
-			machinesManager.update()
-		elseif button == 1 then
-			local machinesManager = require("machinesManager")
-			machinesManager.groups.remove()
-			machinesManager.individuals.init(machinesTable, header)
-		end
-    end,
-	remove = function()
-		component.glasses.removeObject(background.getID())
-		component.glasses.removeObject(backgroundInterior.getID())
-		component.glasses.removeObject(headerText.getID())
-		component.glasses.removeObject(numberOfMachines.getID())
-		component.glasses.removeObject(canRunTitle.getID())
-		component.glasses.removeObject(canRun.getID())
-		
-		background = nil
-		backgroundInterior = nil
-		headerText = nil
-		numberOfMachines = nil
-		canRunTitle = nil
-		canRun = nil
-	end
-  }
+    return {
+        background = background,
+        machines = machinesTable,
+        update = function()
+            print("metricsDisplays - Line 142: Updating machine metrics element.")
+            numberOfMachines.setText(tostring(#machinesTable))
+            local allowedToWork = 0
+            for k, v in ipairs(machinesTable) do
+                if v.isWorkAllowed() then
+                    allowedToWork = allowedToWork + 1
+                    os.sleep(0)
+                end
+            end
+            local allowed = allowedToWork
+            if allowed == 0 then
+                background.setColor(255, 0, 0)
+                workAllowed = false
+            elseif allowed > 0 and allowed < #machinesTable then
+                background.setColor(1, 0, 1)
+            else
+                background.setColor(0, 0, 0)
+                workAllowed = true
+            end
+            canRun.setText(tostring(allowed))
+        end,
+        setVisible = function(visible)
+            print("metricsDisplays - Line 160: Setting visibility of machine metrics element to", tostring(visible))
+            background.setVisible(visible)
+            backgroundInterior.setVisible(visible)
+            headerText.setVisible(visible)
+            numberOfMachines.setVisible(visible)
+            canRunTitle.setVisible(visible)
+            canRun.setVisible(visible)
+        end,
+        onClick = function(button)
+            print("metricsDisplays - Line 169: Handling onClick for machine metrics element with button", tostring(button))
+            if button == 0 then
+                for _, machine in ipairs(machinesTable) do
+                    os.sleep(0)
+                    if workAllowed == true then
+                        machine.setWorkAllowed(false)
+                    else
+                        machine.setWorkAllowed(true)
+                    end
+                end
+                if workAllowed == true then
+                    workAllowed = false
+                    background.setColor(255, 0, 0)
+                else
+                    workAllowed = true
+                    background.setColor(255, 255, 255)
+                end
+                local machinesManager = require("machinesManager")
+                machinesManager.update()
+            elseif button == 1 then
+                local machinesManager = require("machinesManager")
+                machinesManager.groups.remove()
+                machinesManager.individuals.init(machinesTable, header)
+            end
+        end,
+        remove = function()
+            print("metricsDisplays - Line 189: Removing machine metrics element.")
+            component.glasses.removeObject(background.getID())
+            component.glasses.removeObject(backgroundInterior.getID())
+            component.glasses.removeObject(headerText.getID())
+            component.glasses.removeObject(numberOfMachines.getID())
+            component.glasses.removeObject(canRunTitle.getID())
+            component.glasses.removeObject(canRun.getID())
+
+            background = nil
+            backgroundInterior = nil
+            headerText = nil
+            numberOfMachines = nil
+            canRunTitle = nil
+            canRun = nil
+        end
+    }
 end
 
 metricsDisplays.machineGroups = machinesMetricsElement
@@ -254,120 +262,127 @@ metricsDisplays.machineGroups = machinesMetricsElement
 local machineIndividual = {}
 
 function machineIndividual.create(x, y, individualProxy)
-	local machine = individualProxy
-	local highlighted = false
+    print("metricsDisplays - Line 207: Creating individual machine element at position (", x, ",", y, ").")
+    local machine = individualProxy
+    local highlighted = false
 
-	local background = widgetsAreUs.createBox(x, y, 85, 34, {1, 1, 1}, 0.6)
+    local background = widgetsAreUs.createBox(x, y, 85, 34, {1, 1, 1}, 0.6)
 
-	local name = glasses.addTextLabel()
-	name.setPosition(x+4, y+4)
-	name.setText("updating")
-	name.setScale(1)
+    local name = glasses.addTextLabel()
+    name.setPosition(x+4, y+4)
+    name.setText("updating")
+    name.setScale(1)
 
-	local name2 = glasses.addTextLabel()
-	name2.setPosition(x+4, y+12)
-	name2.setText(" ")
-	name2.setScale(0.9)
+    local name2 = glasses.addTextLabel()
+    name2.setPosition(x+4, y+12)
+    name2.setText(" ")
+    name2.setScale(0.9)
 
-	local state = glasses.addTextLabel()
-	state.setScale(1.2)
-	state.setText(" ")
-	state.setPosition(x+22, y+24)
+    local state = glasses.addTextLabel()
+    state.setScale(1.2)
+    state.setText(" ")
+    state.setPosition(x+22, y+24)
 
-	local highlightedIndicator = glasses.addRect()
-	highlightedIndicator.setPosition(x+78, y+27)
-	highlightedIndicator.setSize(0, 0)
-	highlightedIndicator.setColor(0, 1, 1)
+    local highlightedIndicator = glasses.addRect()
+    highlightedIndicator.setPosition(x+78, y+27)
+    highlightedIndicator.setSize(0, 0)
+    highlightedIndicator.setColor(0, 1, 1)
 
-	local xyz
+    local xyz
 
-	local setName = function(newName)
-		if newName then
-			name.setText(newName)
-			name2.setText(" ")
-			xyz = {}
-			xyz.x, xyz.y, xyz.z = machine.getCoordinates()
-			event.push("nameSet", newName, xyz)
-		else
-			local firstPart, secondPart = string.match(machine.getName(), "([^%.]+)%.([^%.]+)%.?.*")
-			name.setText(firstPart)
-			name2.setText(secondPart)
-		end
-	end
+    local setName = function(newName)
+        print("metricsDisplays - Line 232: Setting name for individual machine element to", tostring(newName))
+        if newName then
+            name.setText(newName)
+            name2.setText(" ")
+            xyz = {}
+            xyz.x, xyz.y, xyz.z = machine.getCoordinates()
+            event.push("nameSet", newName, xyz)
+        else
+            local firstPart, secondPart = string.match(machine.getName(), "([^%.]+)%.([^%.]+)%.?.*")
+            name.setText(firstPart)
+            name2.setText(secondPart)
+        end
+    end
 
-	local machineInterface = {
-		background = background,
-		setVisible = function(visible)
-			background.setVisible(visible)
-			name.setVisible(visible)
-			name2.setVisible(visible)
-			state.setVisible(visible)
-		end,
-		setName = setName,
-		getCoords = function()
-			return machine.getCoordinates()
-		end,
-		update = function()
-			local machineState = machine.isMachineActive()
-			if machineState	then
-				state.setText("On")
-			else
-				state.setText("Idle")
-			end
+    local machineInterface = {
+        background = background,
+        setVisible = function(visible)
+            print("metricsDisplays - Line 246: Setting visibility of individual machine element to", tostring(visible))
+            background.setVisible(visible)
+            name.setVisible(visible)
+            name2.setVisible(visible)
+            state.setVisible(visible)
+        end,
+        setName = setName,
+        getCoords = function()
+            return machine.getCoordinates()
+        end,
+        update = function()
+            print("metricsDisplays - Line 256: Updating individual machine element state.")
+            local machineState = machine.isMachineActive()
+            if machineState then
+                state.setText("On")
+            else
+                state.setText("Idle")
+            end
 
-			local allowed = machine.isWorkAllowed()
-			if allowed then
-				background.setColor(1, 1, 1)
-			else
-				background.setColor(1, 0, 0)
-			end
-		end,
-		setState = function()
-			local allowed = machine.isWorkAllowed()
-			if allowed then
-				machine.setWorkAllowed(false)
-				background.setColor(1, 0, 0)
-			else
-				machine.setWorkAllowed(true)
-				background.setColor(1, 1, 1)
-			end
-		end,
-		onClick = function(button, machinesInterface)
-			if button == 0 then -- left click
-				machinesInterface.setState(machinesInterface)
-			elseif button == 1 then --right click
-				local xyz = {}
-				xyz.x, xyz.y, xyz.z = machine.getCoordinates()
-				event.push("highlight", xyz)
-				if highlighted then
-					highlightedIndicator.setSize(0, 0)
-					highlighted = false
-				else
-					highlightedIndicator.setSize(5, 5)
-					highlighted = true
-				end
-			elseif button == 2 then
-				name.setText(" ")
-				name2.setText(" ")
-				local helpMessage = widgetsAreUs.initText(250, 162, "Input New Name")
-				setName(gimpHelper.handleTextInput(name))
-				helpMessage.remove()
-			end
-		end,
-		remove = function()
-			component.glasses.removeObject(background.getID())
-			component.glasses.removeObject(name.getID())
-			component.glasses.removeObject(name2.getID())
-			component.glasses.removeObject(state.getID())
+            local allowed = machine.isWorkAllowed()
+            if allowed then
+                background.setColor(1, 1, 1)
+            else
+                background.setColor(1, 0, 0)
+            end
+        end,
+        setState = function()
+            print("metricsDisplays - Line 270: Toggling work state for individual machine element.")
+            local allowed = machine.isWorkAllowed()
+            if allowed then
+                machine.setWorkAllowed(false)
+                background.setColor(1, 0, 0)
+            else
+                machine.setWorkAllowed(true)
+                background.setColor(1, 1, 1)
+            end
+        end,
+        onClick = function(button, machinesInterface)
+            print("metricsDisplays - Line 279: Handling onClick for individual machine element with button", tostring(button))
+            if button == 0 then -- left click
+                machinesInterface.setState(machinesInterface)
+            elseif button == 1 then -- right click
+                local xyz = {}
+                xyz.x, xyz.y, xyz.z = machine.getCoordinates()
+                event.push("highlight", xyz)
+                if highlighted then
+                    highlightedIndicator.setSize(0, 0)
+                    highlighted = false
+                else
+                    highlightedIndicator.setSize(5, 5)
+                    highlighted = true
+                end
+            elseif button == 2 then
+                name.setText(" ")
+                name2.setText(" ")
+                local helpMessage = widgetsAreUs.initText(250, 162, "Input New Name")
+                setName(gimpHelper.handleTextInput(name))
+                helpMessage.remove()
+            end
+        end,
+        remove = function()
+            print("metricsDisplays - Line 302: Removing individual machine element.")
+            component.glasses.removeObject(background.getID())
+            component.glasses.removeObject(name.getID())
+            component.glasses.removeObject(name2.getID())
+            component.glasses.removeObject(state.getID())
 
-			background = nil
-			name = nil
-			name2 = nil
-			state = nil
-		end
-	}
+            background = nil
+            name = nil
+            name2 = nil
+            state = nil
+        end
+    }
 
-	return machineInterface
+    return machineInterface
 end
 
 metricsDisplays.machine = machineIndividual

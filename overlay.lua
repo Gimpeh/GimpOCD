@@ -18,39 +18,43 @@ local active
 ----Initialization and Swap Functions
 
 function overlay.loadTab(tab)
+    print("overlay.tabs - Line 19: Loading tab", tostring(tab))
     local success, err = pcall(function()
         if active and active.remove then 
             local success_remove, error_remove = pcall(active.remove) 
             if not success_remove then
-                print("Error removing active tab: " .. error_remove)
+                print("overlay.tabs - Line 24: Error removing active tab: " .. tostring(error_remove))
             end
         end
         overlay.tabs[tab].init()
         local tbl = {tab = tab}
         local success_save, error_save = pcall(gimpHelper.saveTable, tbl, "/home/programData/overlay.data")
         if not success_save then
-            print("Error saving overlay tab state: " .. error_save)
+            print("overlay.tabs - Line 30: Error saving overlay tab state: " .. tostring(error_save))
         end
         os.sleep(0)
     end)
     if not success then
-        print("Error in overlay.loadTab: " .. err)
+        print("overlay.tabs - Line 34: Error in overlay.loadTab: " .. tostring(err))
     end
+    print("") -- Blank line for readability
 end
 
 function overlay.init()
+    print("overlay.tabs - Line 39: Initializing overlay.")
     local success, err = pcall(function()
         overlay.tabs.itemWindow = {}
         overlay.tabs.itemWindow.box = widgetsAreUs.createBox(10, 10, 140, 40, {0, 0, 1}, 0.7)
         overlay.tabs.itemWindow.title = widgetsAreUs.text(20, 20, "Storage", 1)
         overlay.tabs.itemWindow.init = function()
             local success_itemWindow, error_itemWindow = pcall(function()
+                print("overlay.tabs - Line 47: Initializing itemWindow tab.")
                 itemWindow.init()
                 os.sleep(0)
                 active = itemWindow
             end)
             if not success_itemWindow then
-                print("Error in itemWindow.init: " .. error_itemWindow)
+                print("overlay.tabs - Line 52: Error in itemWindow.init: " .. tostring(error_itemWindow))
             end
         end
 
@@ -59,12 +63,13 @@ function overlay.init()
         overlay.tabs.machines.title = widgetsAreUs.text(170, 20, "Machines", 1)
         overlay.tabs.machines.init = function()
             local success_machines, error_machines = pcall(function()
+                print("overlay.tabs - Line 59: Initializing machines tab.")
                 machinesManager.init()
                 os.sleep(0)
                 active = machinesManager
             end)
             if not success_machines then
-                print("Error in machinesManager.init: " .. error_machines)
+                print("overlay.tabs - Line 64: Error in machinesManager.init: " .. tostring(error_machines))
             end
         end
 
@@ -73,12 +78,13 @@ function overlay.init()
         overlay.tabs.options.title = widgetsAreUs.text(320, 20, "Options", 1)
         overlay.tabs.options.init = function()
             local success_options, error_options = pcall(function()
+                print("overlay.tabs - Line 71: Initializing options tab.")
                 configurations.init()
                 os.sleep(0)
                 active = configurations
             end)
             if not success_options then
-                print("Error in configurations.init: " .. error_options)
+                print("overlay.tabs - Line 76: Error in configurations.init: " .. tostring(error_options))
             end
         end
 
@@ -87,12 +93,12 @@ function overlay.init()
         overlay.tabs.textEditor.title = widgetsAreUs.text(470, 20, "Text Editor", 1)
         overlay.tabs.textEditor.init = function()
             local success_textEditor, error_textEditor = pcall(function()
-                print("text editor tab init called")
+                print("overlay.tabs - Line 83: Initializing text editor tab.")
                 os.sleep(0)
                 active = "text editor not set yet"
             end)
             if not success_textEditor then
-                print("Error in textEditor.init: " .. error_textEditor)
+                print("overlay.tabs - Line 88: Error in textEditor.init: " .. tostring(error_textEditor))
             end
         end
 
@@ -106,22 +112,26 @@ function overlay.init()
         local success_load, config = pcall(gimpHelper.loadTable, "/home/programData/overlay.data")
         if success_load and config then
             local tab = config.tab
+            print("overlay.tabs - Line 101: Loading saved tab", tostring(tab))
             overlay.loadTab(tab)
         else
+            print("overlay.tabs - Line 104: Initializing default tab (machines).")
             overlay.tabs.machines.init()
         end
         overlay.hide()
         os.sleep(0)
     end)
     if not success then
-        print("Error in overlay.init: " .. err)
+        print("overlay.tabs - Line 110: Error in overlay.init: " .. tostring(err))
     end
+    print("") -- Blank line for readability
 end
 
 -----------------------------------------
 ---element functionality
 
 function overlay.setVisible(visible)
+    print("overlay.tabs - Line 117: Setting visibility to", tostring(visible))
     local success, err = pcall(function()
         for k, v in pairs(overlay.tabs) do
             v.box.setVisible(visible)
@@ -129,11 +139,13 @@ function overlay.setVisible(visible)
         end
     end)
     if not success then
-        print("Error in overlay.setVisible: " .. err)
+        print("overlay.tabs - Line 123: Error in overlay.setVisible: " .. tostring(err))
     end
+    print("") -- Blank line for readability
 end
 
 function overlay.hide()
+    print("overlay.tabs - Line 128: Hiding overlay.")
     local success, err = pcall(function()
         overlay.setVisible(false)
         if active and active.setVisible then
@@ -141,11 +153,13 @@ function overlay.hide()
         end
     end)
     if not success then
-        print("Error in overlay.hide: " .. err)
+        print("overlay.tabs - Line 134: Error in overlay.hide: " .. tostring(err))
     end
+    print("") -- Blank line for readability
 end
 
 function overlay.show()
+    print("overlay.tabs - Line 139: Showing overlay.")
     local success, err = pcall(function()
         overlay.setVisible(true)
         if active and active.setVisible then
@@ -153,13 +167,13 @@ function overlay.show()
         end
     end)
     if not success then
-        print("Error in overlay.show: " .. err)
+        print("overlay.tabs - Line 145: Error in overlay.show: " .. tostring(err))
     end
+    print("") -- Blank line for readability
 end
 
----------
-
 function overlay.onClick(x, y, button)
+    print("overlay.tabs - Line 150: Handling onClick event at (", tostring(x), ",", tostring(y), ") with button", tostring(button))
     local success, err = pcall(function()
         for k, v in pairs(overlay.boxes) do
             if v.contains(x, y, v) then
@@ -173,11 +187,13 @@ function overlay.onClick(x, y, button)
         os.sleep(0)
     end)
     if not success then
-        print("Error in overlay.onClick: " .. err)
+        print("overlay.tabs - Line 161: Error in overlay.onClick: " .. tostring(err))
     end
+    print("") -- Blank line for readability
 end
 
 function overlay.update()
+    print("overlay.tabs - Line 166: Updating overlay.")
     local success, err = pcall(function()
         if active and active.update then
             os.sleep(0)
@@ -185,8 +201,9 @@ function overlay.update()
         end
     end)
     if not success then
-        print("Error in overlay.update: " .. err)
+        print("overlay.tabs - Line 172: Error in overlay.update: " .. tostring(err))
     end
+    print("") -- Blank line for readability
 end
 
 return overlay

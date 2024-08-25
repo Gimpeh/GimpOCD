@@ -8,9 +8,9 @@ local s = require("serialization")
 ---event handlers
 
 local function stockPileData(derp, machineValues, xyz)
-    print("Line 10: stockPileData called with derp =", derp, "and machineValues =", s.serialize(machineValues))
+    print("configurations - Line 10: stockPileData called with derp =", tostring(derp), "and machineValues =", s.serialize(machineValues))
     local success, err = pcall(function()
-        print("Line 12: Inside pcall of stockPileData")
+        print("configurations - Line 12: Inside pcall of stockPileData")
         machineValues.xyz = xyz
         local tbl = gimpHelper.loadTable("/home/programData/machinesNamed.data")
         if not tbl then
@@ -21,40 +21,42 @@ local function stockPileData(derp, machineValues, xyz)
             for k, v in ipairs(tbl) do
                 os.sleep(0)
                 if v.xyz.x == machineValues.xyz.x and v.xyz.y == machineValues.xyz.y and v.xyz.z == machineValues.xyz.z then
-                    print("Line 23: Removing item from table at index", k)
+                    print("configurations - Line 23: Removing item from table at index", tostring(k))
                     table.remove(tbl, k)
                 end
             end
         end
-        print("Line 27: Inserting machineValues into table")
+        print("configurations - Line 27: Inserting machineValues into table")
         table.insert(tbl, machineValues)
         gimpHelper.saveTable(tbl, "/home/programData/machinesNamed.data")
         os.sleep(0)
     end)
     if not success then
-        print("Error in stockPileData: " .. err)
+        print("configurations - Error in stockPileData: " .. tostring(err))
     end
+    print("") -- Blank line after function execution
 end
 
 local function removeIndex(_, path, index)
-    print("Line 36: removeIndex called with path =", path, "and index =", index)
+    print("configurations - Line 36: removeIndex called with path =", tostring(path), "and index =", tostring(index))
     local success, err = pcall(function()
-        print("Line 38: Inside pcall of removeIndex")
+        print("configurations - Line 38: Inside pcall of removeIndex")
         local tbl = gimpHelper.loadTable(path)
         if not tbl then
             tbl = {}
         end
         os.sleep(0)
         if tbl[index] then
-            print("Line 44: Removing item from table at index", index)
+            print("configurations - Line 44: Removing item from table at index", tostring(index))
             table.remove(tbl, index)
         end
         gimpHelper.saveTable(tbl, path)
         os.sleep(0)
     end)
     if not success then
-        print("Error in removeIndex: " .. err)
+        print("configurations - Error in removeIndex: " .. tostring(err))
     end
+    print("") -- Blank line after function execution
 end
 
 ----------------------------------------------------------
@@ -86,7 +88,7 @@ local displays = {}
 ---initialization
 
 function configurations.initBoxes()
-    print("Line 66: Initializing boxes")
+    print("configurations - Line 66: Initializing boxes")
     local success, err = pcall(function()
         boxes.background = widgetsAreUs.createBox(10, 50, 750, 400, {0.2, 0.2, 0.2}, 0.8)
         boxes.levelMaintainer = widgetsAreUs.createBox(20, 80, 160, 200, {0.6, 1, 0.6}, 1)
@@ -99,12 +101,13 @@ function configurations.initBoxes()
         os.sleep(0)
     end)
     if not success then
-        print("Error in configurations.initBoxes: " .. err)
+        print("configurations - Error in configurations.initBoxes: " .. tostring(err))
     end
+    print("") -- Blank line after function execution
 end
 
 function configurations.initButtons()
-    print("Line 86: Initializing buttons")
+    print("configurations - Line 86: Initializing buttons")
     local success, err = pcall(function()
         buttons.levelMaintainerPrev = widgetsAreUs.symbolBox(85, 58, "^", nil, function()
             displays.levelMaintainer:prevPage()
@@ -127,15 +130,16 @@ function configurations.initButtons()
         os.sleep(0)
     end)
     if not success then
-        print("Error in configurations.initButtons: " .. err)
+        print("configurations - Error in configurations.initButtons: " .. tostring(err))
     end
+    print("") -- Blank line after function execution
 end
 
 function configurations.initDisplays()
-    print("Line 108: Initializing displays")
+    print("configurations - Line 108: Initializing displays")
     local success, err = pcall(function()
         local function loadAndDisplayTable(path, width, height, coords, callback, widget)
-            print("Line 112: loadAndDisplayTable called with path =", path)
+            print("configurations - Line 112: loadAndDisplayTable called with path =", tostring(path))
             local tbl = gimpHelper.loadTable(path)
             local display = nil
             if tbl and tbl[1] then
@@ -150,179 +154,186 @@ function configurations.initDisplays()
             end
             tbl = nil
             os.sleep(0)
+            print("") -- Blank line after loop
             return display
         end
 
         displays.levelMaintainer = loadAndDisplayTable("/home/programData/levelMaintainer.data", 150, 30, {x1=25, x2=175, y1=85, y2=195}, function(index)
-            print("Line 127: levelMaintainer callback called with index =", index)
+            print("configurations - Line 127: levelMaintainer callback called with index =", tostring(index))
             configurations.createLevelMaintainerConfig(192, 80, index)
         end, widgetsAreUs.levelMaintainer)
 
         displays.itemManager = loadAndDisplayTable("/home/programData/monitoredItems", 120, 40, {x1=390, x2=540, y1=65, y2=305}, function(index)
-            print("Line 131: itemManager callback called with index =", index)
+            print("configurations - Line 131: itemManager callback called with index =", tostring(index))
             configurations.createItemManagerConfig(580, 80, index)
         end, widgetsAreUs.itemBox)
 
         displays.machineManager = loadAndDisplayTable("/home/programData/machinesNamed.data", 120, 34, {x1=45, x2=295, y1=320, y2=460}, function(index)
-            print("Line 135: machineManager callback called with index =", index)
+            print("configurations - Line 135: machineManager callback called with index =", tostring(index))
             configurations.createMachineManagerConfig(355, 310, index)
         end, widgetsAreUs.machineElementConfigEdition)
     end)
     if not success then
-        print("Error in configurations.initDisplays: " .. err)
+        print("configurations - Error in configurations.initDisplays: " .. tostring(err))
     end
+    print("") -- Blank line after function execution
 end
 
 function configurations.init()
-    print("Line 141: Initializing configurations")
+    print("configurations - Line 141: Initializing configurations")
     local success, error = pcall(configurations.initBoxes)
-    if not success then print("Error in configurations.initBoxes: " .. error) end
+    if not success then print("configurations - Error in configurations.initBoxes: " .. tostring(error)) end
 
     success, error = pcall(configurations.initButtons)
-    if not success then print("Error in configurations.initButtons: " .. error) end
+    if not success then print("configurations - Error in configurations.initButtons: " .. tostring(error)) end
 
     success, error = pcall(configurations.initDisplays)
-    if not success then print("Error in configurations.initDisplays: " .. error) end
+    if not success then print("configurations - Error in configurations.initDisplays: " .. tostring(error)) end
 
     success, error = pcall(function ()
-        print("Line 150: Creating general config and generating helper table")
+        print("configurations - Line 150: Creating general config and generating helper table")
         createGeneralConfig(525, 320, 1)
         generateHelperTable()
     end)
-    if not success then print("Error in configurations.init: " .. error) end
+    if not success then print("configurations - Error in configurations.init: " .. tostring(error)) end
+    print("") -- Blank line after function execution
 end
 
 ----------------------------------------------------------
 ---configs factory
 
 local function removeConfigDisplay(activeConfigsIndex)
-    print("Line 160: removeConfigDisplay called with activeConfigsIndex =", activeConfigsIndex)
+    print("configurations - Line 160: removeConfigDisplay called with activeConfigsIndex =", tostring(activeConfigsIndex))
     local success, err = pcall(function()
         for k, v in pairs(currentlyDisplayedConfigs[activeConfigsIndex].elements) do
             if v.remove then
                 local success_remove, error_remove = pcall(v.remove)
-                if not success_remove then print("Error removing element: " .. error_remove) end
+                if not success_remove then print("configurations - Error removing element: " .. tostring(error_remove)) end
             end
         end
         currentlyDisplayedConfigs[activeConfigsIndex].elements = nil
+        print("") -- Blank line after loop
     end)
     if not success then
-        print("Error in removeConfigDisplay: " .. err)
+        print("configurations - Error in removeConfigDisplay: " .. tostring(err))
     end
+    print("") -- Blank line after function execution
 end
 
 saveConfigData = function(activeConfigsConfigKey, path, activeConfigsIndex)
-    print("Line 214: saveConfigData called with activeConfigsConfigKey =", activeConfigsConfigKey, "path =", path, "activeConfigsIndex =", activeConfigsIndex)
+    print("configurations - Line 214: saveConfigData called with activeConfigsConfigKey =", tostring(activeConfigsConfigKey), "path =", tostring(path), "activeConfigsIndex =", tostring(activeConfigsIndex))
 
     local success, err = pcall(function()
-        print("Line 216: Entering pcall block")
-        print("Line 217: activeConfigsConfigKey =", activeConfigsConfigKey, "path =", path, "activeConfigsIndex =", activeConfigsIndex)
+        print("configurations - Line 216: Entering pcall block")
+        print("configurations - Line 217: activeConfigsConfigKey =", tostring(activeConfigsConfigKey), "path =", tostring(path), "activeConfigsIndex =", tostring(activeConfigsIndex))
 
         local tbl = gimpHelper.loadTable(path)
-        print("Line 220: Loaded tbl from gimpHelper.loadTable(path) =", s.serialize(tbl))
+        print("configurations - Line 220: Loaded tbl from gimpHelper.loadTable(path) =", s.serialize(tbl))
 
         if not tbl then
-            print("Line 222: tbl is nil, initializing as empty table")
+            print("configurations - Line 222: tbl is nil, initializing as empty table")
             tbl = {}
         end
 
         local derp = {}
-        print("Line 225: Initialized empty table derp =", s.serialize(derp))
+        print("configurations - Line 225: Initialized empty table derp =", s.serialize(derp))
 
         for k, v in pairs(currentlyDisplayedConfigs[activeConfigsConfigKey].elements) do
             if type(v) ~= "function" and v.getValue then
-                print("Line 227: Iterating currentlyDisplayedConfigs elements, k =", k, "v =", tostring(v.getValue()))
+                print("configurations - Line 227: Iterating currentlyDisplayedConfigs elements, k =", tostring(k), "v =", tostring(v.getValue()))
             end
             if v.getValue then
                 local value = tostring(v.getValue())
-                print("Line 229: v.getValue() =", value)
+                print("configurations - Line 229: v.getValue() =", value)
 
                 if value ~= "num" and value ~= "string" then
-                    print("Line 231: Saving config for k =", k, "v.key =", v.key, "v.getValue() =", value)
+                    print("configurations - Line 231: Saving config for k =", tostring(k), "v.key =", tostring(v.key), "v.getValue() =", value)
                     derp[v.key] = value
                 else
-                    print("Line 233: Skipping save for k =", k, "v.key =", v.key, "v.getValue() =", value)
+                    print("configurations - Line 233: Skipping save for k =", tostring(k), "v.key =", tostring(v.key), "v.getValue() =", value)
                 end
             else
-                print("Line 235: v.getValue is nil for k =", k)
+                print("configurations - Line 235: v.getValue is nil for k =", tostring(k))
             end
         end
 
         tbl[activeConfigsIndex] = derp
-        print("Line 238: Updated tbl[activeConfigsIndex] =", s.serialize(tbl[activeConfigsIndex]))
+        print("configurations - Line 238: Updated tbl[activeConfigsIndex] =", s.serialize(tbl[activeConfigsIndex]))
 
-        print("Line 240: Saving updated table to path =", path)
+        print("configurations - Line 240: Saving updated table to path =", tostring(path))
         gimpHelper.saveTable(tbl, path)
-        print("Line 242: Table saved successfully")
-
+        print("configurations - Line 242: Table saved successfully")
+        print("") -- Blank line after function block
     end)
 
     if not success then
-        print("Error in saveConfigData: " .. err)
+        print("configurations - Error in saveConfigData: " .. tostring(err))
     else
-        print("Line 245: saveConfigData completed successfully")
+        print("configurations - Line 245: saveConfigData completed successfully")
     end
+    print("") -- Blank line after function execution
 end
 
 loadConfigData = function(currentlyDisplayedConfigsRef, path, configIndex)
-    print("Line 236: loadConfigData called with currentlyDisplayedConfigsRef =", currentlyDisplayedConfigsRef, "path =", path, "configIndex =", configIndex)
+    print("configurations - Line 236: loadConfigData called with currentlyDisplayedConfigsRef =", tostring(currentlyDisplayedConfigsRef), "path =", tostring(path), "configIndex =", tostring(configIndex))
     -- local success, err = pcall(function()
-        print("Line 238: Entering pcall block")
-        print("Line 239: currentlyDisplayedConfigsRef =", currentlyDisplayedConfigsRef, "path =", path, "configIndex =", configIndex)
+        print("configurations - Line 238: Entering pcall block")
+        print("configurations - Line 239: currentlyDisplayedConfigsRef =", tostring(currentlyDisplayedConfigsRef), "path =", tostring(path), "configIndex =", tostring(configIndex))
 
         local tbl = gimpHelper.loadTable(path)
-        print("Line 242: tbl loaded from gimpHelper.loadTable(path) =", tbl)
+        print("configurations - Line 242: tbl loaded from gimpHelper.loadTable(path) =", s.serialize(tbl))
 
         if tbl and tbl[configIndex] then
-            print("Line 244: tbl and tbl[configIndex] are valid")
+            print("configurations - Line 244: tbl and tbl[configIndex] are valid")
             for k, v in pairs(currentlyDisplayedConfigs[currentlyDisplayedConfigsRef].elements) do
-                print("Line 246: Iterating currentlyDisplayedConfigs elements, k =", k, "v =", v)
+                print("configurations - Line 246: Iterating currentlyDisplayedConfigs elements, k =", tostring(k), "v =", tostring(v))
                 for i, j in pairs(tbl[configIndex]) do
-                    print("Line 248: Iterating tbl[configIndex], i =", i, "j =", j)
+                    print("configurations - Line 248: Iterating tbl[configIndex], i =", tostring(i), "j =", tostring(j))
 
-                    print(tostring(v.key), i)
+                    print(tostring(v.key), tostring(i))
                     if v.key and v.key == i then
-                        print("Line 250: Found matching key in currentlyDisplayedConfigs element, key =", v.key)
+                        print("configurations - Line 250: Found matching key in currentlyDisplayedConfigs element, key =", tostring(v.key))
 
                         if j and tostring(j) == "true" then
-                            print("Line 252: j is 'true', setting value to 'X'")
+                            print("configurations - Line 252: j is 'true', setting value to 'X'")
                             currentlyDisplayedConfigs[currentlyDisplayedConfigsRef].elements[k].setValue("X")
                         elseif j and tostring(j) == "false" then
-                            print("Line 254: j is 'false', setting value to ' ' (space)")
+                            print("configurations - Line 254: j is 'false', setting value to ' ' (space)")
                             currentlyDisplayedConfigs[currentlyDisplayedConfigsRef].elements[k].setValue(" ")
                         elseif j then
-                            print("Line 256: j has a different value, setting value to j =", j)
+                            print("configurations - Line 256: j has a different value, setting value to j =", tostring(j))
                             currentlyDisplayedConfigs[currentlyDisplayedConfigsRef].elements[k].setValue(j)
                         else
-                            print("Line 258: j is nil or false")
+                            print("configurations - Line 258: j is nil or false")
                         end
                     else
-                        print("Line 260: No matching key found or v.key is nil")
+                        print("configurations - Line 260: No matching key found or v.key is nil")
                     end
                 end
             end
         else
-            print("Line 263: tbl or tbl[configIndex] is nil or false")
+            print("configurations - Line 263: tbl or tbl[configIndex] is nil or false")
         end
     --[[end)
 
     if not success then
-        print("Error in loadConfigData: " .. err)
+        print("configurations - Error in loadConfigData: " .. tostring(err))
     else
-        print("Line 267: loadConfigData completed successfully")
+        print("configurations - Line 267: loadConfigData completed successfully")
     end
     ]]
+    print("") -- Blank line after function execution
 end
 
 function configurations.createLevelMaintainerConfig(x, y, index)
-    print("Line 217: createLevelMaintainerConfig called with x =", x, "y =", y, "index =", index)
+    print("configurations - Line 217: createLevelMaintainerConfig called with x =", tostring(x), "y =", tostring(y), "index =", tostring(index))
     local success, err = pcall(function()
         if currentlyDisplayedConfigs["lm"] and currentlyDisplayedConfigs["lm"].index then
             local success_save, error_save = pcall(saveConfigData, "lm", "/home/programData/levelMaintainerConfig.data", currentlyDisplayedConfigs["lm"].index)
-            if not success_save then print("Error saving config data: " .. error_save) end
+            if not success_save then print("configurations - Error saving config data: " .. tostring(error_save)) end
 
             local success_remove, error_remove = pcall(removeConfigDisplay, "lm")
-            if not success_remove then print("Error removing config display: " .. error_remove) end
+            if not success_remove then print("configurations - Error removing config display: " .. tostring(error_remove)) end
         end
         configurations.panel.lm = {}
         configurations.panel.lm.priority = widgetsAreUs.numberBox(x, y, "priority", "Priority:")
@@ -337,22 +348,23 @@ function configurations.createLevelMaintainerConfig(x, y, index)
 
         currentlyDisplayedConfigs["lm"] = {index = index, elements = configurations.panel.lm}
         local success_load, error_load = pcall(loadConfigData, "lm", "/home/programData/levelMaintainerConfig.data", index)
-        if not success_load then print("Error loading config data: " .. error_load) end
+        if not success_load then print("configurations - Error loading config data: " .. tostring(error_load)) end
     end)
     if not success then
-        print("Error in configurations.createLevelMaintainerConfig: " .. err)
+        print("configurations - Error in configurations.createLevelMaintainerConfig: " .. tostring(err))
     end
+    print("") -- Blank line after function execution
 end
 
 function configurations.createMachineManagerConfig(x, y, index)
-    print("Line 248: createMachineManagerConfig called with x =", x, "y =", y, "index =", index)
+    print("configurations - Line 248: createMachineManagerConfig called with x =", tostring(x), "y =", tostring(y), "index =", tostring(index))
     local success, err = pcall(function()
         if currentlyDisplayedConfigs["mm"] and currentlyDisplayedConfigs["mm"].index then
             local success_save, error_save = pcall(saveConfigData, "mm", "/home/programData/machineManagerConfig.data", currentlyDisplayedConfigs["mm"].index)
-            if not success_save then print("Error saving config data: " .. error_save) end
+            if not success_save then print("configurations - Error saving config data: " .. tostring(error_save)) end
 
             local success_remove, error_remove = pcall(removeConfigDisplay, "mm")
-            if not success_remove then print("Error removing config display: " .. error_remove) end
+            if not success_remove then print("configurations - Error removing config display: " .. tostring(error_remove)) end
         end
         local tbl = gimpHelper.loadTable("/home/programData/machinesNamed.data")
         configurations.panel.mm = {}
@@ -367,22 +379,23 @@ function configurations.createMachineManagerConfig(x, y, index)
         configurations.panel.mm.alertEnabled = widgetsAreUs.checkBoxHalf(x+80, y+120, "alertEnabled", "A: Enabled")
         currentlyDisplayedConfigs["mm"] = {index = index, elements = configurations.panel.mm}
         local success_load, error_load = pcall(loadConfigData, "mm", "/home/programData/machineManagerConfig.data", index)
-        if not success_load then print("Error loading config data: " .. error_load) end
+        if not success_load then print("configurations - Error loading config data: " .. tostring(error_load)) end
     end)
     if not success then
-        print("Error in configurations.createMachineManagerConfig: " .. err)
+        print("configurations - Error in configurations.createMachineManagerConfig: " .. tostring(err))
     end
+    print("") -- Blank line after function execution
 end
 
 function configurations.createItemManagerConfig(x, y, index)
-    print("Line 276: createItemManagerConfig called with x =", x, "y =", y, "index =", index)
+    print("configurations - Line 276: createItemManagerConfig called with x =", tostring(x), "y =", tostring(y), "index =", tostring(index))
     local success, err = pcall(function()
         if currentlyDisplayedConfigs["im"] and currentlyDisplayedConfigs["im"].index then
             local success_save, error_save = pcall(saveConfigData, "im", "/home/programData/itemManagerConfig.data", currentlyDisplayedConfigs["im"].index)
-            if not success_save then print("Error saving config data: " .. error_save) end
+            if not success_save then print("configurations - Error saving config data: " .. tostring(error_save)) end
 
             local success_remove, error_remove = pcall(removeConfigDisplay, "im")
-            if not success_remove then print("Error removing config display: " .. error_remove) end
+            if not success_remove then print("configurations - Error removing config display: " .. tostring(error_remove)) end
         end
         configurations.panel.im = {}
         configurations.panel.im.alertAbove = widgetsAreUs.longerNumberBox(x, y, "alertAbove", "Alert Above")
@@ -391,15 +404,16 @@ function configurations.createItemManagerConfig(x, y, index)
         --configurations.panel.im.monitorMetrics = widgetsAreUs.checkboxFullLine(x, y+90, "monitorMetrics", "Monitor Metrics on Slave")
         currentlyDisplayedConfigs["im"] = {index = index, elements = configurations.panel.im}
         local success_load, error_load = pcall(loadConfigData, "im", "/home/programData/itemManagerConfig.data", index)
-        if not success_load then print("Error loading config data: " .. error_load) end
+        if not success_load then print("configurations - Error loading config data: " .. tostring(error_load)) end
     end)
     if not success then
-        print("Error in configurations.createItemManagerConfig: " .. err)
+        print("configurations - Error in configurations.createItemManagerConfig: " .. tostring(err))
     end
+    print("") -- Blank line after function execution
 end
 
 createGeneralConfig = function(x, y)
-    print("Line 301: createGeneralConfig called with x =", x, "y =", y)
+    print("configurations - Line 301: createGeneralConfig called with x =", tostring(x), "y =", tostring(y))
     local success, err = pcall(function()
         configurations.panel.gc = {}
         configurations.panel.gc.showHelp = widgetsAreUs.checkBoxHalf(x, y, "showHelp", "Show Help")
@@ -413,11 +427,12 @@ createGeneralConfig = function(x, y)
         configurations.panel.gc.maxCpusAllLevelMaintainers = widgetsAreUs.numberBoxLongerText(x, y+120, "maxCpusAllLevelMaintainers", "Max CPUs for Maintainers")
         currentlyDisplayedConfigs["gc"] = {index = 1, elements = configurations.panel.gc}
         local success_load, error_load = pcall(loadConfigData, "gc", "/home/programData/generalConfig.data", 1)
-        if not success_load then print("Error loading general config data: " .. error_load) end
+        if not success_load then print("configurations - Error loading general config data: " .. tostring(error_load)) end
     end)
     if not success then
-        print("Error in createGeneralConfig: " .. err)
+        print("configurations - Error in createGeneralConfig: " .. tostring(err))
     end
+    print("") -- Blank line after function execution
 end
 
 ----------------------------------------------------------
@@ -426,40 +441,45 @@ end
 local helperTable = {}
 
 generateHelperTable = function()
-    print("Line 326: generateHelperTable called")
+    print("configurations - Line 326: generateHelperTable called")
     local success, err = pcall(function()
         helperTable = {}
         for k, v in pairs(boxes) do
             os.sleep(0)
             table.insert(helperTable, v)
         end
+        print("") -- Blank line after boxes loop
         for k, v in pairs(buttons) do
             os.sleep(0)
             table.insert(helperTable, v)
         end
+        print("") -- Blank line after buttons loop
         for k, v in pairs(displays) do
             os.sleep(0)
             for i, j in ipairs(displays[k].currentlyDisplayed) do
                 table.insert(helperTable, displays[k].currentlyDisplayed[i])
             end
         end
+        print("") -- Blank line after displays loop
         for k, v in pairs(configurations.panel) do
             os.sleep(0)
             for i, j in pairs(configurations.panel[k]) do
                 table.insert(helperTable, configurations.panel[k][i])
             end
         end
+        print("") -- Blank line after configurations.panel loop
     end)
     if not success then
-        print("Error in generateHelperTable: " .. err)
+        print("configurations - Error in generateHelperTable: " .. tostring(err))
     end
+    print("") -- Blank line after function execution
 end
 
 ----------------------------------------------------------
 ---element functionality
 
 function configurations.update()
-    print("Line 347: configurations.update called")
+    print("configurations - Line 347: configurations.update called")
     local success, err = pcall(function()
         if currentlyDisplayedConfigs["lm"] and currentlyDisplayedConfigs["lm"].index then
             saveConfigData("lm", "/home/programData/levelMaintainerConfig.data", currentlyDisplayedConfigs["lm"].index)
@@ -475,12 +495,13 @@ function configurations.update()
         end
     end)
     if not success then
-        print("Error in configurations.update: " .. err)
+        print("configurations - Error in configurations.update: " .. tostring(err))
     end
+    print("") -- Blank line after function execution
 end
 
 function configurations.setVisible(visible)
-    print("Line 364: configurations.setVisible called with visible =", visible)
+    print("configurations - Line 364: configurations.setVisible called with visible =", tostring(visible))
     local success, err = pcall(function()
         generateHelperTable()
         for k, v in pairs(helperTable) do
@@ -489,14 +510,16 @@ function configurations.setVisible(visible)
                 os.sleep(0)
             end
         end
+        print("") -- Blank line after loop
     end)
     if not success then
-        print("Error in configurations.setVisible: " .. err)
+        print("configurations - Error in configurations.setVisible: " .. tostring(err))
     end
+    print("") -- Blank line after function execution
 end
 
 function configurations.remove()
-    print("Line 376: configurations.remove called")
+    print("configurations - Line 376: configurations.remove called")
     local success, err = pcall(function()
         generateHelperTable()
         if currentlyDisplayedConfigs["lm"] and currentlyDisplayedConfigs["lm"].index then
@@ -517,35 +540,42 @@ function configurations.remove()
                 os.sleep(0)
             end
         end
+        print("") -- Blank line after loop
     end)
     if not success then
-        print("Error in configurations.remove: " .. err)
+        print("configurations - Error in configurations.remove: " .. tostring(err))
     end
+    print("") -- Blank line after function execution
 end
 
 function configurations.onClick(x, y, button)
-    print("Line 402: configurations.onClick called with x =", x, "y =", y, "button =", button)
+    print("configurations - Line 402: configurations.onClick called with x =", tostring(x), "y =", tostring(y), "button =", tostring(button))
     local success, err = pcall(function()
         generateHelperTable()
         for k, v in pairs(helperTable) do
             if v.box and v.box.contains(x, y) and v.onClick then
                 v.onClick(x, y, button)
                 os.sleep(0)
+                print("") -- Blank line after condition
                 return
             elseif v.contains and v.contains(x, y) and v.onClick then
                 v.onClick(x, y, button)
                 os.sleep(0)
+                print("") -- Blank line after condition
                 return
             elseif v.option and v.option.box and v.option.box.contains(x, y) and v.onClick then
                 v.onClick(x, y, button)
                 os.sleep(0)
+                print("") -- Blank line after condition
                 return
             end
         end
+        print("") -- Blank line after loop
     end)
     if not success then
-        print("Error in configurations.onClick: " .. err)
+        print("configurations - Error in configurations.onClick: " .. tostring(err))
     end
+    print("") -- Blank line after function execution
 end
 
 ----------------------------------------------------------
