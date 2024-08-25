@@ -10,8 +10,11 @@ local hud = require("hud")
 
 component.modem.open(202)
 component.glasses.removeAll()
-overlay.init()
 hud.init()
+--right here is where the getID index should be captured.
+--that way we can clean up persisting widgets without reinitializing the hud
+
+overlay.init()
 
 print("GimpOCD - Line 12: Components initialized and modem port 202 opened.")
 print("") -- Blank line for readability
