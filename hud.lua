@@ -21,6 +21,7 @@ function hud.init()
 
         while true do
             local eventType, _, _, x, y, button = event.pull(nil, "hud_click")
+            print("HUD - init : click event detected")
             if eventType == "hud_click" then
                 if button == 0 then  -- Left click
                     print("hud - Line 25: Left click detected, setting battery location.")
