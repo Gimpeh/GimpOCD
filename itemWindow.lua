@@ -254,10 +254,10 @@ function itemWindow.onClick(x, y, button)
         --buttons
         for k, v in pairs(itemWindow.elements) do
             os.sleep(0)
-            if widgetsAreUs.isPointInBox(x, y, v.previousButton) then
+            if widgetsAreUs.isPointInBox(x, y, v.previousButton.box) then
                 v.display:prevPage()
                 return
-            elseif widgetsAreUs.isPointInBox(x, y, v.nextButton) then
+            elseif widgetsAreUs.isPointInBox(x, y, v.nextButton.box) then
                 v.display:nextPage()
                 return
             end
