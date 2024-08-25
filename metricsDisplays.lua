@@ -3,6 +3,7 @@ local widgetsAreUs = require("widgetsAreUs")
 local gimpHelper = require("gimpHelper")
 local s = require("serialization")
 local event = require("event")
+local c = require("colors")
 
 local glasses = component.glasses
 local modem = component.modem
@@ -80,16 +81,16 @@ function batteryMetrics.create(x, y)
             print("metricsDisplays - Line 57: Updating battery metrics display.")
             local euin = unserializedTable.powerIn
             local out = unserializedTable.powerOut
-
+			os.sleep(0)
             euInText.setText(gimpHelper.shorthandNumber(euin))
             euOutText.setText(gimpHelper.shorthandNumber(out))
-
+			os.sleep(0)
             local euStored = unserializedTable.stored
             local powerMax = unserializedTable.max
-
+			os.sleep(0)
             local percent = gimpHelper.calculatePercentage(euStored, powerMax)
             storedNumber.setText(gimpHelper.shorthandNumber(gimpHelper.cleanBatteryStorageString(euStored)))
-
+			os.sleep(0)
             local fillWidth = math.ceil(74 * (percent / 100))
             fillBarForeground.setSize(20, fillWidth)
             percentPower.setText(string.format("%.2f%%", tostring(percent)))
@@ -154,7 +155,7 @@ function machinesMetricsElement.createElement(x, y, machineTable, header)
     local backgroundInterior = glasses.addRect()
     backgroundInterior.setPosition(x + 5, y + 5)
     backgroundInterior.setSize(65, 97)
-    backgroundInterior.setColor(13, 255, 255)
+    backgroundInterior.setColor(table.unpack(c.object))
     backgroundInterior.setAlpha(0.7)
 
     local headerText = glasses.addTextLabel()
@@ -214,6 +215,8 @@ function machinesMetricsElement.createElement(x, y, machineTable, header)
         end,
         onClick = function(button)
             print("metricsDisplays - Line 169: Handling onClick for machine metrics element with button", tostring(button))
+			local normalColor = table.pack(backgroundInterior.getColor())
+			backgroundInterior.setColor(c.clicked)
             if button == 0 then
                 for _, machine in ipairs(machinesTable) do
                     os.sleep(0)
@@ -237,6 +240,7 @@ function machinesMetricsElement.createElement(x, y, machineTable, header)
                 machinesManager.groups.remove()
                 machinesManager.individuals.init(machinesTable, header)
             end
+			backgroundInterior.setColor(table.unpack(normalColor))
         end,
         remove = function()
             print("metricsDisplays - Line 189: Removing machine metrics element.")
@@ -266,7 +270,7 @@ function machineIndividual.create(x, y, individualProxy)
     local machine = individualProxy
     local highlighted = false
 
-    local background = widgetsAreUs.createBox(x, y, 85, 34, {1, 1, 1}, 0.6)
+    local background = widgetsAreUs.createBox(x, y, 85, 34, c.object, 0.6)
 
     local name = glasses.addTextLabel()
     name.setPosition(x+4, y+4)
@@ -286,7 +290,7 @@ function machineIndividual.create(x, y, individualProxy)
     local highlightedIndicator = glasses.addRect()
     highlightedIndicator.setPosition(x+78, y+27)
     highlightedIndicator.setSize(0, 0)
-    highlightedIndicator.setColor(0, 1, 1)
+    highlightedIndicator.setColor(c.brightred)
 
     local xyz
 
@@ -347,6 +351,8 @@ function machineIndividual.create(x, y, individualProxy)
         end,
         onClick = function(button, machinesInterface)
             print("metricsDisplays - Line 279: Handling onClick for individual machine element with button", tostring(button))
+			local normalColor = table.pack(background.getColor())
+			background.setColor(c.clicked)
             if button == 0 then -- left click
                 machinesInterface.setState(machinesInterface)
             elseif button == 1 then -- right click
@@ -367,6 +373,7 @@ function machineIndividual.create(x, y, individualProxy)
                 setName(gimpHelper.handleTextInput(name))
                 helpMessage.remove()
             end
+			background.setColor(table.unpack(normalColor))
         end,
         remove = function()
             print("metricsDisplays - Line 302: Removing individual machine element.")

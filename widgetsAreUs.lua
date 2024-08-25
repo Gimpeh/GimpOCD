@@ -65,7 +65,18 @@ function widgetsAreUs.attachUpdate(obj, func)
 end
 
 -----------------------------------------
----Deprecated, use element.box.contains(x, y) instead
+---Helper Functions
+
+function widgetsAreUs.flash(obj, color, timer)
+    if not color then color = c.clicked end
+    if not timer then timer = 0.2 end
+    print("widgetsAreUs - Line 61: Flashing object.")
+    local originalColor = {obj.getColor()}
+    obj.setColor(table.unpack(color))
+    event.timer(timer, function()
+        obj.setColor(table.unpack(originalColor))
+    end)
+end
 
 function widgetsAreUs.isPointInBox(x, y, box)
     print("widgetsAreUs - Line 60: Checking if point is in box.")
@@ -129,7 +140,7 @@ end
 
 function widgetsAreUs.symbolBox(x, y, symbolText, colorOrGreen, func)
     print("widgetsAreUs - Line 118: Creating a symbol box.")
-    if not colorOrGreen then colorOrGreen = {0, 0, 1} end
+    if not colorOrGreen then colorOrGreen = c.lime end
     local box = widgetsAreUs.createBox(x, y, 20, 20, colorOrGreen, 0.8)
     local symbol = widgetsAreUs.text(x+3, y+3, symbolText, 2)
     return widgetsAreUs.attachCoreFunctions{box = box, symbol = symbol, onClick = func}

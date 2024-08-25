@@ -4,6 +4,7 @@ local component = require("component")
 local event = require("event")
 local gimpHelper = require("gimpHelper")
 local s = require("serialization")
+local c = require("colors")
 
 -----------------------------------------
 ---itemWindow layout
@@ -126,17 +127,17 @@ end
 function itemWindow.init()
     print("itemWindow - Line 109: Initializing itemWindow.")
     local success, err = pcall(function()
-        itemWindow.elements.mainStorage.background = widgetsAreUs.createBox(20, 78, 275, 325, {0.5, 0.5, 0.5}, 0.7)
+        itemWindow.elements.mainStorage.background = widgetsAreUs.createBox(20, 78, 275, 325, c.panel, 0.7)
         local items = component.me_interface.getItemsInNetwork()
         itemWindow.elements.mainStorage.display = PagedWindow.new(items, 120, 40, {x1=25, y1=83, x2=320, y2=403}, 5, widgetsAreUs.itemBox)
         itemWindow.elements.mainStorage.display:displayItems()
-        itemWindow.elements.mainStorage.previousButton = widgetsAreUs.createBox(150, 55, 20, 20, {0, 1, 0.3}, 0.8)
-        itemWindow.elements.mainStorage.nextButton = widgetsAreUs.createBox(150, 405, 20, 20, {0, 1, 0.3}, 0.8)
+        itemWindow.elements.mainStorage.previousButton = widgetsAreUs.symbolBox(150, 55, "^", c.navbutton)
+        itemWindow.elements.mainStorage.nextButton = widgetsAreUs.symbolBox(150, 405, "v", c.navbutton)
 
-        itemWindow.elements.reverseLevelMaintainer.background = widgetsAreUs.createBox(330, 78, 160, 160, {1.0, 0.0, 0.0}, 0.7)
-        itemWindow.elements.reverseLevelMaintainer.previousButton = widgetsAreUs.createBox(400, 55, 20, 20, {0, 1, 0.3}, 0.8)
-        itemWindow.elements.reverseLevelMaintainer.nextButton = widgetsAreUs.createBox(400, 241, 20, 20, {0, 1, 0.3}, 0.8)
-        itemWindow.elements.reverseLevelMaintainer.addButton = widgetsAreUs.createBox(460, 55, 20, 20, {1, 1, 0.6}, 0.8)
+        itemWindow.elements.reverseLevelMaintainer.background = widgetsAreUs.createBox(330, 78, 160, 160, c.brightred, 0.7)
+        itemWindow.elements.reverseLevelMaintainer.previousButton = widgetsAreUs.symbolBox(400, 55, "^", c.navbutton)
+        itemWindow.elements.reverseLevelMaintainer.nextButton = widgetsAreUs.symbolBox(400, 241, "v", c.navbutton)
+        itemWindow.elements.reverseLevelMaintainer.addButton = widgetsAreUs.createBox(460, 55, 20, 20, c.otherbutton, 0.8)
         rlm = itemWindow.elements.reverseLevelMaintainer
         local rvlvlmaint = gimpHelper.loadTable("/home/programData/reverseLevelMaintainer.data")
         if rvlvlmaint and rvlvlmaint[1] then
@@ -147,10 +148,10 @@ function itemWindow.init()
             updateUpdate()
         end
 
-        itemWindow.elements.levelMaintainer.background = widgetsAreUs.createBox(500, 78, 160, 160, {0.0, 1.0, 0.0}, 0.7)
-        itemWindow.elements.levelMaintainer.previousButton = widgetsAreUs.createBox(565, 55, 20, 20, {0, 1, 0.3}, 0.8)
-        itemWindow.elements.levelMaintainer.nextButton = widgetsAreUs.createBox(565, 241, 20, 20, {0, 1, 0.3}, 0.8)
-        itemWindow.elements.levelMaintainer.addButton = widgetsAreUs.createBox(635, 55, 20, 20, {1, 1, 0.6}, 0.8)
+        itemWindow.elements.levelMaintainer.background = widgetsAreUs.createBox(500, 78, 160, 160, c.palegreen, 0.7)
+        itemWindow.elements.levelMaintainer.previousButton = widgetsAreUs.symbolBox(565, 55, "^", c.navbutton)
+        itemWindow.elements.levelMaintainer.nextButton = widgetsAreUs.symbolBox(565, 241, "v", c.navbutton)
+        itemWindow.elements.levelMaintainer.addButton = widgetsAreUs.createBox(635, 55, 20, 20, c.otherbutton, 0.8)
         lm = itemWindow.elements.levelMaintainer
         local lvlmaint = gimpHelper.loadTable("/home/programData/levelMaintainer.data")
         if lvlmaint and lvlmaint[1] then
@@ -159,9 +160,9 @@ function itemWindow.init()
             lm.display:displayItems()
         end
 
-        itemWindow.elements.monitoredItems.background = widgetsAreUs.createBox(350, 265, 285, 161, {1.0, 1.0, 0.0}, 0.7)
-        itemWindow.elements.monitoredItems.previousButton = widgetsAreUs.createBox(320, 340, 20, 20, {0, 1, 0.3}, 0.8)
-        itemWindow.elements.monitoredItems.nextButton = widgetsAreUs.createBox(640, 340, 20, 20, {0, 1, 0.3}, 0.8)
+        itemWindow.elements.monitoredItems.background = widgetsAreUs.createBox(350, 265, 285, 161, c.panel, 0.7)
+        itemWindow.elements.monitoredItems.previousButton = widgetsAreUs.symbolBox(320, 340, "<", c.navbutton)
+        itemWindow.elements.monitoredItems.nextButton = widgetsAreUs.symbolBox(640, 340, ">", c.navbutton)
         local monItemsData = gimpHelper.loadTable("/home/programData/monitoredItems")
         if monItemsData and monItemsData[1] then
             print("itemWindow - Line 150: Initializing monitoredItems display.")
@@ -169,7 +170,7 @@ function itemWindow.init()
             itemWindow.elements.monitoredItems.display:displayItems()
         end
 
-        itemWindow.searchBox = widgetsAreUs.createBox(25, 55, 120, 20, {1, 1, 1}, 1.0)
+        itemWindow.searchBox = widgetsAreUs.createBox(25, 55, 120, 20, c.objectinfo, 1.0)
         itemWindow.searchText = component.glasses.addTextLabel()
         itemWindow.searchText.setPosition(29, 60)
         itemWindow.searchText.setScale(1)

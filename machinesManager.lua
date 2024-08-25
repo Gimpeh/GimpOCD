@@ -4,6 +4,7 @@ local gimpHelper = require("gimpHelper")
 local PagedWindow = require("PagedWindow")
 local widgetsAreUs = require("widgetsAreUs")
 local event = require("event")
+local c = require("colors")
 
 local has_been_sorted = false
 local saveData
@@ -64,7 +65,7 @@ function machinesManager.groups.init()
       table.insert(args, k)
       table.insert(args2, v)
     end
-    machinesManager.groups.background = widgetsAreUs.createBox(70, 70, 640, 430, {1, 1, 1}, 0.8)
+    machinesManager.groups.background = widgetsAreUs.createBox(70, 70, 640, 430, c.background, 0.8)
     os.sleep(0.1)
     machinesManager.groups.display = PagedWindow.new(args2, 107, 75, {x1 = 80, y1 = 80, x2 = 700, y2 = 500}, 15, metricsDisplays.machineGroups.createElement, args)
     machinesManager.groups.display:displayItems()
@@ -100,8 +101,8 @@ function machinesManager.individuals.init(machinesTable, header)
     if not header then
       header = individualHeader
     end
-    machinesManager.individuals.background = widgetsAreUs.createBox(70, 70, 640, 430, {1, 1, 1}, 0.7)
-    machinesManager.individuals.back = widgetsAreUs.createBox(720, 75, 50, 25, {1, 0, 0}, 0.7)
+    machinesManager.individuals.background = widgetsAreUs.createBox(70, 70, 640, 430, c.background, 0.7)
+    machinesManager.individuals.back = widgetsAreUs.createBox(720, 75, 50, 25, c.navbutton, 0.7)
     machinesManager.individuals.display = PagedWindow.new(machinesTable, 85, 34, {x1 = 80, y1 = 80, x2 = 700, y2 = 500}, 7, metricsDisplays.machine.create)
     machinesManager.individuals.display:displayItems()
     active = "individuals"
@@ -149,8 +150,8 @@ end
 function machinesManager.init()
   print("machinesManager - Line 135: Initializing machinesManager.")
   local success, err = pcall(function()
-    machinesManager.left = widgetsAreUs.createBox(10, 225, 20, 20, {0, 1, 0}, 0.7)
-    machinesManager.right = widgetsAreUs.createBox(750, 225, 20, 20, {0, 1, 0}, 0.7)
+    machinesManager.left = widgetsAreUs.symbolBox(10, 225, "<", c.navbutton)
+    machinesManager.right = widgetsAreUs.symbolBox(750, 225, ">", c.navbutton)
     machinesManager[active].init()
   end)
   if not success then

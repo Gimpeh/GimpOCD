@@ -73,6 +73,8 @@ gimp_colors.seagreen = {0.180, 0.545, 0.341}
 gimp_colors.springgreen = {0, 1, 0.498}
 gimp_colors.thistle = {0.847, 0.749, 0.847}
 gimp_colors.tomato = {1, 0.388, 0.278}
+gimp_colors.wheat = {0.961, 0.871, 0.702}
+gimp_colors.palegreen = {0.596, 0.984, 0.596}
 
 
 --gimp_colors for gimpOCD
@@ -88,7 +90,7 @@ gimp_colors.alertsettingtitle = gimp_colors.lightorange
 gimp_colors.configsetting = gimp_colors.lightgreen
 
 gimp_colors.navbutton = gimp_colors.tealblue
-gimp_colors.otherbutton = gimp_colors.royalblue
+gimp_colors.otherbutton = gimp_colors.ivory
 gimp_colors.dangerbutton = gimp_colors.brightred
 gimp_colors.tabs = gimp_colors.darkpurple
 

@@ -6,6 +6,7 @@ local gimpHelper = require("gimpHelper")
 local machinesManager = require("machinesManager")
 local itemWindow = require("itemWindow")
 local configurations = require("configurations")
+local c = require("colors")
 
 -----------------------------------------
 ---forward declarations
@@ -44,7 +45,7 @@ function overlay.init()
     print("overlay.tabs - Line 39: Initializing overlay.")
     local success, err = pcall(function()
         overlay.tabs.itemWindow = {}
-        overlay.tabs.itemWindow.box = widgetsAreUs.createBox(10, 10, 140, 40, {0, 0, 1}, 0.7)
+        overlay.tabs.itemWindow.box = widgetsAreUs.createBox(10, 10, 140, 40, c.tabs, 0.7)
         overlay.tabs.itemWindow.title = widgetsAreUs.text(20, 20, "Storage", 1)
         overlay.tabs.itemWindow.init = function()
             local success_itemWindow, error_itemWindow = pcall(function()
@@ -59,7 +60,7 @@ function overlay.init()
         end
 
         overlay.tabs.machines = {}
-        overlay.tabs.machines.box = widgetsAreUs.createBox(160, 10, 140, 40, {0, 0, 1}, 0.7)
+        overlay.tabs.machines.box = widgetsAreUs.createBox(160, 10, 140, 40, c.tabs, 0.7)
         overlay.tabs.machines.title = widgetsAreUs.text(170, 20, "Machines", 1)
         overlay.tabs.machines.init = function()
             local success_machines, error_machines = pcall(function()
@@ -74,7 +75,7 @@ function overlay.init()
         end
 
         overlay.tabs.options = {}
-        overlay.tabs.options.box = widgetsAreUs.createBox(310, 10, 140, 40, {0, 0, 1}, 0.7)
+        overlay.tabs.options.box = widgetsAreUs.createBox(310, 10, 140, 40, c.tabs, 0.7)
         overlay.tabs.options.title = widgetsAreUs.text(320, 20, "Options", 1)
         overlay.tabs.options.init = function()
             local success_options, error_options = pcall(function()
@@ -89,7 +90,7 @@ function overlay.init()
         end
 
         overlay.tabs.textEditor = {}
-        overlay.tabs.textEditor.box = widgetsAreUs.createBox(460, 10, 140, 40, {0, 0, 1}, 0.7)
+        overlay.tabs.textEditor.box = widgetsAreUs.createBox(460, 10, 140, 40, c.tabs, 0.7)
         overlay.tabs.textEditor.title = widgetsAreUs.text(470, 20, "Text Editor", 1)
         overlay.tabs.textEditor.init = function()
             local success_textEditor, error_textEditor = pcall(function()
