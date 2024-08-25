@@ -223,7 +223,10 @@ saveData = function(_, newName, xyz)
     local data = {}
     local str = newName:gsub("^[\0-\31\127]+", "")
     data.newName = str
-    data.xyz = xyz
+    data.xyz = {}
+    data.xyz.x = xyz.x
+    data.xyz.y = xyz.y
+    data.xyz.z = xyz.z
     data.groupName = individualHeader
     for k, v in ipairs(tbl) do
       if v.xyz.x == xyz.x and v.xyz.y == xyz.y and v.xyz.z == xyz.z then
@@ -231,7 +234,7 @@ saveData = function(_, newName, xyz)
       end
     end
 
-    if data.newName and data.xyz and data.groupName then
+    if data.newName and data.xyz and data.xyz.z and data.groupName then
       table.insert(tbl, data)
       gimpHelper.saveTable(tbl, "/home/programData/" .. individualHeader .. ".data")
       event.push("machine_named", data)
