@@ -33,7 +33,7 @@ end
 
 local function onUpdate()
     print("backend - line 43: onUpdate called")
-    if updateThread and not updateThread:status() == "dead" then
+    if updateThread and updateThread:status() ~= "dead" then
         print("backend - line 45: Killing updateThread due to it existing")
         updateThread:kill()
     end
@@ -41,7 +41,8 @@ local function onUpdate()
     updateThread = thread.create(update)
     print("backend - line 50: waiting for locks to clear")
     while gimp_globals.initializing_lock or gimp_globals.configuringHUD_lock do
-        os.sleep(20)
+        print("backend - line 52: Still waiting for locks to clear")
+        os.sleep(100)
     end
     print("backend - line 53: Starting updateThread")
     updateThread:resume()
