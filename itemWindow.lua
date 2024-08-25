@@ -4,7 +4,7 @@ local component = require("component")
 local event = require("event")
 local gimpHelper = require("gimpHelper")
 local s = require("serialization")
-local c = require("colors")
+local c = require("gimp_colors")
 
 -----------------------------------------
 ---itemWindow layout

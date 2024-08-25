@@ -6,7 +6,7 @@ local gimpHelper = require("gimpHelper")
 local machinesManager = require("machinesManager")
 local itemWindow = require("itemWindow")
 local configurations = require("configurations")
-local c = require("colors")
+local c = require("gimp_colors")
 
 -----------------------------------------
 ---forward declarations

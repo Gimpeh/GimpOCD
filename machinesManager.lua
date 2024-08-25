@@ -4,7 +4,7 @@ local gimpHelper = require("gimpHelper")
 local PagedWindow = require("PagedWindow")
 local widgetsAreUs = require("widgetsAreUs")
 local event = require("event")
-local c = require("colors")
+local c = require("gimp_colors")
 
 local has_been_sorted = false
 local saveData
