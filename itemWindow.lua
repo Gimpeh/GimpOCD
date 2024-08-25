@@ -93,7 +93,11 @@ local function handleKeyboard(character)
                 items = component.me_interface.getItemsInNetwork({label = capString})
             end
             itemWindow.elements.mainStorage.display = PagedWindow.new(items, 120, 40, {x1=25, y1=83, x2=320, y2=403}, 5, widgetsAreUs.itemBox)
+            print("itemWindow - Line 96: init lock enabled")
+            gimp_globals.initializing_lock = true
             itemWindow.elements.mainStorage.display:displayItems()
+            gimp_globals.initializing_lock = false
+            print("itemWindow - Line 99: init lock disabled")
         elseif character == 8 then  -- Backspace key
             print("itemWindow - Line 82: Backspace key detected, removing last character.")
             local currentText = itemWindow.searchText.getText()
@@ -283,7 +287,11 @@ function itemWindow.onClick(x, y, button)
                             gimpHelper.saveTable(tbl, "/home/programData/monitoredItems")
                             event.push("add_index", "/home/programData/itemConfig.data")
                             itemWindow.elements.monitoredItems.display = PagedWindow.new(tbl, 120, 40, {x1=355, y1=270, x2=630, y2=421}, 5, widgetsAreUs.itemBox)
+                            gimp_globals.initializing_lock = true
+                            print("itemWindow - Line 256: init lock enabled")
                             itemWindow.elements.monitoredItems.display:displayItems()
+                            print("itemWindow - Line 258: init lock disabled")
+                            gimp_globals.initializing_lock = false
                             return
                         elseif button == 1 then
                             print("itemWindow - Line 256: Broadcasting item via modem.")
@@ -305,7 +313,11 @@ function itemWindow.onClick(x, y, button)
                         table.insert(rvlvlmaint, {itemStack = v.itemStack, batch = 0, amount = 0})
                         gimpHelper.saveTable(rvlvlmaint, "/home/programData/reverseLevelMaintainer.data")
                         rlm.display = PagedWindow.new(rvlvlmaint, 150, 30, {x1=335, y1=83, x2=490, y2=238}, 5, widgetsAreUs.levelMaintainer)
+                        gimp_globals.initializing_lock = true
+                        print("itemWindow - Line 276: init lock enabled")
                         rlm.display:displayItems()
+                        print("itemWindow - Line 278: init lock disabled")
+                        gimp_globals.initializing_lock = false
                         renameBatch()
                     elseif addTo == "levelMaintainer" then
                         print("itemWindow - Line 276: Adding item to levelMaintainer.")
@@ -320,7 +332,11 @@ function itemWindow.onClick(x, y, button)
                         table.insert(lvlmaint, {itemStack = v.itemStack, batch = 0, amount = 0})
                         gimpHelper.saveTable(lvlmaint, "/home/programData/levelMaintainer.data")
                         lm.display = PagedWindow.new(lvlmaint, 150, 30, {x1=505, y1=83, x2=665, y2=238}, 5, widgetsAreUs.levelMaintainer)
+                        gimp_globals.initializing_lock = true
+                        print("itemWindow - Line 290: init lock enabled")
                         lm.display:displayItems()
+                        print("itemWindow - Line 292: init lock disabled")
+                        gimp_globals.initializing_lock = false
                         event.push("add_index", "/home/programData/levelMaintainerConfig.data")
                     end
                 end
@@ -342,7 +358,11 @@ function itemWindow.onClick(x, y, button)
                         table.remove(tbl, k)
                         gimpHelper.saveTable(tbl, "/home/programData/monitoredItems")
                         itemWindow.elements.monitoredItems.display = PagedWindow.new(tbl, 120, 40, {x1=355, y1=270, x2=630, y2=421}, 5, widgetsAreUs.itemBox)
-                        itemWindow.elements.monitoredItems.display:displayItems()  
+                        gimp_globals.initializing_lock = true
+                        print("itemWindow - Line 311: init lock enabled")
+                        itemWindow.elements.monitoredItems.display:displayItems()
+                        print("itemWindow - Line 313: init lock disabled")
+                        gimp_globals.initializing_lock = false
                         event.push("remove_index", "/home/programData/itemManagerConfig.data", k)
                         return 
                     end 
@@ -421,7 +441,11 @@ function itemWindow.onClick(x, y, button)
                         gimpHelper.saveTable(tbl, "/home/programData/levelMaintainer.data")
                         if tbl[1] then
                             lm.display = PagedWindow.new(tbl, 150, 30, {x1=330, y1=71, x2=490, y2=238}, 5, widgetsAreUs.levelMaintainer)
+                            gimp_globals.initializing_lock = true
+                            print("itemWindow - Line 372: init lock enabled")
                             lm.display:displayItems()
+                            print("itemWindow - Line 374: init lock disabled")
+                            gimp_globals.initializing_lock = false
                         end
                     end
                 end
@@ -469,7 +493,11 @@ function itemWindow.onClick(x, y, button)
                         gimpHelper.saveTable(tbl, "/home/programData/reverseLevelMaintainer.data")
                         if tbl[1] then
                             rlm.display = PagedWindow.new(tbl, 150, 30, {x1=335, y1=83, x2=490, y2=238}, 5, widgetsAreUs.levelMaintainer)
+                            gimp_globals.initializing_lock = true
+                            print("itemWindow - Line 401: init lock enabled")
                             rlm.display:displayItems()
+                            print("itemWindow - Line 403: init lock disabled")
+                            gimp_globals.initializing_lock = false
                         end
                     end
                 end

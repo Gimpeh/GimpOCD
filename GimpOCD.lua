@@ -4,17 +4,19 @@ local overlay = require("overlay")
 local component = require("component")
 local widgetsAreUs = require("widgetsAreUs")
 local hud = require("hud")
+local backend = require("backend")
 
 -----------------------------------------
 -- Start up
 
 component.modem.open(202)
 component.glasses.removeAll()
-hud.init()
---right here is where the getID first index should be captured.
---that way we can clean up persisting widgets without reinitializing the hud
-
 overlay.init()
+hud.init()
+
+gimp_globals = {}
+gimp_globals.initializing_lock = false
+gimp_globals.configuringHUD_lock = false
 
 print("GimpOCD - Line 12: Components initialized and modem port 202 opened.")
 print("") -- Blank line for readability
@@ -144,6 +146,9 @@ local function onHudReset()
         print("GimpOCD - Line 116: HUD and Overlay reset")
         hud.show()
         overlay.hide()
+        while gimp_globals.initializing_lock do
+            os.sleep(10)
+        end
         hud.init()
 
         event.listen("modem_message", onModemMessage)

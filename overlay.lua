@@ -20,6 +20,8 @@ local active
 
 function overlay.loadTab(tab)
     print("overlay.tabs - Line 19: Loading tab", tostring(tab))
+    gimp_globals.initializing_lock = true
+    print("\n overlay.tabs - Line 21: init lock enabled \n")
     local success, err = pcall(function()
         if active and active.remove then 
             local success_remove, error_remove = pcall(active.remove) 
@@ -39,9 +41,13 @@ function overlay.loadTab(tab)
         print("overlay.tabs - Line 34: Error in overlay.loadTab: " .. tostring(err))
     end
     print("") -- Blank line for readability
+    gimp_globals.initializing_lock = false
+    print("\n overlay.tabs - Line 38: init lock disabled \n")
 end
 
 function overlay.init()
+    gimp_globals.initializing_lock = true
+    print("overlay.tabs - Line 39: init lock enabled")
     print("overlay.tabs - Line 39: Initializing overlay.")
     local success, err = pcall(function()
         overlay.tabs.itemWindow = {}
@@ -110,9 +116,6 @@ function overlay.init()
             itemWindow = overlay.tabs.itemWindow.box
         }
 
-        --************************* right here should be the getID call to get the last glasses
-        
-
         local success_load, config = pcall(gimpHelper.loadTable, "/home/programData/overlay.data")
         if success_load and config then
             local tab = config.tab
@@ -128,6 +131,8 @@ function overlay.init()
     if not success then
         print("overlay.tabs - Line 110: Error in overlay.init: " .. tostring(err))
     end
+    gimp_globals.initializing_lock = false
+    print("\n overlay.tabs - Line 113: init lock disabled \n")
     print("") -- Blank line for readability
 end
 
@@ -136,6 +141,11 @@ end
 
 function overlay.setVisible(visible)
     print("overlay.tabs - Line 117: Setting visibility to", tostring(visible))
+    print("waiting on init lock")
+    while gimp_globals.initializing_lock do
+        os.sleep(10)
+    end
+    print("done waiting on init lock")
     local success, err = pcall(function()
         for k, v in pairs(overlay.tabs) do
             v.box.setVisible(visible)
@@ -150,6 +160,11 @@ end
 
 function overlay.hide()
     print("overlay.tabs - Line 128: Hiding overlay.")
+    print("waiting on init lock")
+    while gimp_globals.initializing_lock do
+        os.sleep(10)
+    end
+    print("done waiting on init lock")
     local success, err = pcall(function()
         overlay.setVisible(false)
         if active and active.setVisible then
@@ -164,6 +179,11 @@ end
 
 function overlay.show()
     print("overlay.tabs - Line 139: Showing overlay.")
+    print("waiting on init lock")
+    while gimp_globals.initializing_lock do
+        os.sleep(10)
+    end
+    print("done waiting on init lock")
     local success, err = pcall(function()
         overlay.setVisible(true)
         if active and active.setVisible then
@@ -197,6 +217,11 @@ function overlay.onClick(x, y, button)
 end
 
 function overlay.update()
+    print("waiting on init lock")
+    while gimp_globals.initializing_lock do
+        os.sleep(10)
+    end
+    print("done waiting on init lock")
     print("overlay.tabs - Line 166: Updating overlay.")
     local success, err = pcall(function()
         if active and active.update then
