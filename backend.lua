@@ -15,7 +15,7 @@ local function manageThreads()
     print("backend - line 21: manageThreads called")
     os.sleep(0)
     if (gimp_globals.configuringHUD_lock or gimp_globals.initializing_lock) and updateThread and not updateThread:status() == "dead" then
-        print("backend - line 24: Killing updateThread due to existing lock", tostring(gimp_globals.configuringHUD_lock), tostring(gimp_globals.initializing_lock))
+        print("backend - line 24: Killing updateThread due to existing lock")
         updateThread:kill()
     end
     os.sleep(0)
