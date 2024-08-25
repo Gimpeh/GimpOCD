@@ -373,6 +373,7 @@ function itemWindow.onClick(x, y, button)
                 return
             elseif addTo == "reverseLevelMaintainer" then
                 addTo = nil
+                itemWindow.elements.reverseLevelMaintainer.addButton.setColor(1, 1, 0.6)
                 print("itemWindow - Line 331: addTo set to nil")
                 return
             end
