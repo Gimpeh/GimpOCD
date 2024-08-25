@@ -34,11 +34,12 @@ local onModemMessage
 local function updateOverlay()
     print("GimpOCD - Line 24: updateOverlay called")
     os.sleep(0)
-    local success, error = pcall(overlay.update)
+    --[[local success, error = pcall(overlay.update)
     if not success then
         print("GimpOCD - Error in updateOverlay: " .. tostring(error))
     end
-    os.sleep(0)
+    os.sleep(0)]]
+    event.push("update_overlay")
     print("") -- Blank line after function execution
 end
 
