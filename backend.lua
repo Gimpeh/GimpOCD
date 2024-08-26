@@ -5,6 +5,7 @@ local itemWindow = require("itemWindow")
 local machinesManager = require("machinesManager")
 local event = require("event")
 local thread = require("thread")
+local gimpHelper = require("gimpHelper")
 
 local backend = {}
 
@@ -49,8 +50,8 @@ local function onUpdate()
     updateThread:resume()
 end
 
-local function makeLevelMaintThread()
-    
+local function makeLevelMaintThread(data)
+local data = data
 
     print("backend - line 58: makeLevelMaintThread called")
     if not levelMaintThread or levelMaintThread:status() == "dead" then
@@ -60,6 +61,20 @@ local function makeLevelMaintThread()
         end)
         table.insert(levelMaintThreads, levelMaintThread)
     end
+end
+
+local function addLevelMaintThread(index)
+    local data = {}
+    local tbl1 = gimpHelper.loadTable("/home/programData/levelMaintainer.data")
+    local tbl2 = gimpHelper.loadTable("/home/programData/levelMaintainerConfig.data")
+    if tbl2 and tbl2[index] and tbl2[index].enabled then
+        
+    end
+
+
+
+    print("backend - line 70: addLevelMaintThread called")
+    makeLevelMaintThread(data)
 end
 
 event.listen("update_overlay", onUpdate)
