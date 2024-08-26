@@ -3,17 +3,15 @@ local event = require("event")
 local thread = require("thread")
 local gimpHelper = require("gimpHelper")
 
+local y = os.sleep
 local me = component.me_interface
 local levelMaintainer = {}
 
--- Proxy os.sleep as y
-local y = os.sleep
-
 -- Configurable sleep duration variables
-local yieldDuration = 0       -- Minimal yielding for context switching
-local shortDuration = 1000    -- Short sleep duration (adjustable)
-local medDuration = 5000      -- Medium sleep duration (adjustable)
-local longDuration = 45000    -- Long sleep duration (adjustable for waiting up to ~45 seconds)
+local yieldDuration = 0    
+local shortDuration = 1500    
+local medDuration = 5000   
+local longDuration = 10000 
 
 ----------------------------------------------
 --- Level Maintainer Functions and Variables
@@ -99,7 +97,7 @@ local function shouldRun(data, index)
         y(yieldDuration)
         if me.getCraftables({label = data.itemStack.label, name = data.itemStack.name, damage = data.itemStack.damage})[1] then
             y(yieldDuration)
-            local cpus, cpusInUse = getNumActiveCpus()
+            local cpus, cpusInUse = getNumActiveCpus() --80
             y(shortDuration)  
             if data.minCpu <= (#cpus - cpusInUse) then
                 y(yieldDuration)
@@ -149,10 +147,10 @@ end
 
 local function craftItems(data, index)
     local tbl = {}
-    local cpus, cpusInUse = getNumActiveCpus()
+    local cpus, cpusInUse = getNumActiveCpus() --80
     y(yieldDuration)
     levelMaintVars[index].cpusUsed = 0
-    for i = 1, math.min(data.maxCpu, #cpus - cpusInUse, levelMaintVars.maxCpu - computeLevelMaintainerCpuUsage()) do
+    for i = 1, math.min(data.maxCpu, #cpus - cpusInUse, levelMaintVars.maxCpu - computeLevelMaintainerCpuUsage()) do --135
         y(yieldDuration)
         local obj = me.getCraftables({label = data.itemStack.label, name = data.itemStack.name, damage = data.itemStack.damage})[1].request(data.batch, gimp_globals.prioritize_var_Testing)
         y(shortDuration) 
@@ -255,28 +253,27 @@ end
 --- Level Maintainer Main Functions
 
 local function runLevelMaintainer(data, index)
-    awaitUnlock(1)
-    lock(1)
+    awaitUnlock(1) --41
+    lock(1) --48
     y(shortDuration) 
-    if not isItMyTurn(data) then 
-        unlock(1)
+    if not isItMyTurn(data) then  --61
+        unlock(1) --53
         y(shortDuration) 
         return 
     end
-
-    local willRun = shouldRun(data, index)
-    unlock(1)
+    local willRun = shouldRun(data, index) --96
+    unlock(1) --53
     y(shortDuration) 
     if willRun then
-        awaitUnlock(2)
-        lock(2)
+        awaitUnlock(2) --41
+        lock(2) --48
         y(yieldDuration)
-        local success, tbl = craftItems(data, index) 
+        local success, tbl = craftItems(data, index) --150
         if not success then 
             event.push("alert_notification", "alertResources") 
         end
-        saveRunningCrafts(tbl)
-        unlock(2)
+        saveRunningCrafts(tbl) --175
+        unlock(2) --53
         y(yieldDuration)  
     else
         y(shortDuration) 
@@ -291,7 +288,7 @@ local function createLevelMaintainerThread(configs, key)
     local levelMaintThread = thread.create(function()
         while true do
             y(yieldDuration)  
-            local success, error = pcall(runLevelMaintainer, data, index)
+            local success, error = pcall(runLevelMaintainer, data, index) --257
             if not success then 
                 print("backend - line 221/196: Error while executing runLevelMaintainer from thread : ", index, " : " .. tostring(error)) 
                 y(longDuration) 
@@ -302,16 +299,16 @@ local function createLevelMaintainerThread(configs, key)
 end
 
 local function setLevelMaintThread(_, index)
-    awaitUnlock(3)
-    lock(3)
+    awaitUnlock(3) --41
+    lock(3) --48
     y(yieldDuration)
-    local configs = getLevelMaintainerConfigs(index)
+    local configs = getLevelMaintainerConfigs(index) --188
     y(yieldDuration)
-    killOldThread(index)
+    killOldThread(index) --226
     y(yieldDuration)
-    local thr = createLevelMaintainerThread(configs, index)
-    setThreadState(configs, index, thr)
-    unlock(3)
+    local thr = createLevelMaintainerThread(configs, index) --288
+    setThreadState(configs, index, thr) --238
+    unlock(3) --53
     y(medDuration)  
 end
 
