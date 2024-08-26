@@ -29,7 +29,7 @@ local levelMaintVars = {
 local function awaitUnlock(num)
     while levelMaintVars.lock[num] do
         print("backend - line 58: levelMaintainer locked")
-        y(5000) -- Longer sleep to reduce CPU usage while waiting
+        y(10000)
     end
 end
 
@@ -41,12 +41,10 @@ local function unlock(num)
     levelMaintVars.lock[num] = false
 end
 
--- Retain frequent yields in all loops and processing-heavy functions
-
 local function isItMyTurn(data)
     local myTurn = true
     for k, v in pairs(levelMaintVars) do
-        y(0) -- Yield in loop for responsiveness
+        y(0)
         if k ~= "lock" and k~= "levelMaintainerCpuUsage" then
             if v.enabled and v.canRun then
                 if v.priority > data.priority then
@@ -56,7 +54,7 @@ local function isItMyTurn(data)
             end
         end
     end
-    y(0) -- Another yield for responsiveness
+    y(0)
     return myTurn
 end
 
@@ -64,55 +62,55 @@ local function getNumActiveCpus()
     local cpus = me.getCpus()
     local cpusInUse = 0
     for k, v in ipairs(cpus) do
-        y(0) -- Yield before checking CPU status
+        y(0)
         if v.isActive() then
             cpusInUse = cpusInUse + 1
         end
-        y(0) -- Yield after each CPU check
+        y(0)
     end
     return cpus, cpusInUse
 end
 
 local function shouldRun(data, index)
-    y(0) -- Yield before processing heavy checks
+    y(0)
     if data and data.enabled then
-        y(0) -- Additional yield for safety
+        y(0) 
         local craftables = me.getCraftables({label = data.itemStack.label, name = data.itemStack.name, damage = data.itemStack.damage})
         if craftables[1] then
-            y(0) -- Yield before CPU count check
+            y(0) 
             local cpus, cpusInUse = getNumActiveCpus()
             if data.minCpu <= (#cpus - cpusInUse) then
                 if levelMaintVars[index].cpusUsed and levelMaintVars[index].cpusUsed < data.maxCpu then
-                    y(0) -- Yield before checking stock
+                    y(0)
                     local itemInStock = me.getItemsInNetwork({label = data.label, name = data.name, damage = data.damage})[1]
                     if itemInStock and itemInStock.size < data.amount then
                         levelMaintVars[index].canRun = true
-                        y(1000) -- Longer yield after deciding to run
+                        y(10000) 
                         return true
                     end
                     levelMaintVars[index].canRun = false
-                    y(5000) -- Long sleep if it cannot run
+                    y(15000)
                     return false
                 end
             end
         end
     end
     levelMaintVars[index].canRun = false
-    y(5000) -- Even longer sleep if data is not enabled or conditions are not met
+    y(15000)
     return false
 end
 
 local function computeLevelMaintainerCpuUsage()
-    y(0) -- Yield before starting CPU usage computation
+    y(0) 
     levelMaintVars.levelMaintainerCpuUsage = 0
     for k, v in pairs(levelMaintVars) do
-        y(0) -- Yield inside loop for responsiveness
+        y(0) 
         if k ~= "lock" and k ~= "levelMaintainerCpuUsage" then
             if v.cpusUsed then
                 levelMaintVars.levelMaintainerCpuUsage = levelMaintVars.levelMaintainerCpuUsage + v.cpusUsed
             end
         end
-        y(0) -- Yield after CPU usage calculation for each variable
+        y(0) 
     end
     return
 end
@@ -122,7 +120,7 @@ local function craftItems(data, index)
     local cpus, cpusInUse = getNumActiveCpus()
     levelMaintVars[index].cpusUsed = 0
     for i = 1, math.min(data.maxCpu, #cpus - cpusInUse, levelMaintVars.maxCpu - computeLevelMaintainerCpuUsage()) do
-        y(0) -- Yield before crafting
+        y(0) 
         local obj = me.getCraftables({label = data.itemStack.label, name = data.itemStack.name, damage = data.itemStack.damage})[1].request(data.batch, gimp_globals.prioritize_var_Testing)
         if obj then
             print("backend - line 93: Object returned from me_interface.getCraftables")
@@ -130,47 +128,47 @@ local function craftItems(data, index)
             levelMaintVars[index].cpusUsed = levelMaintVars[index].cpusUsed + 1
         else
             print("backend - line 93: No object returned from me_interface.getCraftables")
-            y(1000) -- Longer sleep if crafting fails
+            y(1000) 
             return false, tbl
         end
-        y(0) -- Yield after each craft request
+        y(0) 
     end
-    y(5000) -- Even longer sleep after completing the batch
+    y(5000)
     return true, tbl
 end
 
 local function saveRunningCrafts(tbl)
     if tbl and tbl[1] then
         for k, v in pairs(tbl) do
-            y(0) -- Yield inside loop for responsiveness
+            y(0)
             table.insert(levelMaintVars.runningCrafts, tbl[k])
         end
     end
-    y(0) -- Yield after saving crafts
+    y(0)
 end
 
 local function runLevelMaintainer(data, index)
     awaitUnlock(1)
     lock(1)
-    y(0) -- Yield after acquiring lock
+    y(0)
     if not isItMyTurn(data) then 
-        y(5000) -- Long sleep if not my turn, to save resources
+        y(10000)
         return 
     end
     local willRun = shouldRun(data, index)
     unlock(1)
-    y(0) -- Yield after releasing lock
+    y(0) 
     if willRun then
         awaitUnlock(2)
         lock(2)
-        y(0) -- Yield after acquiring second lock
+        y(0) 
         local success, tbl = craftItems(data, index)
         if not success then event.push("alert_notification", "alertResources") end
         saveRunningCrafts(tbl)
         unlock(2)
-        y(1000) -- Yield after completing crafting and releasing lock
+        y(1000) 
     else
-        y(5000) -- Long sleep if crafting is not running
+        y(15000)
         return
     end
 end
@@ -180,12 +178,12 @@ local function createLevelMaintainerThread(configs, key)
     local index = key
     local levelMaintThread = thread.create(function()
         while true do
-            y(0) -- Yield at start of loop
+            y(0) 
             local success, error = pcall(runLevelMaintainer, data, index)
             if not success then
                 print("backend - line 221/196: Error while executing runLevelMaintainer from thread: ", index, " : " .. tostring(error))
             end
-            y(5000) -- Even longer sleep after each loop iteration to reduce CPU usage
+            y(5000)
         end
     end)
     return levelMaintThread
@@ -217,11 +215,11 @@ local function getLevelMaintainerConfigs(index)
         else
             data.minCpu = 1
         end
-        y(0) -- Yield after loading configurations
+        y(0) 
         return data
     else
         data = nil
-        y(0) -- Yield after failing to load configurations
+        y(0)
         return data
     end
 end
@@ -233,7 +231,7 @@ local function killOldThread(index)
         levelMaintThreads[index]:kill()
         levelMaintThreads[index] = nil
     end
-    y(0) -- Yield after killing old thread
+    y(0)
 end
 
 local function setThreadState(configs, index, thr)
@@ -248,19 +246,19 @@ local function setThreadState(configs, index, thr)
         levelMaintThreads[index] = nil
         levelMaintVars[index].enabled = false
     end
-    y(0) -- Yield after setting thread state
+    y(0) 
 end
 
 local function setLevelMaintThread(_, index)
     awaitUnlock(3)
     lock(3)
-    y(0) -- Yield after acquiring lock
+    y(0)
     local configs = getLevelMaintainerConfigs(index)
     killOldThread(index)
     local thr = createLevelMaintainerThread(configs, index)
     setThreadState(configs, index, thr)
     unlock(3)
-    y(0) -- Yield after releasing lock and setting up thread
+    y(0) 
 end
 
 ---------------------
@@ -268,7 +266,7 @@ end
 
 local t = event.timer(10000, function()
     for k, v in pairs(levelMaintVars.runningCrafts) do
-        y(0) -- Yield in loop to maintain responsiveness
+        y(0) 
         if v.isDone() or v.isCanceled() then
             levelMaintVars.runningCrafts[k] = nil
             table.remove(levelMaintVars.runningCrafts, k)
@@ -279,7 +277,7 @@ local t = event.timer(10000, function()
             print("levelMaintainer.lua - Line 255 : It has been removed now \n \n")
         end
     end
-    y(0) -- Yield after processing each running craft
+    y(0) 
 end, math.huge)
 
 event.listen("add_level_maint_thread", setLevelMaintThread)
