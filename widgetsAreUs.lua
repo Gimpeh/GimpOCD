@@ -244,7 +244,7 @@ end
 function widgetsAreUs.initText(x, y, text1)
     print("widgetsAreUs - Line 222: Initializing text.")
     local text = widgetsAreUs.text(x+10, y+10, text1, 1.5)
-    local box = widgetsAreUs.createBox(x, y, 200, 50, {1, 1, 1}, 0.7)
+    local box = widgetsAreUs.createBox(x, y, 400, 25, {1, 1, 1}, 0.7)
     return widgetsAreUs.attachCoreFunctions({text = text, box = box})
 end
 

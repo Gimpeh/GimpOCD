@@ -18,7 +18,7 @@ function hud.init()
         gimp_globals.configuringHUD_lock = true
         print("hud - Line 18: Configuring HUD lock set to true.")
         table.insert(initMessages, widgetsAreUs.initText(200, 162, "Left or Right click to set location"))
-        table.insert(initMessages, widgetsAreUs.initText(250, 212, "Middle click to accept"))
+        table.insert(initMessages, widgetsAreUs.initText(200, 187, "Middle click to accept"))
         hud.elements.battery = metricsDisplays.battery.create(1, 1)
         while true do
             local eventType, _, _, x, y, button = event.pull(nil, "hud_click")
