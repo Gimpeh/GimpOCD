@@ -8,6 +8,7 @@ local thread = require("thread")
 local gimpHelper = require("gimpHelper")
 local s = require("serialization")
 local component = require("component")
+local levelMaintainer = require("levelMaintainer")
 
 local me = component.me_interface
 
