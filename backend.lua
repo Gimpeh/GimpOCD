@@ -10,6 +10,7 @@ local backend = {}
 
 local threadManager
 local updateThread = nil
+local levelMaintThreads = {}
 
 local function manageThreads()
     print("backend - line 21: manageThreads called")
@@ -46,6 +47,19 @@ local function onUpdate()
     end
     print("backend - line 53: Starting updateThread")
     updateThread:resume()
+end
+
+local function makeLevelMaintThread()
+    
+
+    print("backend - line 58: makeLevelMaintThread called")
+    if not levelMaintThread or levelMaintThread:status() == "dead" then
+        print("backend - line 60: Creating new levelMaintThread")
+        levelMaintThread = thread.create(function()
+            
+        end)
+        table.insert(levelMaintThreads, levelMaintThread)
+    end
 end
 
 event.listen("update_overlay", onUpdate)

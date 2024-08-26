@@ -137,7 +137,6 @@ end
 
 local function onHudReset()
     print("GimpOCD - Line 109: onHudReset called")
-    local success, error = pcall(function()
         event.ignore("modem_message", onModemMessage)
         event.ignore("highlight", onHighlight)
         event.ignore("overlay_opened", onOverlayEvent)
@@ -156,10 +155,6 @@ local function onHudReset()
         event.listen("highlight", onHighlight)
         event.listen("overlay_opened", onOverlayEvent)
         event.listen("overlay_closed", onOverlayEvent)
-    end)
-    if not success then
-        print("GimpOCD - Error in onHudReset: " .. tostring(error))
-    end
     print("") -- Blank line after function execution
 end
 
