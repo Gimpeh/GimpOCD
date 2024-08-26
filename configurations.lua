@@ -339,7 +339,6 @@ function configurations.createLevelMaintainerConfig(x, y, index)
         configurations.panel.lm = {}
         configurations.panel.lm.priority = widgetsAreUs.numberBox(x, y, "priority", "Priority:")
         configurations.panel.lm.enabled = widgetsAreUs.checkBoxHalf(x+80, y, "enabled", "Enabled", c.coral)
-        configurations.panel.lm.maxInstances = widgetsAreUs.numberBox(x + 80, y, "enabled", "Max Conc:")
         configurations.panel.lm.minCPU = widgetsAreUs.numberBox(x, y+30, "minCpu", "Min CPU")
         configurations.panel.lm.minCpuTitle2 = widgetsAreUs.text(x+5, y+45, "Available:", 0.9)
         configurations.panel.lm.maxCPU = widgetsAreUs.numberBox(x+80, y+30, "maxCpu", "Max CPU")
