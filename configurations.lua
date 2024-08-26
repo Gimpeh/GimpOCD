@@ -223,7 +223,7 @@ end
 
 saveConfigData = function(activeConfigsConfigKey, path, activeConfigsIndex)
     print("configurations - Line 214: saveConfigData called with activeConfigsConfigKey =", tostring(activeConfigsConfigKey), "path =", tostring(path), "activeConfigsIndex =", tostring(activeConfigsIndex))
-
+    
     local success, err = pcall(function()
         print("configurations - Line 216: Entering pcall block")
         print("configurations - Line 217: activeConfigsConfigKey =", tostring(activeConfigsConfigKey), "path =", tostring(path), "activeConfigsIndex =", tostring(activeConfigsIndex))
@@ -238,7 +238,7 @@ saveConfigData = function(activeConfigsConfigKey, path, activeConfigsIndex)
 
         local derp = {}
         print("configurations - Line 225: Initialized empty table derp =", s.serialize(derp))
-
+        local enabled = false
         for k, v in pairs(currentlyDisplayedConfigs[activeConfigsConfigKey].elements) do
             if type(v) ~= "function" and v.getValue then
                 print("configurations - Line 227: Iterating currentlyDisplayedConfigs elements, k =", tostring(k), "v =", tostring(v.getValue()))
@@ -250,6 +250,9 @@ saveConfigData = function(activeConfigsConfigKey, path, activeConfigsIndex)
                 if value ~= "num" and value ~= "string" then
                     print("configurations - Line 231: Saving config for k =", tostring(k), "v.key =", tostring(v.key), "v.getValue() =", value)
                     derp[v.key] = value
+                    if v.key == "enabled" and value == "X" then
+                        enabled = true
+                    end 
                 else
                     print("configurations - Line 233: Skipping save for k =", tostring(k), "v.key =", tostring(v.key), "v.getValue() =", value)
                 end
@@ -264,6 +267,9 @@ saveConfigData = function(activeConfigsConfigKey, path, activeConfigsIndex)
         print("configurations - Line 240: Saving updated table to path =", tostring(path))
         gimpHelper.saveTable(tbl, path)
         print("configurations - Line 242: Table saved successfully")
+        if enabled then
+            event.push("add_level_maint_thread", activeConfigsIndex)
+        end
         print("") -- Blank line after function block
     end)
 
