@@ -150,6 +150,9 @@ local function onHudReset()
             os.sleep(10)
         end
         hud.init()
+        while gimp_globals.configuringHUD_lock do
+            os.sleep(10)
+        end
 
         event.listen("modem_message", onModemMessage)
         event.listen("highlight", onHighlight)

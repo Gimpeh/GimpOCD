@@ -17,6 +17,7 @@ function hud.init()
     local success, err = pcall(function()
         gimp_globals.configuringHUD_lock = true
         print("hud - Line 18: Configuring HUD lock set to true.")
+        initMessages = {}
         table.insert(initMessages, widgetsAreUs.initText(200, 162, "Left or Right click to set location"))
         table.insert(initMessages, widgetsAreUs.initText(200, 187, "Middle click to accept"))
         hud.elements.battery = metricsDisplays.battery.create(1, 1)
