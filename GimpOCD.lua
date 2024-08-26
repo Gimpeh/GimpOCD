@@ -14,6 +14,7 @@ component.glasses.removeAll()
 gimp_globals = {}
 gimp_globals.initializing_lock = false
 gimp_globals.configuringHUD_lock = false
+gimp_globals.prioritize_var_Testing = true
 
 overlay.init()
 hud.init()
