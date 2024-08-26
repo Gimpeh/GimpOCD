@@ -20,6 +20,11 @@ function hud.init()
         initMessages = {}
         table.insert(initMessages, widgetsAreUs.initText(200, 162, "Left or Right click to set location"))
         table.insert(initMessages, widgetsAreUs.initText(200, 187, "Middle click to accept"))
+        if hud.elements.battery then
+            hud.elements.battery.remove()
+            os.sleep(0.1)
+            hud.elements.battery = nil
+        end
         hud.elements.battery = metricsDisplays.battery.create(1, 1)
         while true do
             local eventType, _, _, x, y, button = event.pull(nil, "hud_click")
