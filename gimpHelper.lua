@@ -48,7 +48,7 @@ end
 
 function gimpHelper.shorthandNumber(numberToConvert)
     print("gimpHelper - Line 45: shorthandNumber called with numberToConvert =", tostring(numberToConvert))
-    local num = numberToConvert
+    local num = tonumber(numberToConvert)
     local units = {"", "k", "M", "B", "T", "Qua", "E", "Z", "Y"}
     local unitIndex = 1
     while num >= 1000 and unitIndex < #units do
@@ -74,7 +74,7 @@ end
 
 function gimpHelper.cleanBatteryStorageString(numberStr)
     print("gimpHelper - Line 69: cleanBatteryStorageString called with numberStr =", tostring(numberStr))
-    local cleanStr = numberStr:gsub(",", ""):gsub("EU Stored: ", ""):gsub("EU", "")
+    local cleanStr = tostring(numberStr):gsub(",", ""):gsub("EU Stored: ", ""):gsub("EU", "")
     local result = tonumber(cleanStr)
     print("gimpHelper - Line 72: Cleaned battery storage string:", tostring(result))
     print("")  -- Blank line for readability
