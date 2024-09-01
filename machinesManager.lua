@@ -26,6 +26,7 @@ According to groups.config file
 ]]
 machinesManager.display = nil -- This will be a PagedWindow object for displaying elements
 machinesManager.buttons = {} -- This table will hold buttons for the displayed elements
+machinesManager.individuals = {} -- probably doesnt need to be a table as it only holds one function and no data
 
 local saveData -- Function to save new names for machines
 
