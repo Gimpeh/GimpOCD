@@ -8,7 +8,7 @@ local hud = require("hud")
 -----------------------------------------
 -- Start up
 
-component.modem.open(202)
+--component.modem.open(202)
 component.glasses.removeAll()
 
 gimp_globals = {}
