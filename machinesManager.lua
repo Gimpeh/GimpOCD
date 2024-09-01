@@ -140,7 +140,7 @@ end
 --- Sub-page initializing (occurs whenever a group is right clicked)
 
 function machinesManager.individuals.init(machinesTable, active_group)
-    print("machinesManager - Line 99: Initializing individuals with header =", tostring(header))
+    print("machinesManager - Line 99: Initializing individuals with header =", tostring(active_group))
 
     gimp_globals.initializing_lock = true
     print("machinesManager - Line 109: Initializing lock enabled in individuals.init")
@@ -156,10 +156,6 @@ function machinesManager.individuals.init(machinesTable, active_group)
         --initialize the display for the machines in the selected group
         machinesManager.display = PagedWindow.new(machinesTable, 85, 34, {x1 = 80, y1 = 80, x2 = 700, y2 = 500}, 7, metricsDisplays.machine.create)
         machinesManager.display:displayItems()
-
-        --set active page to individuals and activeIndividualPage to the table of machines for UI functionality
-        active = "individuals"
-        activeIndividualPage = machinesTable
         
         -- Dont think this is necessary anymore
         --individualHeader = header
