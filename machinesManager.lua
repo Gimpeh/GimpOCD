@@ -6,359 +6,338 @@ local widgetsAreUs = require("widgetsAreUs")
 local event = require("event")
 local c = require("gimp_colors")
 
-local has_been_sorted = false
-local saveData
-local activeIndividualPage
-local individualHeader
-local active = "groups"
+--------------------------------------------------
+---Variables and Forward Declarations for Module
+
+local has_been_sorted = false -- Flag to indicate if the proxies have been sorted, or needs resorting
+local active_group_name = nil -- Flag to indicate the name of the active group, I dont think this is necessary anymore
 
 local machinesManager = {}
+-- This table holds groups functions, such as init, and the groupings table for arrays of proxies
 machinesManager.groups = {}
-machinesManager.individuals = {}
+machinesManager.groups.groupings = {}
+--[[ This table will be populated with the following structure:  
+machinesManager.groups.groupings = {
+    ["group_name_1"] = {proxy1, proxy2, proxy3}, 
+    ["group_name_2"] = {proxy4, proxy5, proxy6},
+    etc
+    }
+According to groups.config file
+]]
+machinesManager.display = nil -- This will be a PagedWindow object for displaying elements
+machinesManager.buttons = {} -- This table will hold buttons for the displayed elements
+
+local saveData -- Function to save new names for machines
+
+--------------------------------------------------
+---Proxies and Sorting
 
 local function getProxies()
-  print("machinesManager - Line 17: Getting component proxies.")
-  local tbl = {}
-  local theList = component.list("gt_machine")
-  for k, v in pairs(theList) do
-    print("machinesManager - Line 21: Adding proxy for component:", tostring(k))
-    table.insert(tbl, component.proxy(k))
-    os.sleep(0)  -- Yield execution to avoid high CPU usage
-  end
-  print("machinesManager - Line 24: Total proxies retrieved:", tostring(#tbl))
-  return tbl
+    print("machinesManager - Line 31: Getting component proxies.")
+    local gt_machine_proxies = {}
+    local components_to_proxy = component.list("gt_machine")
+    for address, _ in pairs(components_to_proxy) do
+        print("machinesManager - Line 35: Adding proxy for component:", tostring(address))
+        table.insert(gt_machine_proxies, component.proxy(address))
+        os.sleep(0)
+    end
+    print("machinesManager - Line 39: Total proxies retrieved:", tostring(#gt_machine_proxies))
+    return gt_machine_proxies
+end
+  
+local function sortProxies()
+    print("machinesManager - Line 26: Sorting component proxies.")
+    local success, err = pcall(function()
+        local unsorted_gt_machines = getProxies()
+        os.sleep(0)  -- Yield execution after getting proxies
+  
+        local config = gimpHelper.loadTable("/home/programData/groups.config")
+        print("machinesManager - Line 30: Loaded configuration data:", tostring(config))
+  
+        machinesManager.groups.groupings = {}
+        for k, v in ipairs(config) do
+            print("machinesManager - Line 34: Processing group:", tostring(v.name))
+            local proxies = {}
+            local groupname = v.name
+  
+            for e = #unsorted_gt_machines, 1, -1 do
+                local i = unsorted_gt_machines[e]
+                local x, y, z = i.getCoordinates()
+                print("machinesManager - Line 39: Checking proxy coordinates: (", tostring(x), ",", tostring(y), ",", tostring(z), ")")
+          
+                os.sleep(0)  -- Yield execution within inner loop
+                if v.start.x < x and x < v.ending.x and v.start.z < z and z < v.ending.z then
+                    print("machinesManager - Line 43: Proxy in range for group:", groupname)
+                    table.insert(proxies, i)
+                    table.remove(unsorted_gt_machines, e)
+                end
+            end
+  
+            print("machinesManager - Line 47: Total proxies for group", groupname, ":", tostring(#proxies))
+            machinesManager.groups.groupings[groupname] = proxies
+        end
+  
+        has_been_sorted = true
+    end)
+  
+    if not success then
+        print("machinesManager - Line 55: Error in sortProxies: " .. tostring(err))
+    end
+    print("") -- Blank line for readability
 end
 
-local function sortProxies()
-  print("machinesManager - Line 26: Sorting component proxies.")
-  local success, err = pcall(function()
-    local unsorted = getProxies()
-    os.sleep(0)  -- Yield execution after getting proxies
+--------------------------------------------------
+---Initialization (occurs whenever the machines tab is clicked in overlay)
 
-    local config = gimpHelper.loadTable("/home/programData/groups.config")
-    print("machinesManager - Line 30: Loaded configuration data:", tostring(config))
-
-    machinesManager.groups.groupings = {}
-    for k, v in ipairs(config) do
-      print("machinesManager - Line 34: Processing group:", tostring(v.name))
-      local proxies = {}
-      local groupname = v.name
-
-      for e = #unsorted, 1, -1 do
-        local i = unsorted[e]
-        local x, y, z = i.getCoordinates()
-        print("machinesManager - Line 39: Checking proxy coordinates: (", tostring(x), ",", tostring(y), ",", tostring(z), ")")
+function machinesManager.init()
+    print("machinesManager - Line 154: Initializing machinesManager.")
+    local success, err = pcall(function()
+        machinesManager.buttons.left = widgetsAreUs.symbolBox(10, 225, "<", c.navbutton)
+        machinesManager.buttons.right = widgetsAreUs.symbolBox(750, 225, ">", c.navbutton)
+        machinesManager.background = widgetsAreUs.createBox(70, 70, 640, 430, c.background, 0.8)
         
-        os.sleep(0)  -- Yield execution within inner loop
-        if v.start.x < x and x < v.ending.x and v.start.z < z and z < v.ending.z then
-          print("machinesManager - Line 43: Proxy in range for group:", groupname)
-          table.insert(proxies, i)
-          table.remove(unsorted, e)
-        end
-      end
-
-      print("machinesManager - Line 47: Total proxies for group", groupname, ":", tostring(#proxies))
-      machinesManager.groups.groupings[groupname] = proxies
+        machinesManager.groups.init()
+    end)
+  
+    if not success then
+        print("machinesManager - Line 162: Error in machinesManager.init: " .. tostring(err))
     end
-
-    has_been_sorted = true
-  end)
-
-  if not success then
-    print("machinesManager - Line 55: Error in sortProxies: " .. tostring(err))
-  end
-  print("") -- Blank line for readability
+    print("") -- Blank line for readability
 end
 
 function machinesManager.groups.init()
-  print("machinesManager - Line 61: Initializing groups.")
-  local success, err = pcall(function()
-    local initlock = false
-    if gimp_globals.initializing_lock then
-      initlock = true
-    else
-      gimp_globals.initializing_lock = true
-      print("machinesManager - Line 79: Initializing lock enabled.")
-    end
-    if not has_been_sorted then
-      sortProxies()
-    end
-
-    local args = {}
-    local args2 = {}
-    for k, v in pairs(machinesManager.groups.groupings) do
-      print("machinesManager - Line 69: Adding group", tostring(k))
-      table.insert(args, k)
-      table.insert(args2, v)
-      os.sleep(0)  -- Yield execution during initialization
-    end
-
-    machinesManager.groups.background = widgetsAreUs.createBox(70, 70, 640, 430, c.background, 0.8)
-    os.sleep(0.1)  -- Short sleep to allow UI element creation
-    machinesManager.groups.display = PagedWindow.new(args2, 107, 75, {x1 = 80, y1 = 80, x2 = 700, y2 = 500}, 15, metricsDisplays.machineGroups.createElement, args)
-    machinesManager.groups.display:displayItems()
-    active = "groups"
-    event.push("update_overlay")
-    if not initlock then
-      gimp_globals.initializing_lock = false
-      print("machinesManager - Line 83: Initializing lock disabled.")
-    end
-  end)
-
-  if not success then
-    print("machinesManager - Line 80: Error in machinesManager.groups.init: " .. tostring(err))
-  end
-  print("") -- Blank line for readability
-end
-
-function machinesManager.groups.remove()
-  print("machinesManager - Line 86: Removing groups display.")
-  local success, err = pcall(function()
-    machinesManager.groups.display:clearDisplayedItems()
-    os.sleep(0)  -- Yield execution after clearing items
-
-    machinesManager.groups.display = nil
-    component.glasses.removeObject(machinesManager.groups.background.getID())
-    machinesManager.groups.background = nil
-  end)
-
-  if not success then
-    print("machinesManager - Line 93: Error in machinesManager.groups.remove: " .. tostring(err))
-  end
-  print("") -- Blank line for readability
-end
-
-function machinesManager.individuals.init(machinesTable, header)
-  print("machinesManager - Line 99: Initializing individuals with header =", tostring(header))
-  local initlock = false
-  if gimp_globals.initializing_lock then
-    initlock = true
-  else
-    gimp_globals.initializing_lock = true
-    print("machinesManager - Line 109: Initializing lock enabled.")
-  end
-  local success, err = pcall(function()
-    if not machinesTable then
-      machinesTable = activeIndividualPage
-    end
-    if not header then
-      header = individualHeader
-    end
-    os.sleep(0)  -- Yield execution before creating UI elements
-
-    machinesManager.individuals.background = widgetsAreUs.createBox(70, 70, 640, 430, c.background, 0.7)
-    machinesManager.individuals.back = widgetsAreUs.createBox(720, 75, 50, 25, c.navbutton, 0.7)
-    machinesManager.individuals.display = PagedWindow.new(machinesTable, 85, 34, {x1 = 80, y1 = 80, x2 = 700, y2 = 500}, 7, metricsDisplays.machine.create)
-    machinesManager.individuals.display:displayItems()
-    active = "individuals"
-    activeIndividualPage = machinesTable
-    individualHeader = header
-
-    for k, v in pairs(machinesManager.individuals.display.currentlyDisplayed) do
-      print("machinesManager - Line 115: Setting name for displayed item.")
-      v.setName()
-      os.sleep(0)  -- Yield execution during loop
-    end
-
-    local savedNames = gimpHelper.loadTable("/home/programData/" .. header .. ".data")
-    if not savedNames then
-      savedNames = {}
-    end
-
-    for k, v in pairs(savedNames) do
-      for j, i in pairs(machinesManager.individuals.display.currentlyDisplayed) do
-        os.sleep(0)  -- Yield execution within nested loop
-        local xyzCheck = {}
-        xyzCheck.x, xyzCheck.y, xyzCheck.z = i.getCoords()
-        if v.xyz.x == xyzCheck.x and v.xyz.y == xyzCheck.y and v.xyz.z == xyzCheck.z then
-          print("machinesManager - Line 128: Matching saved name found, setting name.")
-          i.setName(v.newName)
+    print("machinesManager - Line 61: Initializing groups.")
+    local success, err = pcall(function()
+        if not has_been_sorted then
+            sortProxies()
         end
-      end
+  
+        local args = {}
+        local args2 = {}
+        for group_name, array_of_proxies in pairs(machinesManager.groups.groupings) do
+            print("machinesManager - Line 69: Adding group", tostring(group_name))
+            table.insert(args, group_name)
+            table.insert(args2, array_of_proxies)
+        end
+  
+        machinesManager.display = PagedWindow.new(args2, 107, 75, {x1 = 80, y1 = 80, x2 = 700, y2 = 500}, 15, metricsDisplays.machineGroups.createElement, args)
+        machinesManager.display:displayItems()
+        active = "groups"
+
+        --below might need to be removed, as updating should be done consistently in overlay.onClick instead of in individual modules for initial update of UI elements
+        --event.push("update_overlay")
+    end)
+  
+    if not success then
+        print("machinesManager - Line 80: Error in machinesManager.groups.init: " .. tostring(err))
     end
-    if not initlock then
-      gimp_globals.initializing_lock = false
-      print("machinesManager - Line 113: Initializing lock disabled.")
+    print("Done initializing groups.")
+    print("") -- Blank line for readability
+end
+
+--------------------------------------------------
+--- Sub-page initializing (occurs whenever a group is right clicked)
+
+function machinesManager.individuals.init(machinesTable, active_group)
+    print("machinesManager - Line 99: Initializing individuals with header =", tostring(header))
+
+    gimp_globals.initializing_lock = true
+    print("machinesManager - Line 109: Initializing lock enabled in individuals.init")
+    local success, err = pcall(function()
+        active_group_name = active_group
+        --Below should be swapped out for symbolBox or something so that the boxes function can be indicated to users
+        machinesManager.buttons.back = widgetsAreUs.createBox(720, 75, 50, 25, c.navbutton, 0.7)
+        
+        --clear displayed items from groups, which is being navigated away from
+        machinesManager.display:clearDisplayedItems()
+        machinesManager.display = nil
+
+        --initialize the display for the machines in the selected group
+        machinesManager.display = PagedWindow.new(machinesTable, 85, 34, {x1 = 80, y1 = 80, x2 = 700, y2 = 500}, 7, metricsDisplays.machine.create)
+        machinesManager.display:displayItems()
+
+        --set active page to individuals and activeIndividualPage to the table of machines for UI functionality
+        active = "individuals"
+        activeIndividualPage = machinesTable
+        
+        -- Dont think this is necessary anymore
+        --individualHeader = header
+  
+        -- Set the names of the displayed items to their default names returned by proxy.getName()
+        for k, v in ipairs(machinesManager.display.currentlyDisplayed) do
+            print("machinesManager - Line 115: Setting name for displayed item.")
+            v.setName()
+        end
+
+        -- Check if there are any saved names for the machines in the group
+        local savedNames = gimpHelper.loadTable("/home/programData/" .. active_group_name .. ".data")
+        if not savedNames then
+            savedNames = {}
+        end
+        --set the names of the displayed items to the saved names if they exist
+        for k, v in pairs(savedNames) do
+            for j, i in pairs(machinesManager.display.currentlyDisplayed) do
+                local xyzCheck = {}
+                xyzCheck.x, xyzCheck.y, xyzCheck.z = i.getCoords()
+                if v.xyz.x == xyzCheck.x and v.xyz.y == xyzCheck.y and v.xyz.z == xyzCheck.z then
+                    print("machinesManager - Line 128: Matching saved name found, setting name.")
+                    i.setName(v.newName)
+                    break
+                end
+            end
+        end
+    end)
+  
+    if not success then
+      print("machinesManager - Line 134: Error in machinesManager.individuals.init: " .. tostring(err))
     end
+
+    print("machinesManager - Line 113: Initializing lock disabled.")
+    gimp_globals.initializing_lock = false
     event.push("update_overlay")
-  end)
-
-  if not success then
-    print("machinesManager - Line 134: Error in machinesManager.individuals.init: " .. tostring(err))
-  end
-  print("") -- Blank line for readability
+    print("Done initializing individuals.") 
+    print("") -- Blank line for readability
 end
 
-function machinesManager.individuals.remove()
-  print("machinesManager - Line 140: Removing individuals display.")
-  local success, err = pcall(function()
-    machinesManager.individuals.display:clearDisplayedItems()
-    os.sleep(0)  -- Yield execution after clearing items
+--------------------------------------------------
+--- UI functions
 
-    component.glasses.removeObject(machinesManager.individuals.background.getID())
-    component.glasses.removeObject(machinesManager.individuals.back.getID())
-    machinesManager.individuals.background = nil
-  end)
+function machinesManager.onClick(x, y, button)
+    print("machinesManager - Line 143: Processing click at (", tostring(x), ",", tostring(y), ")")
+    local success, err = pcall(function()
+        if machinesManager.buttons.left then
+            if widgetsAreUs.isPointInBox(x, y, machinesManager.buttons.left) then
+                print("machinesManager - Line 147: Clicked on left button.")
+                machinesManager.display:previousPage()
+                return
+            end
+        end
 
-  if not success then
-    print("machinesManager - Line 148: Error in machinesManager.individuals.remove: " .. tostring(err))
-  end
-  print("") -- Blank line for readability
-end
+        if machinesManager.buttons.right then
+            if widgetsAreUs.isPointInBox(x, y, machinesManager.buttons.right) then
+                print("machinesManager - Line 153: Clicked on right button.")
+                machinesManager.display:nextPage()
+                return
+            end
+        end
 
-function machinesManager.init()
-  print("machinesManager - Line 154: Initializing machinesManager.")
-  local success, err = pcall(function()
-    machinesManager.left = widgetsAreUs.symbolBox(10, 225, "<", c.navbutton)
-    machinesManager.right = widgetsAreUs.symbolBox(750, 225, ">", c.navbutton)
-    os.sleep(0)  -- Yield execution after creating navigation symbols
+        if machinesManager.buttons.back then
+            if widgetsAreUs.isPointInBox(x, y, machinesManager.buttons.back) then
+                print("machinesManager - Line 159: Clicked on back button.")
+                machinesManager.remove()
+                machinesManager.init()
+                return
+            end
+        end
 
-    machinesManager[active].init()
-  end)
+        for k, v in ipairs(machinesManager.display.currentlyDisplayed) do
+            if widgetsAreUs.isPointInBox(x, y, v.background) then
+                print("machinesManager - Line 167: Clicked on a displayed item.")
+                v.onClick(button)
+                return
+            end
+        end
+    end)
 
-  if not success then
-    print("machinesManager - Line 162: Error in machinesManager.init: " .. tostring(err))
-  end
-  print("") -- Blank line for readability
+    if not success then
+        print("machinesManager - Line 174: Error in machinesManager.onClick: " .. tostring(err))
+    end
+    print("onClick event processed.")
+    print("") -- Blank line for readability
 end
 
 function machinesManager.remove()
-  print("machinesManager - Line 168: Removing machinesManager.")
-  local success, err = pcall(function()
-    saveData()
-    os.sleep(0)  -- Yield execution after saving data
-
-    machinesManager[active].remove()
-    component.glasses.removeObject(machinesManager.left.getID())
-    component.glasses.removeObject(machinesManager.right.getID())
-    machinesManager.left = nil
-  end)
-
-  if not success then
-    print("machinesManager - Line 177: Error in machinesManager.remove: " .. tostring(err))
-  end
-  print("") -- Blank line for readability
+    print("machinesManager - Line 180: Removing machinesManager display.")
+    local success, err = pcall(function()
+        machinesManager.display:clearDisplayedItems()
+        machinesManager.display = nil
+        for k, v in pairs(machinesManager.buttons) do
+            v.remove()
+        end
+        machinesManager.background.remove()
+    end)
+    print("machinesManager - Line 187: Removed machinesManager display.")
 end
 
 function machinesManager.update()
-  print("machinesManager - Line 183: Updating machinesManager display.")
-  local success, err = pcall(function()
-    for k, v in ipairs(machinesManager[active].display.currentlyDisplayed) do
-      v.update()
-      os.sleep(0)  -- Yield execution during update loop
-    end
-  end)
-
-  if not success then
-    print("machinesManager - Line 189: Error in machinesManager.update: " .. tostring(err))
-  end
-  print("") -- Blank line for readability
-end
-
-function machinesManager.onClick(x, y, button)
-  print("machinesManager - Line 195: Handling onClick event at (", tostring(x), ",", tostring(y), ") with button", tostring(button))
-  local success, err = pcall(function()
-    if widgetsAreUs.isPointInBox(x, y, machinesManager.left) then
-      print("machinesManager - Line 199: Clicked on left navigation button.")
-      machinesManager[active].display:prevPage()
-      return
-    elseif widgetsAreUs.isPointInBox(x, y, machinesManager.right) then
-      print("machinesManager - Line 203: Clicked on right navigation button.")
-      machinesManager[active].display:nextPage()
-      return
-    end
-
-    if machinesManager.individuals.back then
-      if widgetsAreUs.isPointInBox(x, y, machinesManager.individuals.back) then
-        print("machinesManager - Line 209: Clicked on back button.")
-        machinesManager.individuals.remove()
-        machinesManager.groups.init()
-        return
-      end
-    end
-
-    for k, v in ipairs(machinesManager[active].display.currentlyDisplayed) do
-      os.sleep(0)  -- Yield execution during onClick processing
-      if widgetsAreUs.isPointInBox(x, y, v.background) then
-        print("machinesManager - Line 217: Clicked on a displayed item.")
-        v.onClick(button, v, individualHeader)
-        return
-      end
-    end
-  end)
-
-  if not success then
-    print("machinesManager - Line 224: Error in machinesManager.onClick: " .. tostring(err))
-  end
-  print("") -- Blank line for readability
+    print("machinesManager - Line 183: Updating machinesManager display.")
+    local success, err = pcall(function()
+        for k, v in ipairs(machinesManager.display.currentlyDisplayed) do
+            v.update()
+            os.sleep(100)  -- Yield execution during update loop
+        end
+    end)
+    print("machinesManager - Line 189: Updated machinesManager display.")
 end
 
 function machinesManager.setVisible(visible)
-  print("machinesManager - Line 230: Setting visibility to", tostring(visible))
-  local success, err = pcall(function()
-    machinesManager[active].background.setVisible(visible)
-    os.sleep(0)  -- Yield execution after setting background visibility
+    print("machinesManager - Line 230: Setting visibility to", tostring(visible))
+    local success, err = pcall(function()
+        machinesManager.background.setVisible(visible)
+        
+        if machinesManager.buttons.back then
+            machinesManager.buttons.back.setVisible(visible)
+        end
 
-    if active == "individuals" then
-      machinesManager.individuals.back.setVisible(visible)
-      os.sleep(0)  -- Yield execution after setting back visibility
-    end
+        for k, v in ipairs(machinesManager.display.currentlyDisplayed) do
+            v.setVisible(visible)
+        end
 
-    for k, v in ipairs(machinesManager[active].display.currentlyDisplayed) do
-      v.setVisible(visible)
-      os.sleep(0)  -- Yield execution during visibility loop
-    end
-
-    machinesManager.left.setVisible(visible)
-    machinesManager.right.setVisible(visible)
-  end)
-
-  if not success then
-    print("machinesManager - Line 243: Error in machinesManager.setVisible: " .. tostring(err))
-  end
-  print("") -- Blank line for readability
+        for k, v in pairs(machinesManager.buttons) do
+            v.setVisible(visible)
+        end
+    end)
 end
+
+--------------------------------------------------
+--- Save New Names for Machines
 
 saveData = function(_, newName, xyz)
-  print("machinesManager - Line 249: Saving data for machine with newName =", tostring(newName))
-  local success, err = pcall(function()
-    local tbl = gimpHelper.loadTable("/home/programData/" .. individualHeader .. ".data") or {}
-    if not tbl then
-      tbl = {}
+    print("machinesManager - Line 249: Saving data for machine with newName =", tostring(newName))
+    local success, err = pcall(function()
+        local tbl = gimpHelper.loadTable("/home/programData/" .. active_group_name .. ".data") or {}
+        if not tbl then
+            tbl = {}
+        end
+  
+        local data = {}
+        local str = newName:gsub("^[\0-\31\127]+", "")
+        data.newName = str
+        data.xyz = {}
+        data.xyz.x = xyz.x
+        data.xyz.y = xyz.y
+        data.xyz.z = xyz.z
+        data.groupName = active_group_name
+  
+        for k, v in ipairs(tbl) do
+            if v.xyz.x == xyz.x and v.xyz.y == xyz.y and v.xyz.z == xyz.z then
+            table.remove(tbl, k)
+            end
+        end
+  
+        if data.newName and data.xyz and data.xyz.z and data.groupName then
+            table.insert(tbl, data)
+            gimpHelper.saveTable(tbl, "/home/programData/" .. active_group_name .. ".data")
+            event.push("machine_named", data, data.xyz)
+            print("machinesManager - Line 273: Data saved successfully.")
+        else
+            print("machinesManager - Line 275: Error in saveData: Data is incomplete.")
+        end
+    end)
+  
+    if not success then
+        print("machinesManager - Line 279: Error in saveData: " .. tostring(err))
     end
-
-    local data = {}
-    local str = newName:gsub("^[\0-\31\127]+", "")
-    data.newName = str
-    data.xyz = {}
-    data.xyz.x = xyz.x
-    data.xyz.y = xyz.y
-    data.xyz.z = xyz.z
-    data.groupName = individualHeader
-
-    for k, v in ipairs(tbl) do
-      if v.xyz.x == xyz.x and v.xyz.y == xyz.y and v.xyz.z == xyz.z then
-        table.remove(tbl, k)
-      end
-      os.sleep(0)  -- Yield execution during data processing loop
-    end
-
-    if data.newName and data.xyz and data.xyz.z and data.groupName then
-      table.insert(tbl, data)
-      gimpHelper.saveTable(tbl, "/home/programData/" .. individualHeader .. ".data")
-      event.push("machine_named", data, data.xyz)
-      print("machinesManager - Line 273: Data saved successfully.")
-    else
-      print("machinesManager - Line 275: Error in saveData: Data is incomplete.")
-    end
-  end)
-
-  if not success then
-    print("machinesManager - Line 279: Error in saveData: " .. tostring(err))
-  end
-  print("") -- Blank line for readability
+    print("machinesManager - Finished Saving Data")
+    print("") -- Blank line for readability
 end
+  
+--------------------------------------------------
+--- Event Listeners
 
 event.listen("nameSet", saveData)
+
+--------------------------------------------------
+--- Return Module
 
 return machinesManager

@@ -10,6 +10,7 @@ local hud = require("hud")
 
 --component.modem.open(202)
 component.glasses.removeAll()
+print("modem port 202 not opened!!! re-enable when ready")
 
 gimp_globals = {}
 gimp_globals.initializing_lock = false
