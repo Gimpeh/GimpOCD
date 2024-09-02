@@ -75,6 +75,7 @@ local function onOverlayEvent(eventType, ...)
         elseif eventType == "overlay_closed" then
             print("GimpOCD - Line 55: overlay_closed event detected")
             event.ignore("hud_click", handleClick)
+            os.sleep(sleeps.yield)
             overlay.hide()
             hud.show()
             event.cancel(overlayUpdateEvent)
