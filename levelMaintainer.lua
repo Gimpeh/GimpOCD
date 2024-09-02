@@ -9,9 +9,9 @@ local levelMaintainer = {}
 
 -- Configurable sleep duration variables
 local yieldDuration = 0    
-local shortDuration = 1500    
-local medDuration = 5000   
-local longDuration = 10000 
+local shortDuration = 150    
+local medDuration = 500   
+local longDuration = 1000 
 
 ----------------------------------------------
 --- Level Maintainer Functions and Variables
