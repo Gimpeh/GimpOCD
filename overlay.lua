@@ -7,6 +7,7 @@ local machinesManager = require("machinesManager")
 local itemWindow = require("itemWindow")
 local configurations = require("configurations")
 local c = require("gimp_colors")
+local sleeps = require("sleepDurations")
 
 -----------------------------------------
 ---forward declarations
@@ -22,7 +23,7 @@ function overlay.loadTab(tab)
     print("overlay.tabs - Line 22: Loading tab", tostring(tab))
     while gimp_globals.initializing_lock do
         print("overlay load Tab: waiting on init lock")
-        os.sleep(500)
+        os.sleep(sleeps.ten)
     end
     gimp_globals.initializing_lock = true
     print("\n overlay.tabs - Line 24: init lock enabled \n")
@@ -39,7 +40,7 @@ function overlay.loadTab(tab)
         if not success_save then
             print("overlay.tabs - Line 36: Error saving overlay tab state: " .. tostring(error_save))
         end
-        os.sleep(0)
+        os.sleep(sleeps.yield)
     end)
     if not success then
         print("overlay.tabs - Line 41: Error in overlay.loadTab: " .. tostring(err))
@@ -61,7 +62,7 @@ function overlay.init()
             local success_itemWindow, error_itemWindow = pcall(function()
                 print("overlay.tabs - Line 58: Initializing itemWindow tab.")
                 itemWindow.init()
-                os.sleep(0)
+                os.sleep(sleeps.yield)
                 active = itemWindow
             end)
             if not success_itemWindow then
@@ -76,7 +77,7 @@ function overlay.init()
             local success_machines, error_machines = pcall(function()
                 print("overlay.tabs - Line 73: Initializing machines tab.")
                 machinesManager.init()
-                os.sleep(0)
+                os.sleep(sleeps.yield)
                 active = machinesManager
             end)
             if not success_machines then
@@ -91,7 +92,7 @@ function overlay.init()
             local success_options, error_options = pcall(function()
                 print("overlay.tabs - Line 88: Initializing options tab.")
                 configurations.init()
-                os.sleep(0)
+                os.sleep(sleeps.yield)
                 active = configurations
             end)
             if not success_options then
@@ -105,7 +106,7 @@ function overlay.init()
         overlay.tabs.textEditor.init = function()
             local success_textEditor, error_textEditor = pcall(function()
                 print("overlay.tabs - Line 103: Initializing text editor tab.")
-                os.sleep(0)
+                os.sleep(sleeps.yield)
                 active = "text editor not set yet"
             end)
             if not success_textEditor then
@@ -130,7 +131,7 @@ function overlay.init()
             overlay.tabs.machines.init()
         end
         overlay.hide()
-        os.sleep(0)
+        os.sleep(sleeps.yield)
     end)
     if not success then
         print("overlay.tabs - Line 132: Error in overlay.init: " .. tostring(err))
@@ -146,7 +147,7 @@ function overlay.setVisible(visible)
     print("overlay.tabs - Line 143: Setting visibility to", tostring(visible))
     print("overlay - 144 : waiting on init lock")
     while gimp_globals.initializing_lock do
-        os.sleep(10)
+        os.sleep(sleeps.one)
     end
     print("overlay - 148 : done waiting on init lock")
     local success, err = pcall(function()
@@ -165,7 +166,7 @@ function overlay.hide()
     print("overlay.tabs - Line 162: Hiding overlay.")
     print("waiting on init lock")
     while gimp_globals.initializing_lock do
-        os.sleep(10)
+        os.sleep(sleeps.one)
     end
     print("done waiting on init lock")
     local success, err = pcall(function()
@@ -182,11 +183,10 @@ end
 
 function overlay.show()
     print("overlay.tabs - Line 181: Showing overlay.")
-    print("waiting on init lock")
-    while gimp_globals.initializing_lock do
-        os.sleep(10)
+    if gimp_globals.initializing_lock then
+        print("overlay.tabs - Line 183: Overlay is initializing, not showing.")
+        return
     end
-    print("done waiting on init lock")
     local success, err = pcall(function()
         overlay.setVisible(true)
         if active and active.setVisible then
@@ -204,14 +204,14 @@ function overlay.onClick(x, y, button)
     local success, err = pcall(function()
         for k, v in pairs(overlay.boxes) do
             if v.contains(x, y, v) then
-                os.sleep(0)
+                os.sleep(sleeps.yield)
                 return overlay.loadTab(k)
             end
         end
         if active and active.onClick then
             active.onClick(x, y, button)
         end
-        os.sleep(0)
+        os.sleep(sleeps.yield)
         if active and active.update then
             active.update()
         end
@@ -227,13 +227,13 @@ function overlay.update()
     print("overlay - 220 : waiting on init lock")
     while gimp_globals.initializing_lock do
         print("overlay - 222 : still waiting on init lock")
-        os.sleep(1200)
+        os.sleep(sleeps.ten)
     end
     print("overlay - 225 : done waiting on init lock")
     print("overlay.tabs - Line 226: Updating overlay.")
     local success, err = pcall(function()
         if active and active.update then
-            os.sleep(0)
+            os.sleep(sleeps.yield)
             active.update()
         end
     end)

@@ -4,6 +4,7 @@ local overlay = require("overlay")
 local component = require("component")
 local widgetsAreUs = require("widgetsAreUs")
 local hud = require("hud")
+local sleeps = require("sleepDurations")
 
 -----------------------------------------
 -- Start up
@@ -48,13 +49,13 @@ end
 local function handleClick(_, _, _, x, y, button)
     print("GimpOCD - Line 34: handleClick called with x =", tostring(x), "y =", tostring(y), "button =", tostring(button))
     while gimp_globals.initializing_lock do
-        os.sleep(100)
+        os.sleep(sleeps.one)
     end
     local success, error = pcall(overlay.onClick, x, y, button)
     if not success then
         print("GimpOCD - Error in handleClick: " .. tostring(error))
     end
-    os.sleep(0)
+    os.sleep(sleeps.yield)
     print("") -- Blank line after function execution
 end
 
@@ -67,9 +68,9 @@ local function onOverlayEvent(eventType, ...)
             event.listen("hud_click", handleClick)
             hud.hide()
             overlay.show()
-            os.sleep(0)
+            os.sleep(sleeps.yield)
             overlay.update()
-            os.sleep(0)
+            os.sleep(sleeps.yield)
             overlayUpdateEvent = event.timer(2500, updateOverlay, math.huge)
         elseif eventType == "overlay_closed" then
             print("GimpOCD - Line 55: overlay_closed event detected")
@@ -77,7 +78,7 @@ local function onOverlayEvent(eventType, ...)
             overlay.hide()
             hud.show()
             event.cancel(overlayUpdateEvent)
-            os.sleep(0)
+            os.sleep(sleeps.yield)
             event.listen("modem_message", onModemMessage)
         end
     end)
@@ -93,7 +94,7 @@ local function onHighlightActual(xyz)
         for k, v in ipairs(highlighters) do
             if v.x == xyz.x and v.y == xyz.y and v.z == xyz.z then
                 print("GimpOCD - Line 71: Found existing beacon at xyz, removing it")
-                os.sleep(0)
+                os.sleep(sleeps.yield)
                 v.remove()
                 table.remove(highlighters, k)
                 print("") -- Blank line after removal
@@ -104,7 +105,7 @@ local function onHighlightActual(xyz)
         beacon.beacon.setColor(0, 1, 1)
         table.insert(highlighters, beacon)
         print("GimpOCD - Line 78: New beacon created and added to highlighters.")
-        os.sleep(0)
+        os.sleep(sleeps.yield)
     end)
     if not success then
         print("GimpOCD - Error in onHighlightActual: " .. tostring(error))
@@ -118,7 +119,7 @@ local function onHighlight(_, xyz)
     if not success then
         print("GimpOCD - Error in onHighlight: " .. tostring(error))
     end
-    os.sleep(0)
+    os.sleep(sleeps.yield)
     print("") -- Blank line after function execution
 end
 
@@ -132,7 +133,7 @@ onModemMessage = function(_, _, _, port, _, message1)
                 print("GimpOCD - Error in hud.modemMessageHandler: " .. tostring(error_message))
             end
         end
-        os.sleep(0)
+        os.sleep(sleeps.yield)
     end)
     if not success then
         print("GimpOCD - Error in onModemMessage: " .. tostring(error))
@@ -183,5 +184,5 @@ print("") -- Blank line for readability
 --- Break me to play games on the side
 
 while true do
-    os.sleep(5)
+    os.sleep(sleeps.sixty)
 end
