@@ -8,6 +8,7 @@ local itemWindow = require("itemWindow")
 local configurations = require("configurations")
 local c = require("gimp_colors")
 local sleeps = require("sleepDurations")
+local event = require("event")
 
 -----------------------------------------
 ---forward declarations
@@ -15,6 +16,7 @@ local sleeps = require("sleepDurations")
 local overlay = {}
 overlay.tabs = {}
 local active
+local mutex_timer = 0
 
 -----------------------------------------
 ----Initialization and Swap Functions
@@ -26,6 +28,7 @@ function overlay.loadTab(tab)
         os.sleep(sleeps.ten)
     end
     gimp_globals.initializing_lock = true
+    mutex_timer = event.timer(sleeps.thirty, function() gimp_globals.initializing_lock = false end)
     print("\n overlay.tabs - Line 24: init lock enabled \n")
     local success, err = pcall(function()
         if active and active.remove then 
@@ -40,13 +43,13 @@ function overlay.loadTab(tab)
         if not success_save then
             print("overlay.tabs - Line 36: Error saving overlay tab state: " .. tostring(error_save))
         end
-        os.sleep(sleeps.yield)
     end)
     if not success then
         print("overlay.tabs - Line 41: Error in overlay.loadTab: " .. tostring(err))
     end
     print("") -- Blank line for readability
     gimp_globals.initializing_lock = false
+    event.cancel(mutex_timer)
     overlay.update()
     print("\n overlay.tabs - Line 45: init lock disabled \n")
 end
@@ -62,7 +65,6 @@ function overlay.init()
             local success_itemWindow, error_itemWindow = pcall(function()
                 print("overlay.tabs - Line 58: Initializing itemWindow tab.")
                 itemWindow.init()
-                os.sleep(sleeps.yield)
                 active = itemWindow
             end)
             if not success_itemWindow then
@@ -77,7 +79,6 @@ function overlay.init()
             local success_machines, error_machines = pcall(function()
                 print("overlay.tabs - Line 73: Initializing machines tab.")
                 machinesManager.init()
-                os.sleep(sleeps.yield)
                 active = machinesManager
             end)
             if not success_machines then
@@ -92,7 +93,6 @@ function overlay.init()
             local success_options, error_options = pcall(function()
                 print("overlay.tabs - Line 88: Initializing options tab.")
                 configurations.init()
-                os.sleep(sleeps.yield)
                 active = configurations
             end)
             if not success_options then
@@ -106,7 +106,6 @@ function overlay.init()
         overlay.tabs.textEditor.init = function()
             local success_textEditor, error_textEditor = pcall(function()
                 print("overlay.tabs - Line 103: Initializing text editor tab.")
-                os.sleep(sleeps.yield)
                 active = "text editor not set yet"
             end)
             if not success_textEditor then
