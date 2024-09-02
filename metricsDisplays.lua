@@ -240,7 +240,6 @@ function machinesMetricsElement.createElement(x, y, machineTable, header)
             elseif button == 1 then
                 print("metricsDisplays - Line 191: Initializing individuals")
                 local machinesManager = require("machinesManager")
-                machinesManager.remove()
                 machinesManager.individuals.init(machinesTable, header)
             end
 			backgroundInterior.setColor(table.unpack(normalColor))
