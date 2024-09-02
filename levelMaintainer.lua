@@ -66,19 +66,14 @@ local function lock(num)
     unlock_timer = thread.create(function()
         for j = 1, 100 do
             y(200)
-            print("levelMaintainer - line 380: unlock_timer:", num, j)
             if not levelMaintVars.lock[num] then
-                print("levelMaintainer - line 383: unlock_timer: unlocked naturally", num)
                 return
             end
         end
         unlock(num)
-        print("levelMaintainer - line 383: unlock_timer: unlocked", num)
     end)
-    print("levelMaintainer - line 48: levelMaintainer locked", tostring(num))
     unlock_timer:detach()
     unlock_timer:resume()
-
     y(yieldDuration)
 end
 
