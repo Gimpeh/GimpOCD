@@ -3,7 +3,6 @@ local event = require("event")
 local gimpHelper = {}
 
 function gimpHelper.handleTextInput(textLabel)
-    print("gimpHelper - Line 5: handleTextInput called")
     textLabel.setText("")
     while true do
         local _, _, _, character = event.pull("hud_keyboard")
@@ -130,7 +129,6 @@ function gimpHelper.trim(s)
 end
 
 function gimpHelper.capitalizeWords(str)
-    print("gimpHelper - Line 145: capitalizeWords called with str =", tostring(str))
     local capitalized = str:gsub("(%a)([%w_']*)", function(first, rest)
         return first:upper() .. rest
     end)
