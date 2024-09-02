@@ -102,7 +102,7 @@ local function getNumActiveCpus()
     y(yieldDuration)
     for k, v in ipairs(cpus) do
         print("levelMaintainer - line 89: Checking if cpu is active, CPU: ", k)
-        if v.isActive() then
+        if v.cpu.isActive() then
             y(yieldDuration)
             cpusInUse = cpusInUse + 1
             print("levelMaintainer - line 93: CPU is active, incrementing cpusInUse")
