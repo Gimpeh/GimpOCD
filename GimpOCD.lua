@@ -137,7 +137,6 @@ onModemMessage = function(_, _, _, port, _, message1)
     if not success then
         print("GimpOCD - Error in onModemMessage: " .. tostring(error))
     end
-    print("") -- Blank line after function execution
 end
 
 local function onHudReset()
