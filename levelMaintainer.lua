@@ -63,6 +63,7 @@ local function lock(num)
     levelMaintVars.lock[num] = true
     if auto_unlock[num] then
         event.cancel(auto_unlock[num])
+        auto_unlock[num] = nil
     end
     auto_unlock[num] = event.timer(20000, function()
         levelMaintVars.lock[num] = false
@@ -300,7 +301,7 @@ end
 
 local function setThreadState(configs, index, thr)
     print("levelMaintainer - line 276: Setting thread state")
-    if configs and configs.enabled then
+    if configs and configs.enabled and configs.enabled == "true" then
         print("levelMaintainer - line 279: Configs enabled is true")
         levelMaintThreads[index] = thr
         levelMaintVars[index].enabled = true
@@ -359,16 +360,18 @@ end
 local function createLevelMaintainerThread(configs, key)
     local data = configs
     local index = key
-    local levelMaintThread = thread.create(function()
-        while true do
-            y(medDuration)  
-            print("levelMaintainer - line 334: Running levelMaintThread")
-            if data then
+    if data and data.enabled and data.enabled == "true" then
+        local levelMaintThread = thread.create(function()
+            while true do
+                y(medDuration)  
+                print("levelMaintainer - line 334: Running levelMaintThread")
                 runLevelMaintainer(data, index)
             end
-        end
-    end)
-    return levelMaintThread
+        end)
+        return levelMaintThread
+    else 
+        return nil
+    end
 end
 
 local function setLevelMaintThread(_, index)
