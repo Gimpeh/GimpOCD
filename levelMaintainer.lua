@@ -286,7 +286,7 @@ local function getLevelMaintainerConfigs(index)
 end
 
 local function killOldThread(index)
-    if levelMaintThreads and levelMaintThreads[index] and type(levelMaintThreads[index]) == "thread" and levelMaintThreads[index]:status() ~= "dead" then
+    if levelMaintThreads and levelMaintThreads[index] and levelMaintThreads[index]:status() ~= "dead" then
         print("levelMaintainer - line 266: Killing existing levelMaintThread", index)
         levelMaintThreads[index]:suspend()
         y(yieldDuration)
