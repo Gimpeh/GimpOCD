@@ -2,6 +2,7 @@ local component = require("component")
 local event = require("event")
 local thread = require("thread")
 local gimpHelper = require("gimpHelper")
+local s = require("serialization")
 
 local y = os.sleep
 local me = component.me_interface
@@ -239,6 +240,7 @@ local function getLevelMaintainerConfigs(index)
     local tbl2 = gimpHelper.loadTable("/home/programData/levelMaintainerConfig.data")
     print("levelMaintainer - line 227: Loaded levelMaintainerConfig.data")
     y(yieldDuration) 
+    print(tbl2[index].enabled)
     if tbl2 and tbl2[index] and tbl2[index].enabled and tbl2[index].enabled == "true" then
         print("levelMaintainer - line 230: Config option enabled is true for index", index)
         data.enabled = tbl2[index].enabled == "true"
@@ -350,7 +352,7 @@ local function createLevelMaintainerThread(configs, key)
     local levelMaintThread = thread.create(function()
         while true do
             y(yieldDuration)  
-            local success, error = pcall(runLevelMaintainer, data, index) --257
+            local success, error = pcall(runLevelMaintainer, data, index)
             if not success then 
                 print("backend - line 221/196: Error while executing runLevelMaintainer from thread : ", index, " : " .. tostring(error)) 
                 y(longDuration) 
@@ -366,6 +368,7 @@ local function setLevelMaintThread(_, index)
     lock(3) 
     y(yieldDuration)
     local configs = getLevelMaintainerConfigs(index) 
+    print(s.serialize(configs))
     y(yieldDuration)
     killOldThread(index) 
     y(yieldDuration)
