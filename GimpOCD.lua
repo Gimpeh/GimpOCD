@@ -9,7 +9,7 @@ local sleeps = require("sleepDurations")
 -----------------------------------------
 -- Start up
 
---component.modem.open(202)
+component.modem.open(202)
 component.glasses.removeAll()
 print("modem port 202 not opened!!! re-enable when ready")
 
