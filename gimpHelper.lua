@@ -172,7 +172,7 @@ end
 function gimpHelper.capitalizeWords(str)
     print("gimpHelper - Line 145: capitalizeWords called with str =", tostring(str))
     local capitalized = str:gsub("(%a)([%w_']*)", function(first, rest)
-        return first:upper() .. rest:lower()
+        return first:upper() .. rest
     end)
     print("gimpHelper - Line 148: Capitalized string:", capitalized)
     print("")  -- Blank line for readability
