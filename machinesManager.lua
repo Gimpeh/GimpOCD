@@ -154,7 +154,7 @@ function machinesManager.individuals.init(machinesTable, active_group)
         machinesManager.display = nil
 
         --initialize the display for the machines in the selected group
-        machinesManager.display = PagedWindow.new(machinesTable, 85, 34, {x1 = 80, y1 = 80, x2 = 700, y2 = 500}, 7, metricsDisplays.machine.create)
+        machinesManager.display = PagedWindow.new(machinesTable, 85, 34, {x1 = 80, y1 = 80, x2 = 700, y2 = 500}, 7, metricsDisplays.machine.create, active_group)
         machinesManager.display:displayItems()
         
         -- Dont think this is necessary anymore
