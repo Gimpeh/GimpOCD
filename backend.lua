@@ -77,6 +77,14 @@ local function notifier(_, notification_subject, ...)
         local first = select(1, ...)
         notification_message = widgetsAreUs.alert_notification(c.alertnotification, first  .. " Can't be crafted!", 700)
         return notification_message
+    elseif notification_subject == "alertStalled" then
+        local first = select(1, ...)
+        if first then
+            notification_message = widgetsAreUs.alert_notification(c.alertnotification, first  .. " Stalled!", 500)
+        --[[else
+            notification_message = widgetsAreUs.alert_notification(c.alertnotification, "A recipe has stalled!", 500)]]
+        return notification_message
+        end
     end
 end
 

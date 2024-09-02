@@ -203,6 +203,7 @@ local function craftItems(data, index)
         print("levelMaintainer - line 174: Craftables requested")
         y(shortDuration)
         if obj then
+            obj.itemLabel = data.itemStack.label
             print("levelMaintainer - line 177: Object returned from me_interface.getCraftables")
             table.insert(tbl, obj)
             if obj.hasFailed and obj.hasFailed() then
@@ -214,7 +215,17 @@ local function craftItems(data, index)
             levelMaintVars[index].cpusUsed = levelMaintVars[index].cpusUsed + 1
             print("levelMaintainer - line 180: cpusUsed incremented")
             y(yieldDuration)
+            --[[for key, cpu in ipairs(cpus) do
+                if cpu.cpu.finalOutput().label == data.itemStack.label then
+                    if not cpu.cpu.activeItems()[1] then
+                        event.push("alert_notification", "alertStalled", data.itemStack.label)
+                    end
+                end
+            end]]
         else
+            if data.alertResources then
+                event.push("alert_notification", "alertResources", data.itemStack.label)
+            end
             print("backend - line 93: No object returned from me_interface.getCraftables")
             y(longDuration) 
             return false, tbl
@@ -414,6 +425,15 @@ local function cleanup()
                 levelMaintVars.runningCrafts[k] = nil
                 print("\n \n levelMaintainer.lua - Line 255 : Craft failed but still was added to runningCrafts")
                 print("levelMaintainer.lua - Line 255 : It has been removed now \n \n")
+            else
+                local cpus = me.getCpus()
+                for key, cpu in ipairs(cpus) do
+                    if cpu.cpu.finalOutput().label == v.itemLabel then
+                        if not cpu.cpu.activeItems()[1] then
+                            event.push("alert_notification", "alertStalled", v.itemLabel)
+                        end
+                    end
+                end
             end
             print("levelMaintainer - line 367: Done checking on craft: ", k)
             y(yieldDuration)
