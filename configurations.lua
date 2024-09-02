@@ -99,7 +99,6 @@ function configurations.initBoxes()
         boxes.machineManagerConfig = widgetsAreUs.createBox(355, 310, 160, 160, c.background2, 1)
         boxes.generalConfig = widgetsAreUs.createBox(520, 310, 200, 160, c.background2, 1)
         boxes.itemMangerConfig = widgetsAreUs.createBox(580, 80, 160, 200, c.background2, 1)
-        os.sleep(0)
     end)
     if not success then
         print("configurations - Error in configurations.initBoxes: " .. tostring(err))
@@ -128,7 +127,6 @@ function configurations.initButtons()
         buttons.machineManagerNext = widgetsAreUs.symbolBox(328, 378, ">", c.navbutton, function()
             displays.machineManager:nextPage()
         end)
-        os.sleep(0)
     end)
     if not success then
         print("configurations - Error in configurations.initButtons: " .. tostring(err))
@@ -154,7 +152,6 @@ function configurations.initDisplays()
                 end
             end
             tbl = nil
-            os.sleep(0)
             print("") -- Blank line after loop
             return display
         end
