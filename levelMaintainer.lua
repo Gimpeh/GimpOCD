@@ -8,7 +8,7 @@ local y = os.sleep
 local me = component.me_interface
 local levelMaintainer = {}
 
-local unlocking = false
+local unlock_timer = false
 
 local verbosity = true
 local print = print
@@ -55,16 +55,27 @@ local function awaitUnlock(num)
     end
 end
 
-local function lock(num)
-    levelMaintVars.lock[num] = true
-    print("levelMaintainer - line 48: levelMaintainer locked", tostring(num))
-    y(yieldDuration)
-end
-
 local function unlock(num)
     levelMaintVars.lock[num] = false
     print("levelMaintainer - line 53: levelMaintainer unlocked", tostring(num))
     y(shortDuration) 
+end
+
+local function lock(num)
+    levelMaintVars.lock[num] = true
+    unlock_timer = thread.create(function()
+        for j = 1, 100 do
+            y(200)
+            print("levelMaintainer - line 380: unlock_timer:", num, j)
+        end
+        unlock(num)
+        print("levelMaintainer - line 383: unlock_timer: unlocked", num)
+    end)
+    print("levelMaintainer - line 48: levelMaintainer locked", tostring(num))
+    unlock_timer:detach()
+    unlock_timer:resume()
+
+    y(yieldDuration)
 end
 
 -------------
@@ -403,35 +414,6 @@ local t = event.timer(10000, function()
     print("levelMaintainer - line 370: Done running levelMaintainer cleanup")
 end, math.huge)
 
-local function unlock_timer(num)
-    unlocking = true
-    for i = 1, 100 do
-        os.sleep(200)
-        print("autounlock countdown", tostring(num), tostring(i))
-        if levelMaintVars.lock[num] == false then
-            unlocking = false
-            return
-        end
-    end
-    unlocking = false
-    levelMaintVars.lock[num] = false
-end
-
-local function unlock_timer_controller()
-    if unlocking then
-        return
-    end
-    for i = 1, 3 do
-        if levelMaintVars.lock[i] then
-            unlock_timer(i)
-        end
-    end
-end
-
 event.listen("add_level_maint_thread", setLevelMaintThread)
-
-event.timer(1000, function()
-    unlock_timer_controller()
-end, math.huge)
 
 return levelMaintainer
