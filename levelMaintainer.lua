@@ -392,26 +392,34 @@ end
 ---------------------
 --- Level Maintainer Event Listener
 
-local t = event.timer(10000, function()
-    print("levelMaintainer - line 359: Running levelMaintainer cleanup")
-    for k, v in ipairs(levelMaintVars.runningCrafts) do
-        print("levelMaintainer - line 361: Checking on craft: ", k)
-        y(yieldDuration)
-        if v.isDone() or v.isCanceled() then
-            print("levelMaintainer - line 362: Craft is done or canceled")
-            table.remove(levelMaintVars.runningCrafts, k)
-            levelMaintVars.runningCrafts[k] = nil
-        elseif v.hasFailed and v.hasFailed() then
-            table.remove(levelMaintVars.runningCrafts, k)
-            levelMaintVars.runningCrafts[k] = nil
-            print("\n \n levelMaintainer.lua - Line 255 : Craft failed but still was added to runningCrafts")
-            print("levelMaintainer.lua - Line 255 : It has been removed now \n \n")
+local function cleanup()
+    while true do
+        os.sleep(5000)
+        print("levelMaintainer - line 359: Running levelMaintainer cleanup")
+        for k, v in ipairs(levelMaintVars.runningCrafts) do
+            print("levelMaintainer - line 361: Checking on craft: ", k)
+            y(yieldDuration)
+            if v.isDone() or v.isCanceled() then
+                print("levelMaintainer - line 362: Craft is done or canceled")
+                table.remove(levelMaintVars.runningCrafts, k)
+                levelMaintVars.runningCrafts[k] = nil
+            elseif v.hasFailed and v.hasFailed() then
+                table.remove(levelMaintVars.runningCrafts, k)
+                levelMaintVars.runningCrafts[k] = nil
+                print("\n \n levelMaintainer.lua - Line 255 : Craft failed but still was added to runningCrafts")
+                print("levelMaintainer.lua - Line 255 : It has been removed now \n \n")
+            end
+            print("levelMaintainer - line 367: Done checking on craft: ", k)
+            y(yieldDuration)
         end
-        print("levelMaintainer - line 367: Done checking on craft: ", k)
-        y(yieldDuration)
+        print("levelMaintainer - line 370: Done running levelMaintainer cleanup")
     end
-    print("levelMaintainer - line 370: Done running levelMaintainer cleanup")
-end, math.huge)
+end
+
+local cleanup_thread = thread.create(cleanup)
+cleanup_thread:detach()
+cleanup_thread:resume()
+
 
 event.listen("add_level_maint_thread", setLevelMaintThread)
 
