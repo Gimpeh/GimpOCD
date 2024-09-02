@@ -217,7 +217,9 @@ function machinesMetricsElement.createElement(x, y, machineTable, header)
             print("metricsDisplays - Line 169: Handling onClick for machine metrics element with button", tostring(button))
 			local normalColor = table.pack(backgroundInterior.getColor())
 			backgroundInterior.setColor(c.clicked)
+            print("checking button")
             if button == 0 then
+                print("metricsDisplays - Line 173: Sifting through machines table")
                 for _, machine in ipairs(machinesTable) do
                     os.sleep(0)
                     if workAllowed == true then
@@ -236,6 +238,7 @@ function machinesMetricsElement.createElement(x, y, machineTable, header)
                 local machinesManager = require("machinesManager")
                 machinesManager.update()
             elseif button == 1 then
+                print("metricsDisplays - Line 191: Initializing individuals")
                 local machinesManager = require("machinesManager")
                 machinesManager.remove()
                 machinesManager.individuals.init(machinesTable, header)
