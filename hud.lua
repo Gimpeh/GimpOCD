@@ -41,6 +41,7 @@ function hud.init()
                     end
                     os.sleep(1)
                     hud.elements.battery = metricsDisplays.battery.create(x, y)
+                    hud.savedCoordinates.battery = {x = x, y = y}
                     os.sleep(1)
                 elseif button == 1 then  -- Right click
                     print("hud - Line 34: Right click detected, adjusting battery location.")
@@ -53,6 +54,7 @@ function hud.init()
                     local xModified = x - 203
                     local yModified = y - 183
                     hud.elements.battery = metricsDisplays.battery.create(xModified, yModified)
+                    hud.savedCoordinates.battery = {x = xModified, y = yModified}
                 elseif button == 2 then  -- Middle click
                     print("hud - Line 44: Middle click detected, finalizing battery location.")
                     break
@@ -112,6 +114,10 @@ function hud.modemMessageHandler(port, message)
         print("hud - Line 91: Error in hud.modemMessageHandler: " .. tostring(err))
     end
     print("") -- Blank line for readability
+end
+
+function hud.persist_through_soft_reset()
+    hud.elements.battery = metricsDisplays.battery.create(hud.savedCoordinates.battery.x, hud.savedCoordinates.battery.y)
 end
 
 return hud
