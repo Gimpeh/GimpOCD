@@ -234,7 +234,7 @@ saveConfigData = function(activeConfigsConfigKey, path, activeConfigsIndex)
         end
 
         local derp = {}
-        print("configurations - Line 225: Initialized empty table derp =", s.serialize(derp))
+        print("configurations - Line 225: Initialized empty table derp")
         local enabled = false
         for k, v in pairs(currentlyDisplayedConfigs[activeConfigsConfigKey].elements) do
             if type(v) ~= "function" and v.getValue then
