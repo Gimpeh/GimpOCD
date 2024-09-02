@@ -175,6 +175,7 @@ function widgetsAreUs.titleBox(x, y, width, height, color, alpha, text1)
 end
 
 function widgetsAreUs.contextMenu(x, y, ...)
+    gimp_globals.initializing_lock = true
     local args = {...}
     local box = widgetsAreUs.createBox(x, y, 100, 30 * #args, c.slategray, 0.6)
     local options = {}
@@ -196,9 +197,16 @@ function widgetsAreUs.contextMenu(x, y, ...)
     onClick = function(x1, y1)
         for i = 1, #options do
             if options[i].box.contains(x1, y1) then
-                return gimpHelper.trim(options[i].text.getText())
+                gimp_globals.initializing_lock = false
+                local selected = options[i].text.getText()
+                box.remove()
+                options.remove()
+                return selected
             end
         end
+        gimp_globals.initializing_lock = false
+        box.remove()
+        options.remove()
     end
     }
 end
