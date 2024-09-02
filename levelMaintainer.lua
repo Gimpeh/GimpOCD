@@ -301,7 +301,7 @@ end
 
 local function setThreadState(configs, index, thr)
     print("levelMaintainer - line 276: Setting thread state")
-    if configs and configs.enabled and configs.enabled == "true" then
+    if configs and configs.enabled then
         print("levelMaintainer - line 279: Configs enabled is true")
         levelMaintThreads[index] = thr
         levelMaintVars[index].enabled = true
@@ -360,7 +360,7 @@ end
 local function createLevelMaintainerThread(configs, key)
     local data = configs
     local index = key
-    if data and data.enabled and data.enabled == "true" then
+    if data and data.enabled then
         local levelMaintThread = thread.create(function()
             while true do
                 y(medDuration)  
