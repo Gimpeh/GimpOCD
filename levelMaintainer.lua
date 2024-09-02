@@ -62,7 +62,6 @@ local function unlock(num)
 end
 
 local function lock(num)
-    levelMaintVars.lock[num] = true
     unlock_timer = thread.create(function()
         for j = 1, 100 do
             y(200)
@@ -72,6 +71,7 @@ local function lock(num)
         end
         unlock(num)
     end)
+    levelMaintVars.lock[num] = true
     unlock_timer:detach()
     unlock_timer:resume()
     y(yieldDuration)
@@ -394,16 +394,16 @@ end
 
 local t = event.timer(10000, function()
     print("levelMaintainer - line 359: Running levelMaintainer cleanup")
-    for k, v in pairs(levelMaintVars.runningCrafts) do
+    for k, v in ipairs(levelMaintVars.runningCrafts) do
         print("levelMaintainer - line 361: Checking on craft: ", k)
         y(yieldDuration)
         if v.isDone() or v.isCanceled() then
             print("levelMaintainer - line 362: Craft is done or canceled")
-            levelMaintVars.runningCrafts[k] = nil
             table.remove(levelMaintVars.runningCrafts, k)
+            levelMaintVars.runningCrafts[k] = nil
         elseif v.hasFailed and v.hasFailed() then
-            levelMaintVars.runningCrafts[k] = nil
             table.remove(levelMaintVars.runningCrafts, k)
+            levelMaintVars.runningCrafts[k] = nil
             print("\n \n levelMaintainer.lua - Line 255 : Craft failed but still was added to runningCrafts")
             print("levelMaintainer.lua - Line 255 : It has been removed now \n \n")
         end
