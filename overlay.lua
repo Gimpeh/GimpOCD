@@ -42,6 +42,7 @@ function overlay.loadTab(tab)
     end
     print("") -- Blank line for readability
     gimp_globals.initializing_lock = false
+    overlay.update()
     print("\n overlay.tabs - Line 45: init lock disabled \n")
 end
 
