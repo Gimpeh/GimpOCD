@@ -205,6 +205,12 @@ local function craftItems(data, index)
         if obj then
             print("levelMaintainer - line 177: Object returned from me_interface.getCraftables")
             table.insert(tbl, obj)
+            if obj.hasFailed and obj.hasFailed() then
+                if data.alertResources then
+                    event.push("alert_notification", "alertResources", data.itemStack.label)
+                end
+                return
+            end
             levelMaintVars[index].cpusUsed = levelMaintVars[index].cpusUsed + 1
             print("levelMaintainer - line 180: cpusUsed incremented")
             y(yieldDuration)

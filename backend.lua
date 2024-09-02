@@ -10,6 +10,8 @@ local s = require("serialization")
 local component = require("component")
 local levelMaintainer = require("levelMaintainer")
 local sleeps = require("sleepDurations")
+local widgetsAreUs = require("widgetsAreUs")
+local c = require("gimp_colors")
 
 local me = component.me_interface
 
@@ -69,6 +71,16 @@ local function onUpdate()
     updateThread:resume()
 end
 
+local function notifier(_, notification_subject, ...)
+    local notification_message
+    if notification_subject == "alertResources" then
+        local first = select(1, ...)
+        notification_message = widgetsAreUs.alert_notification(c.alertnotification, first  .. " Can't be crafted!", 700)
+        return notification_message
+    end
+end
+
+event.listen("alert_notification", notifier)
 event.listen("update_overlay", onUpdate)
 
 threadManager = thread.create(manageThreads)
