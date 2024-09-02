@@ -352,12 +352,9 @@ local function createLevelMaintainerThread(configs, key)
     local levelMaintThread = thread.create(function()
         while true do
             y(medDuration)  
+            print("levelMaintainer - line 334: Running levelMaintThread")
             if data then
-                local success, error = pcall(runLevelMaintainer, data, index)
-                if not success then 
-                    print("backend - line 221/196: Error while executing runLevelMaintainer from thread : ", index, " : " .. tostring(error)) 
-                    y(longDuration) 
-                end
+                runLevelMaintainer(data, index)
             end
         end
     end)
