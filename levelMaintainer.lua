@@ -203,7 +203,7 @@ local function craftItems(data, index)
     for i = 1, math.min(data.maxCpu, #cpus - cpusInUse, levelMaintVars.maxCpu - computeLevelMaintainerCpuUsage()) do
         print("levelMaintainer - line 171: Initiating craft number: " .. i .. " of same recipe")
         y(yieldDuration)
-        local obj = me.getCraftables({label = data.itemStack.label, name = data.itemStack.name})[1].request(data.batch, gimp_globals.prioritize_var_Testing)
+        local obj = me.getCraftables({label = data.itemStack.label, name = data.itemStack.name})[1].request(data.batch)
         print("levelMaintainer - line 174: Craftables requested")
         y(shortDuration)
         if obj then
@@ -248,7 +248,7 @@ local function getLevelMaintainerConfigs(index)
     local data = {}
     local tbl1 = gimpHelper.loadTable("/home/programData/levelMaintainer.data")
     print("levelMaintainer - line 224: Loaded levelMaintainer.data")
-    y(shortDuration)  
+    y(shortDuration)
     local tbl2 = gimpHelper.loadTable("/home/programData/levelMaintainerConfig.data")
     print("levelMaintainer - line 227: Loaded levelMaintainerConfig.data")
     y(yieldDuration) 
