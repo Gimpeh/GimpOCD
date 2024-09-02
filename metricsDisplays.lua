@@ -216,7 +216,7 @@ function machinesMetricsElement.createElement(x, y, machineTable, header)
         onClick = function(button)
             print("metricsDisplays - Line 169: Handling onClick for machine metrics element with button", tostring(button))
 			local normalColor = table.pack(backgroundInterior.getColor())
-			backgroundInterior.setColor(c.clicked)
+			backgroundInterior.setColor(table.unpack(c.clicked))
             print("checking button")
             if button == 0 then
                 print("metricsDisplays - Line 173: Sifting through machines table")
