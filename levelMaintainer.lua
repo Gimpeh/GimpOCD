@@ -288,7 +288,7 @@ end
 
 local function killOldThread(index)
     print("levelMaintainer - line 263: attempting to Kill old thread")
-    if levelMaintThreads and levelMaintThreads[index] and levelMaintThreads[index]:status() ~= "dead" then
+    if levelMaintThreads and levelMaintThreads[index] and levelMaintThreads[index] ~= "nil" then
         print("levelMaintainer - line 266: Killing existing levelMaintThread", index)
         levelMaintThreads[index]:suspend()
         y(yieldDuration)
