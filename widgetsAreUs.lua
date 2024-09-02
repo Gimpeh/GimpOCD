@@ -56,6 +56,18 @@ function widgetsAreUs.attachOnClick(obj, func)
     return obj
 end
 
+function widgetsAreUs.attachToOnClick(obj, func)
+    local currentOnClick = obj.onClick
+    print("widgetsAreUs - Line 44: Attaching onClick function.")
+    obj.onClick = function(args_current, args_new)
+        if currentOnClick then
+            currentOnClick(table.unpack(args_current))
+        end
+        return func(obj, table.unpack(args_new))
+    end
+    return obj
+end
+
 function widgetsAreUs.attachUpdate(obj, func)
     print("widgetsAreUs - Line 51: Attaching update function.")
     obj.update = function(...)

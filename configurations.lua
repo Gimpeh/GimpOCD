@@ -329,6 +329,10 @@ loadConfigData = function(currentlyDisplayedConfigsRef, path, configIndex)
     print("") -- Blank line after function execution
 end
 
+local function enable_level_maintainer()
+    event.push("add_level_maint_thread", currentlyDisplayedConfigs["lm"].index)
+end
+
 function configurations.createLevelMaintainerConfig(x, y, index)
     print("configurations - Line 217: createLevelMaintainerConfig called with x =", tostring(x), "y =", tostring(y), "index =", tostring(index))
     local success, err = pcall(function()
@@ -341,7 +345,7 @@ function configurations.createLevelMaintainerConfig(x, y, index)
         end
         configurations.panel.lm = {}
         configurations.panel.lm.priority = widgetsAreUs.numberBox(x, y, "priority", "Priority:")
-        configurations.panel.lm.enabled = widgetsAreUs.checkBoxHalf(x+80, y, "enabled", "Enabled", c.coral)
+        configurations.panel.lm.enabled = widgetsAreUs.attachToOnClick(widgetsAreUs.checkBoxHalf(x+80, y, "enabled", "Enabled", c.coral), enable_level_maintainer)
         configurations.panel.lm.minCPU = widgetsAreUs.numberBox(x, y+30, "minCpu", "Min CPU")
         configurations.panel.lm.minCpuTitle2 = widgetsAreUs.text(x+5, y+45, "Available:", 0.9)
         configurations.panel.lm.maxCPU = widgetsAreUs.numberBox(x+80, y+30, "maxCpu", "Max CPU")
