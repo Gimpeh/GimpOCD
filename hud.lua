@@ -113,6 +113,7 @@ function hud.modemMessageHandler(port, message)
     if not success then
         print("hud - Line 91: Error in hud.modemMessageHandler: " .. tostring(err))
     end
+    os.sleep(0)
     print("") -- Blank line for readability
 end
 
