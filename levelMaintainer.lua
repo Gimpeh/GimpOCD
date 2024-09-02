@@ -186,7 +186,7 @@ local function computeLevelMaintainerCpuUsage()
     end
     y(medDuration)
     print("levelMaintainer - line 157: done computing levelMaintainerCpuUsage")
-    return
+    return levelMaintVars.levelMaintainerCpuUsage
 end
 
 local function craftItems(data, index)
