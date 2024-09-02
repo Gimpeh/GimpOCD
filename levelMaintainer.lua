@@ -46,12 +46,6 @@ local levelMaintVars = {
     }
 }
 
-local auto_unlock = {
-    [1] = nil,
-    [2] = nil,
-    [3] = nil
-}
-
 local function awaitUnlock(num)
     while levelMaintVars.lock[num] do
         print("levelMaintainer - line 41: waiting for unlock", tostring(num))
@@ -61,16 +55,7 @@ end
 
 local function lock(num)
     levelMaintVars.lock[num] = true
-    auto_unlock[num] = event.timer(10, function()
-        for i = 1, 100 do
-            os.sleep(200)
-            print("autounlock countdown", tostring(num), tostring(i))
-            if levelMaintVars.lock[num] == false then
-                return
-            end
-        end
-        levelMaintVars.lock[num] = false
-    end)
+    event.push("auto_unlock", num)
     print("levelMaintainer - line 48: levelMaintainer locked", tostring(num))
     y(yieldDuration)  
 end
@@ -417,6 +402,18 @@ local t = event.timer(10000, function()
     print("levelMaintainer - line 370: Done running levelMaintainer cleanup")
 end, math.huge)
 
+local function unlock_timer(_, num)
+    for i = 1, 100 do
+        os.sleep(200)
+        print("autounlock countdown", tostring(num), tostring(i))
+        if levelMaintVars.lock[num] == false then
+            return
+        end
+    end
+    levelMaintVars.lock[num] = false
+end
+
 event.listen("add_level_maint_thread", setLevelMaintThread)
+event.listen("auto_unlock", unlock_timer)
 
 return levelMaintainer
