@@ -203,7 +203,7 @@ function machinesManager.onClick(x, y, button)
     print("machinesManager - Line 143: Processing click at (", tostring(x), ",", tostring(y), ")")
     local success, err = pcall(function()
         if machinesManager.buttons.left then
-            if widgetsAreUs.isPointInBox(x, y, machinesManager.buttons.left) then
+            if widgetsAreUs.isPointInBox(x, y, machinesManager.buttons.left.box) then
                 print("machinesManager - Line 147: Clicked on left button.")
                 machinesManager.display:previousPage()
                 return
@@ -211,7 +211,7 @@ function machinesManager.onClick(x, y, button)
         end
 
         if machinesManager.buttons.right then
-            if widgetsAreUs.isPointInBox(x, y, machinesManager.buttons.right) then
+            if widgetsAreUs.isPointInBox(x, y, machinesManager.buttons.right.box) then
                 print("machinesManager - Line 153: Clicked on right button.")
                 machinesManager.display:nextPage()
                 return
