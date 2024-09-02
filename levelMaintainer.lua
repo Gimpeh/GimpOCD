@@ -61,13 +61,15 @@ end
 
 local function lock(num)
     levelMaintVars.lock[num] = true
-    if auto_unlock[num] then
-        event.cancel(auto_unlock[num])
-        auto_unlock[num] = nil
-    end
-    auto_unlock[num] = event.timer(20000, function()
+    auto_unlock[num] = event.timer(10, function()
+        for i = 1, 100 do
+            os.sleep(200)
+            print("autounlock countdown", tostring(num), tostring(i))
+            if levelMaintVars.lock[num] == false then
+                return
+            end
+        end
         levelMaintVars.lock[num] = false
-        print("levelMaintainer - line 48: levelMaintainer lock automatically unlocked", tostring(num))
     end)
     print("levelMaintainer - line 48: levelMaintainer locked", tostring(num))
     y(yieldDuration)  
