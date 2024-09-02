@@ -329,8 +329,10 @@ loadConfigData = function(currentlyDisplayedConfigsRef, path, configIndex)
     print("") -- Blank line after function execution
 end
 
-local function enable_level_maintainer()
-    event.push("add_level_maint_thread", currentlyDisplayedConfigs["lm"].index)
+local function enable_level_maintainer(obj)
+    if obj.getValue() == "X" then
+        event.push("add_level_maint_thread", currentlyDisplayedConfigs["lm"].index)
+    end
 end
 
 function configurations.createLevelMaintainerConfig(x, y, index)
