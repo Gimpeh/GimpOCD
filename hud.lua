@@ -13,10 +13,11 @@ hud.hide = nil
 hud.show = nil
 
 local verbosity = false
+local print = print
 
 if not verbosity then
-    local print = function()
-        return 1 + 1
+    print = function()
+        return false
     end
 end
 

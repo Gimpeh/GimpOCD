@@ -16,10 +16,11 @@ local me = component.me_interface
 local backend = {}
 
 local verbosity = false
+local print = print
 
 if not verbosity then
-    local print = function()
-        return 1 + 1
+    print = function()
+        return false
     end
 end
 

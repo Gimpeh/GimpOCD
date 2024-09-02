@@ -7,10 +7,11 @@ local hud = require("hud")
 local sleeps = require("sleepDurations")
 
 local verbosity = false
+local print = print
 
 if not verbosity then
-    local print = function()
-        return 1 + 1
+    print = function()
+        return false
     end
 end
 

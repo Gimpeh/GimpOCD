@@ -11,9 +11,10 @@ local sleeps = require("sleepDurations")
 local event = require("event")
 
 local verbosity = false
+local print = print
 
 if not verbosity then
-    local print = function()
+    print = function()
         return false
     end
 end
