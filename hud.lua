@@ -6,6 +6,8 @@ local s = require("serialization")
 local hud = {}
 hud.elements = {}
 hud.elements.battery = nil
+hud.savedCoordinates = {}
+hud.savedCoordinates.battery = {}
 
 hud.hide = nil
 hud.show = nil

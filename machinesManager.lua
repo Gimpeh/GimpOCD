@@ -261,6 +261,7 @@ function machinesManager.update()
     local success, err = pcall(function()
         for k, v in ipairs(machinesManager.display.currentlyDisplayed) do
             v.update()
+            os.sleep(0)
         end
     end)
     print("machinesManager - Line 189: Updated machinesManager display.")

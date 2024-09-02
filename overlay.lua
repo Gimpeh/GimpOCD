@@ -20,6 +20,10 @@ local active
 
 function overlay.loadTab(tab)
     print("overlay.tabs - Line 22: Loading tab", tostring(tab))
+    while gimp_globals.initializing_lock do
+        print("overlay load Tab: waiting on init lock")
+        os.sleep(500)
+    end
     gimp_globals.initializing_lock = true
     print("\n overlay.tabs - Line 24: init lock enabled \n")
     local success, err = pcall(function()
