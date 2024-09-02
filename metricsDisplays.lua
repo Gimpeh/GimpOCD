@@ -292,7 +292,7 @@ function machineIndividual.create(x, y, individualProxy)
     local highlightedIndicator = glasses.addRect()
     highlightedIndicator.setPosition(x+78, y+27)
     highlightedIndicator.setSize(0, 0)
-    highlightedIndicator.setColor(c.brightred)
+    highlightedIndicator.setColor(table.unpack(c.brightred))
 
     local xyz
 
@@ -354,7 +354,7 @@ function machineIndividual.create(x, y, individualProxy)
         onClick = function(button, machinesInterface)
             print("metricsDisplays - Line 279: Handling onClick for individual machine element with button", tostring(button))
 			local normalColor = table.pack(background.getColor())
-			background.setColor(c.clicked)
+			background.setColor(table.unpack(c.clicked))
             if button == 0 then -- left click
                 machinesInterface.setState(machinesInterface)
             elseif button == 1 then -- right click
