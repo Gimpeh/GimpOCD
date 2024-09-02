@@ -118,7 +118,7 @@ end
 
 local function shouldRun(data, index)
     print("levelMaintainer - line 106: Checking if I should run", index)
-    y(shortDuration) 
+    y(shortDuration)
     if data and data.enabled then
         print("levelMaintainer - line 109: Data is enabled")
         y(yieldDuration)

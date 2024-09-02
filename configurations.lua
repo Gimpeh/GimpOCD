@@ -330,6 +330,8 @@ loadConfigData = function(currentlyDisplayedConfigsRef, path, configIndex)
 end
 
 local function enable_level_maintainer(obj)
+    local success_save, error_save = pcall(saveConfigData, "lm", "/home/programData/levelMaintainerConfig.data", currentlyDisplayedConfigs["lm"].index)
+    if not success_save then print("configurations - Error saving config data: " .. tostring(error_save)) end
     if obj.getValue() == "true" then
         event.push("add_level_maint_thread", currentlyDisplayedConfigs["lm"].index)
     end
