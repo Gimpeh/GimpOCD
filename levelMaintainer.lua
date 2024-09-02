@@ -142,7 +142,7 @@ local function shouldRun(data, index)
                 y(yieldDuration)
                 if levelMaintVars[index].cpusUsed and levelMaintVars[index].cpusUsed < data.maxCpu then
                     print("levelMaintainer - line 121: Cpus used is less than maxCpu")
-                    local itemInStock = me.getItemsInNetwork({label = data.label, name = data.name, damage = data.damage})[1]
+                    local itemInStock = me.getItemsInNetwork({label = data.itemStack.label, name = data.itemStack.name, damage = data.itemStack.damage})[1]
                     print("levelMaintainer - line 123: got itemstack", itemInStock.label)
                     y(shortDuration)  
                     if itemInStock and itemInStock.size < data.amount then
