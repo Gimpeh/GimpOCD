@@ -152,7 +152,7 @@ local function craftItems(data, index)
     levelMaintVars[index].cpusUsed = 0
     for i = 1, math.min(data.maxCpu, #cpus - cpusInUse, levelMaintVars.maxCpu - computeLevelMaintainerCpuUsage()) do --135
         y(yieldDuration)
-        local obj = me.getCraftables(data.itemStack)[1].request(data.batch, gimp_globals.prioritize_var_Testing)
+        local obj = me.getCraftables({label = data.itemStack.label, name = data.itemStack.name})[1].request(data.batch, gimp_globals.prioritize_var_Testing)
         y(shortDuration)
         if obj then
             print("backend - line 93: Object returned from me_interface.getCraftables")
