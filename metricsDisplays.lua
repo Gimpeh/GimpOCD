@@ -78,7 +78,6 @@ function batteryMetrics.create(x, y)
 
     return {
         update = function(unserializedTable)
-            print("metricsDisplays - Line 57: Updating battery metrics display.")
             local euin = unserializedTable.powerIn
             local out = unserializedTable.powerOut
 			os.sleep(0)

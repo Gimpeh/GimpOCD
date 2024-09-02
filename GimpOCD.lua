@@ -125,10 +125,8 @@ local function onHighlight(_, xyz)
 end
 
 onModemMessage = function(_, _, _, port, _, message1)
-    print("GimpOCD - Line 95: onModemMessage called with port =", tostring(port), "message1 =", tostring(message1))
     local success, error = pcall(function()
         if port == 202 then
-            print("GimpOCD - Line 98: Processing modem message on port 202.")
             local success_message, error_message = pcall(hud.modemMessageHandler, port, message1)
             if not success_message then
                 print("GimpOCD - Error in hud.modemMessageHandler: " .. tostring(error_message))

@@ -102,10 +102,8 @@ function hud.show()
 end
 
 function hud.modemMessageHandler(port, message)
-    print("hud - Line 83: Handling modem message on port", tostring(port))
     local success, err = pcall(function()
         if port == 202 then
-            print("hud - Line 86: Port 202 detected, processing message.")
             local unserializedTable = s.unserialize(message)
             hud.elements.battery.update(unserializedTable)
         end
