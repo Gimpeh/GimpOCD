@@ -47,6 +47,9 @@ end
 
 local function handleClick(_, _, _, x, y, button)
     print("GimpOCD - Line 34: handleClick called with x =", tostring(x), "y =", tostring(y), "button =", tostring(button))
+    while gimp_globals.initializing_lock do
+        os.sleep(100)
+    end
     local success, error = pcall(overlay.onClick, x, y, button)
     if not success then
         print("GimpOCD - Error in handleClick: " .. tostring(error))
