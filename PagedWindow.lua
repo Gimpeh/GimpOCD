@@ -2,6 +2,15 @@
 local PagedWindow = {}
 PagedWindow.__index = PagedWindow
 
+local verbosity = false
+local print = print
+
+if not verbosity then
+    print = function()
+        return false
+    end
+end
+
 -- Constructor function
 function PagedWindow.new(items, itemWidth, itemHeight, screenBounds, padding, renderItem, array)
     print("PagedWindow - Line 6: Initializing new PagedWindow.")
