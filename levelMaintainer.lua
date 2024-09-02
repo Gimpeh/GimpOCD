@@ -8,6 +8,8 @@ local y = os.sleep
 local me = component.me_interface
 local levelMaintainer = {}
 
+local unlocking = false
+
 local verbosity = true
 local print = print
 
@@ -402,22 +404,26 @@ local t = event.timer(10000, function()
 end, math.huge)
 
 local function unlock_timer(num)
+    unlocking = true
     for i = 1, 100 do
         os.sleep(200)
         print("autounlock countdown", tostring(num), tostring(i))
         if levelMaintVars.lock[num] == false then
+            unlocking = false
             return
         end
     end
+    unlocking = false
     levelMaintVars.lock[num] = false
 end
 
 local function unlock_timer_controller()
-    while true do
-        for i = 1, 3 do
-            if levelMaintVars.lock[i] then
-                unlock_timer(i)
-            end
+    if unlocking then
+        return
+    end
+    for i = 1, 3 do
+        if levelMaintVars.lock[i] then
+            unlock_timer(i)
         end
     end
 end
