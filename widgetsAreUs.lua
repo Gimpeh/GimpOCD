@@ -174,6 +174,35 @@ function widgetsAreUs.titleBox(x, y, width, height, color, alpha, text1)
     return widgetsAreUs.attachCoreFunctions{box = box, text = text}
 end
 
+function widgetsAreUs.contextMenu(x, y, ...)
+    local args = {...}
+    local box = widgetsAreUs.createBox(x, y, 100, 30 * #args, c.slategray, 0.6)
+    local options = {}
+    for i = 1, #args do
+        local textBox = widgetsAreUs.textBox(x+3, (y+3) + (30*(i-1)), 94, 24, c.softyellow, 0.75, args[i], 1, 5, 5)
+        options[i] = textBox
+    end
+    options.remove = function()
+        for i = 1, #options do
+            options[i].remove()
+        end
+    end
+    options.setVisible = function(visible)
+        for i = 1, #options do
+            options[i].setVisible(visible)
+        end
+    end
+    return widgetsAreUs.attachCoreFunctions{box = box, options = options, 
+    onClick = function(x1, y1)
+        for i = 1, #options do
+            if options[i].box.contains(x1, y1) then
+                return gimpHelper.trim(options[i].text.getText())
+            end
+        end
+    end
+    }
+end
+
 -----------------------------------------
 ---Pop-up stuff
 
