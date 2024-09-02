@@ -179,9 +179,9 @@ end
 
 function widgetsAreUs.alertMessage(color, message, timer)
     print("widgetsAreUs - Line 136: Creating an alert message.")
-    local box = widgetsAreUs.createBox(100, 100, 200, 100, color or c.brightred, 0.6)
+    local box = widgetsAreUs.createBox(300, 200, 200, 100, color or c.brightred, 0.6)
 
-    local text = widgetsAreUs.text(110, 110, message, 1.2)
+    local text = widgetsAreUs.text(310, 210, message, 1.5)
 
     local function remove() component.glasses.removeObject(box.getID()) component.glasses.removeObject(text.getID()) text = nil box = nil end
     event.timer(timer, remove)
