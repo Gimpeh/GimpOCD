@@ -51,7 +51,6 @@ function overlay.loadTab(tab)
 end
 
 function overlay.init()
-    gimp_globals.initializing_lock = true
     print("overlay.tabs - Line 50: init lock enabled")
     print("overlay.tabs - Line 51: Initializing overlay.")
     local success, err = pcall(function()
@@ -136,7 +135,6 @@ function overlay.init()
     if not success then
         print("overlay.tabs - Line 132: Error in overlay.init: " .. tostring(err))
     end
-    gimp_globals.initializing_lock = false
     print("\n overlay.tabs - Line 135: init lock disabled \n")
     print("") -- Blank line for readability
 end
