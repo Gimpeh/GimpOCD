@@ -7,6 +7,14 @@ local glasses = component.glasses
 
 local widgetsAreUs = {}
 
+local verbosity = false
+
+if not verbosity then
+    local print = function()
+        return 1 + 1
+    end
+end
+
 -----------------------------------------
 ---Factory Functions
 

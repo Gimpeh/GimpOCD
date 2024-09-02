@@ -8,6 +8,14 @@ local y = os.sleep
 local me = component.me_interface
 local levelMaintainer = {}
 
+local verbosity = true
+
+if not verbosity then
+    local print = function()
+        return 1 + 1
+    end
+end
+
 -- Configurable sleep duration variables
 local yieldDuration = 0    
 local shortDuration = 150    

@@ -15,6 +15,14 @@ local me = component.me_interface
 
 local backend = {}
 
+local verbosity = false
+
+if not verbosity then
+    local print = function()
+        return 1 + 1
+    end
+end
+
 
 ----------------------------------------------
 --- Update Thread Functions

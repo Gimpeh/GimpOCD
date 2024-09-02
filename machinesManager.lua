@@ -6,6 +6,14 @@ local widgetsAreUs = require("widgetsAreUs")
 local event = require("event")
 local c = require("gimp_colors")
 
+local verbosity = false
+
+if not verbosity then
+    local print = function()
+        return 1 + 1
+    end
+end
+
 --------------------------------------------------
 ---Variables and Forward Declarations for Module
 

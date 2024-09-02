@@ -5,6 +5,14 @@ local event = require("event")
 local s = require("serialization")
 local c = require("gimp_colors")
 
+local verbosity = false
+
+if not verbosity then
+    local print = function()
+        return 1 + 1
+    end
+end
+
 ----------------------------------------------------------
 ---event handlers
 

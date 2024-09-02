@@ -10,6 +10,14 @@ local c = require("gimp_colors")
 local sleeps = require("sleepDurations")
 local event = require("event")
 
+local verbosity = false
+
+if not verbosity then
+    local print = function()
+        return 1 + 1
+    end
+end
+
 -----------------------------------------
 ---forward declarations
 

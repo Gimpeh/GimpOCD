@@ -6,6 +6,14 @@ local widgetsAreUs = require("widgetsAreUs")
 local hud = require("hud")
 local sleeps = require("sleepDurations")
 
+local verbosity = false
+
+if not verbosity then
+    local print = function()
+        return 1 + 1
+    end
+end
+
 -----------------------------------------
 -- Start up
 
