@@ -66,7 +66,6 @@ function PagedWindow:displayItems()
         print("PagedWindow - Line 55: Start index: " .. tostring(startIndex) .. ", End index: " .. tostring(endIndex))
 
         for i = startIndex, endIndex do
-            os.sleep(0)
             print("PagedWindow - Line 59: Displaying item index: " .. tostring(i))
 
             -- Calculate row and column based on dynamic values
