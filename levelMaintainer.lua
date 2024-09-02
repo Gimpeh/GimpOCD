@@ -36,6 +36,12 @@ local levelMaintVars = {
     }
 }
 
+local auto_unlock = {
+    [1] = nil,
+    [2] = nil,
+    [3] = nil
+}
+
 local function awaitUnlock(num)
     while levelMaintVars.lock[num] do
         print("levelMaintainer - line 41: waiting for unlock", tostring(num))
@@ -45,6 +51,13 @@ end
 
 local function lock(num)
     levelMaintVars.lock[num] = true
+    if auto_unlock[num] then
+        event.cancel(auto_unlock[num])
+    end
+    auto_unlock[num] = event.timer(20000, function()
+        levelMaintVars.lock[num] = false
+        print("levelMaintainer - line 48: levelMaintainer lock automatically unlocked", tostring(num))
+    end)
     print("levelMaintainer - line 48: levelMaintainer locked", tostring(num))
     y(yieldDuration)  
 end
