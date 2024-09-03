@@ -136,6 +136,28 @@ function configurations.initButtons()
         buttons.machineManagerNext = widgetsAreUs.symbolBox(328, 378, ">", c.navbutton, function()
             displays.machineManager:nextPage()
         end)
+        buttons.save = widgetsAreUs.attachOnClick(widgetsAreUs.textBox(680, 60, 50, 15, c.dangerbutton, 0.7, "Save", 1.2, 3, 3),
+        function()
+            local success, err = pcall(function()
+                if currentlyDisplayedConfigs["lm"] and currentlyDisplayedConfigs["lm"].index then
+                    saveConfigData("lm", "/home/programData/levelMaintainerConfig.data", currentlyDisplayedConfigs["lm"].index)
+                end
+                if currentlyDisplayedConfigs["mm"] and currentlyDisplayedConfigs["mm"].index then
+                    saveConfigData("mm", "/home/programData/machineManagerConfig.data", currentlyDisplayedConfigs["mm"].index)
+                end
+                if currentlyDisplayedConfigs["im"] and currentlyDisplayedConfigs["im"].index then
+                    saveConfigData("im", "/home/programData/itemManagerConfig.data", currentlyDisplayedConfigs["im"].index)
+                end
+                if currentlyDisplayedConfigs["gc"] and currentlyDisplayedConfigs["gc"].index then
+                    saveConfigData("gc", "/home/programData/generalConfig.data", currentlyDisplayedConfigs["gc"].index)
+                end
+
+                event.push("updated_configs")
+            end)
+            if not success then
+                print("configurations - Error in configurations.update: " .. tostring(err))
+            end
+        end)
     end)
     if not success then
         print("configurations - Error in configurations.initButtons: " .. tostring(err))
@@ -377,7 +399,7 @@ end
 
 function configurations.createMachineManagerConfig(x, y, index)
     print("configurations - Line 248: createMachineManagerConfig called with x =", tostring(x), "y =", tostring(y), "index =", tostring(index))
-    local success, err = pcall(function()
+    --[[local success, err = pcall(function()
         if currentlyDisplayedConfigs["mm"] and currentlyDisplayedConfigs["mm"].index then
             local success_save, error_save = pcall(saveConfigData, "mm", "/home/programData/machineManagerConfig.data", currentlyDisplayedConfigs["mm"].index)
             if not success_save then print("configurations - Error saving config data: " .. tostring(error_save)) end
@@ -393,16 +415,15 @@ function configurations.createMachineManagerConfig(x, y, index)
         configurations.panel.mm.group.setValue(tbl[index].groupName)
         configurations.panel.mm.autoTurnOn = widgetsAreUs.numberBox(x, y+60, "autoTurnOn", "Auto On")
         configurations.panel.mm.autoTurnOff = widgetsAreUs.numberBox(x+80, y+60, "autoTurnOff", "Auto Off")
-        configurations.panel.mm.alertIdle = widgetsAreUs.longerNumberBox(x, y+90, "alertIdle", "A: Idle Timer", c.alertsettingtitle)
-        configurations.panel.mm.alertDisabled = widgetsAreUs.checkBoxHalf(x, y+120, "alertDisabled", "A: Disabled")
-        configurations.panel.mm.alertEnabled = widgetsAreUs.checkBoxHalf(x+80, y+120, "alertEnabled", "A: Enabled")
+        configurations.panel.mm.alertDisabled = widgetsAreUs.checkBoxHalf(x, y+90, "alertDisabled", "A: Disabled")
+        configurations.panel.mm.alertEnabled = widgetsAreUs.checkBoxHalf(x+80, y+90, "alertEnabled", "A: Enabled")
         currentlyDisplayedConfigs["mm"] = {index = index, elements = configurations.panel.mm}
         local success_load, error_load = pcall(loadConfigData, "mm", "/home/programData/machineManagerConfig.data", index)
         if not success_load then print("configurations - Error loading config data: " .. tostring(error_load)) end
     end)
     if not success then
         print("configurations - Error in configurations.createMachineManagerConfig: " .. tostring(err))
-    end
+    end]]
     print("") -- Blank line after function execution
 end
 
@@ -500,23 +521,6 @@ end
 
 function configurations.update()
     print("configurations - Line 347: configurations.update called")
-    local success, err = pcall(function()
-        if currentlyDisplayedConfigs["lm"] and currentlyDisplayedConfigs["lm"].index then
-            saveConfigData("lm", "/home/programData/levelMaintainerConfig.data", currentlyDisplayedConfigs["lm"].index)
-        end
-        if currentlyDisplayedConfigs["mm"] and currentlyDisplayedConfigs["mm"].index then
-            saveConfigData("mm", "/home/programData/machineManagerConfig.data", currentlyDisplayedConfigs["mm"].index)
-        end
-        if currentlyDisplayedConfigs["im"] and currentlyDisplayedConfigs["im"].index then
-            saveConfigData("im", "/home/programData/itemManagerConfig.data", currentlyDisplayedConfigs["im"].index)
-        end
-        if currentlyDisplayedConfigs["gc"] and currentlyDisplayedConfigs["gc"].index then
-            saveConfigData("gc", "/home/programData/generalConfig.data", currentlyDisplayedConfigs["gc"].index)
-        end
-    end)
-    if not success then
-        print("configurations - Error in configurations.update: " .. tostring(err))
-    end
     print("") -- Blank line after function execution
 end
 

@@ -233,7 +233,7 @@ function widgetsAreUs.beacon(x, y, z, color)
     element.setColor(color or c.azure)
     element.setViewDistance(500)
     element.setScale(1)
-    return widgetsAreUs.attachCoreFunctions({ beacon = element })
+    return widgetsAreUs.attachCoreFunctions(element)
 end
 
 -----------------------------------------

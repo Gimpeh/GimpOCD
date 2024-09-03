@@ -401,8 +401,8 @@ local function setLevelMaintThread(_, index)
     y(yieldDuration)
     local thr = createLevelMaintainerThread(configs, index) 
     setThreadState(configs, index, thr) 
-    unlock(3) 
-    y(medDuration)  
+    unlock(3)
+    y(medDuration)
     print("levelMaintainer - line 352: Done setting levelMaintThread")
 end
 
@@ -446,7 +446,13 @@ local cleanup_thread = thread.create(cleanup)
 cleanup_thread:detach()
 cleanup_thread:resume()
 
-
+event.listen("configs_updated", function()
+    local configs = gimpHelper.loadTable("/home/programData/generalConfigs.data")
+    if not configs and configs.maxCpusAllLevelMaintainers then
+        return
+    end
+    levelMaintVars.maxCpu = tonumber(configs.maxCpusAllLevelMaintainers)
+end)
 event.listen("add_level_maint_thread", setLevelMaintThread)
 
 return levelMaintainer

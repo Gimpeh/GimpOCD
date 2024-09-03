@@ -129,15 +129,8 @@ function overlay.init()
             itemWindow = overlay.tabs.itemWindow.box
         }
 
-        local success_load, config = pcall(gimpHelper.loadTable, "/home/programData/overlay.data")
-        if success_load and config then
-            local tab = config.tab
-            print("overlay.tabs - Line 122: Loading saved tab", tostring(tab))
-            overlay.loadTab(tab)
-        else
-            print("overlay.tabs - Line 125: Initializing default tab (machines).")
-            overlay.tabs.machines.init()
-        end
+        print("overlay.tabs - Line 125: Initializing default tab (machines).")
+        overlay.tabs.machines.init()
         overlay.hide()
         os.sleep(sleeps.yield)
     end)

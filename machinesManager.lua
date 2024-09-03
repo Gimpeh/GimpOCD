@@ -337,7 +337,11 @@ saveData = function(_, newName, xyz)
     print("machinesManager - Finished Saving Data")
     print("") -- Blank line for readability
 end
-  
+
+function machinesManager.reproxy(componentType)
+        sortProxies()
+end
+
 --------------------------------------------------
 --- Event Listeners
 

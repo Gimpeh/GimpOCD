@@ -5,6 +5,8 @@ local component = require("component")
 local widgetsAreUs = require("widgetsAreUs")
 local hud = require("hud")
 local sleeps = require("sleepDurations")
+local machinesManager = require("machinesManager")
+local c = require("gimp_colors")
 
 local verbosity = false
 local print = print
@@ -25,7 +27,8 @@ print("modem port 202 not opened!!! re-enable when ready")
 gimp_globals = {}
 gimp_globals.initializing_lock = false
 gimp_globals.configuringHUD_lock = false
-gimp_globals.prioritize_var_Testing = true
+gimp_globals.glasses_controller_coords = {x = 5.5, y = 46, z = 13.5}
+gimp_globals.alert_DC = false
 
 overlay.init()
 hud.init()
@@ -174,16 +177,27 @@ local function onHudReset()
     print("") -- Blank line after function execution
 end
 
+local function on_components_changed(addedOrRemoved, _, componentType)
+    if gimp_globals.alert_DC then
+        widgetsAreUs.alertMessage(c.alertMessage, componentType .. " : " .. addedOrRemoved, 5)
+    end
+    if componentType == "gt_machine" then
+        machinesManager.reproxy()
+    end
+end
+
 -------------------------------------------------------
 --- Event listeners
 
+event.listen("component_removed", on_components_changed)
+event.listen("component_added", on_components_changed)
 event.listen("reset_hud", onHudReset)
 event.listen("highlight", onHighlight)
 event.listen("modem_message", onModemMessage)
 event.listen("overlay_opened", onOverlayEvent)
 event.listen("overlay_closed", onOverlayEvent)
 
-print("GimpOCD - Line 133: Event listeners registered.")
+print("GimpOCD - Event listeners registered.")
 local backend = require("backend")
 print("") -- Blank line for readability
 

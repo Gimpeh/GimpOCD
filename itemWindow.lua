@@ -98,8 +98,7 @@ local function handleKeyboard(character)
             if trimmedStr == "" then 
                 items = component.me_interface.getItemsInNetwork()
             else
-                local capString = gimpHelper.capitalizeWords(trimmedStr)
-                items = component.me_interface.getItemsInNetwork({label = capString})
+                items = component.me_interface.getItemsInNetwork({label = trimmedStr})
             end
             itemWindow.elements.mainStorage.display = PagedWindow.new(items, 120, 40, {x1=25, y1=83, x2=320, y2=403}, 5, widgetsAreUs.itemBox)
             print("itemWindow - Line 96: init lock enabled")

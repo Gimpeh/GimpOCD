@@ -144,4 +144,13 @@ function gimpHelper.capitalizeWords(str)
     return capitalized
 end
 
+function gimpHelper.calc_modified_coords(given_coordinates, modifier_coordinates)
+    local xyz = {}
+    xyz.x = given_coordinates.x - modifier_coordinates.x
+    xyz.y = given_coordinates.y - modifier_coordinates.y
+    xyz.z = given_coordinates.z - modifier_coordinates.z
+
+    return xyz
+end
+
 return gimpHelper
