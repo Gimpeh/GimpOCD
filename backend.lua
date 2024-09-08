@@ -94,7 +94,7 @@ local function highlight_disabled_machines()
     print("backend - line 77: highlight_disabled_machines initiated")
     local configs = gimpHelper.loadTable("/home/programData/generalConfig.data")
     print("backend - line 79: configs loaded")
-    if not configs and not configs.highlightDisabled then
+    if not configs or not configs.highlightDisabled then
         print("backend - line 81: no configs found, returning")
         return
     end
@@ -112,6 +112,7 @@ local function highlight_disabled_machines()
         end
         for group_name, proxy_table in pairs(machinesManager.groups.groupings) do
             print("backend - line 95: checking group", group_name)
+            os.sleep(sleeps.yield)
             local group_of_machines = machinesManager.groups.groupings[group_name]
             for index, machine in ipairs(group_of_machines) do
                 print("backend - line 98: checking machine", machine.getName())
@@ -119,6 +120,7 @@ local function highlight_disabled_machines()
                 if not machine.isWorkAllowed() then
                     print("backend - line 101: machine not allowed to work")
                     local x, y, z = machine.getCoordinates()
+                    os.sleep(sleeps.yield)
                     local xyzMod = gimpHelper.calc_modified_coords({x = x, y = y, z = z}, gimp_globals.glasses_controller_coords)
                     table.insert(table_of_highlighers, widgetsAreUs.beacon(xyzMod.x, xyzMod.y, xyzMod.z, c.alertnotification))
                 end
