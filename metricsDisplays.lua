@@ -101,7 +101,7 @@ function batteryMetrics.create(x, y)
 			os.sleep(0)
             local fillWidth = math.ceil(74 * (percent / 100))
             fillBarForeground.setSize(20, fillWidth)
-            percentPower.setText(string.format("%.2f%%", tostring(percent)))
+            percentPower.setText(string.format("%.2f%%", tonumber(percent)))
         end,
         setVisible = function(visible)
             print("metricsDisplays - Line 73: Setting visibility of battery metrics display to", tostring(visible))
