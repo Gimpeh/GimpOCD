@@ -367,6 +367,7 @@ local function enable_level_maintainer(obj)
 end
 
 function configurations.createLevelMaintainerConfig(x, y, index)
+    gimp_globals.initializing_lock = true
     print("configurations - Line 217: createLevelMaintainerConfig called with x =", tostring(x), "y =", tostring(y), "index =", tostring(index))
     local success, err = pcall(function()
         if currentlyDisplayedConfigs["lm"] and currentlyDisplayedConfigs["lm"].index then
@@ -394,6 +395,7 @@ function configurations.createLevelMaintainerConfig(x, y, index)
     if not success then
         print("configurations - Error in configurations.createLevelMaintainerConfig: " .. tostring(err))
     end
+    gimp_globals.initializing_lock = false
     print("") -- Blank line after function execution
 end
 
@@ -428,6 +430,7 @@ function configurations.createMachineManagerConfig(x, y, index)
 end
 
 function configurations.createItemManagerConfig(x, y, index)
+    gimp_globals.initializing_lock = true
     print("configurations - Line 276: createItemManagerConfig called with x =", tostring(x), "y =", tostring(y), "index =", tostring(index))
     local success, err = pcall(function()
         if currentlyDisplayedConfigs["im"] and currentlyDisplayedConfigs["im"].index then
@@ -449,10 +452,12 @@ function configurations.createItemManagerConfig(x, y, index)
     if not success then
         print("configurations - Error in configurations.createItemManagerConfig: " .. tostring(err))
     end
+    gimp_globals.initializing_lock = false
     print("") -- Blank line after function execution
 end
 
 createGeneralConfig = function(x, y)
+    gimp_globals.initializing_lock = true
     print("configurations - Line 301: createGeneralConfig called with x =", tostring(x), "y =", tostring(y))
     local success, err = pcall(function()
         configurations.panel.gc = {}
@@ -473,6 +478,7 @@ createGeneralConfig = function(x, y)
     if not success then
         print("configurations - Error in createGeneralConfig: " .. tostring(err))
     end
+    gimp_globals.initializing_lock = false
     print("") -- Blank line after function execution
 end
 
