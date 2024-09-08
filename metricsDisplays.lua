@@ -8,7 +8,7 @@ local c = require("gimp_colors")
 local glasses = component.glasses
 local modem = component.modem
 
-local verbosity = false
+local verbosity = true
 local print = print
 
 if not verbosity then

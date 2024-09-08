@@ -8,7 +8,7 @@ local sleeps = require("sleepDurations")
 local machinesManager = require("machinesManager")
 local c = require("gimp_colors")
 
-local verbosity = false
+local verbosity = true
 local print = print
 
 if not verbosity then

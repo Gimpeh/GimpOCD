@@ -12,7 +12,7 @@ hud.savedCoordinates.battery = {}
 hud.hide = nil
 hud.show = nil
 
-local verbosity = false
+local verbosity = true
 local print = print
 
 if not verbosity then

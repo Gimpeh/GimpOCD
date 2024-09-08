@@ -6,7 +6,7 @@ local widgetsAreUs = require("widgetsAreUs")
 local event = require("event")
 local c = require("gimp_colors")
 
-local verbosity = false
+local verbosity = true
 local print = print
 
 if not verbosity then

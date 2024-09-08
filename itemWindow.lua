@@ -6,7 +6,7 @@ local gimpHelper = require("gimpHelper")
 local s = require("serialization")
 local c = require("gimp_colors")
 
-local verbosity = false
+local verbosity = true
 local print = print
 
 if not verbosity then

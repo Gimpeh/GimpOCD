@@ -17,7 +17,7 @@ local me = component.me_interface
 
 local backend = {}
 
-local verbosity = false
+local verbosity = true
 local print = print
 
 if not verbosity then

@@ -20,10 +20,10 @@ if not verbosity then
 end
 
 -- Configurable sleep duration variables
-local yieldDuration = 0    
-local shortDuration = 150    
-local medDuration = 500   
-local longDuration = 1000 
+local yieldDuration = 0
+local shortDuration = 1000
+local medDuration = 5000
+local longDuration = 10000
 
 ----------------------------------------------
 --- Level Maintainer Functions and Variables

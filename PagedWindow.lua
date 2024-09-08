@@ -2,7 +2,7 @@
 local PagedWindow = {}
 PagedWindow.__index = PagedWindow
 
-local verbosity = false
+local verbosity = true
 local print = print
 
 if not verbosity then

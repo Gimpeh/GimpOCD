@@ -7,7 +7,7 @@ local glasses = component.glasses
 
 local widgetsAreUs = {}
 
-local verbosity = false
+local verbosity = true
 local print = print
 
 if not verbosity then

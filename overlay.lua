@@ -10,7 +10,7 @@ local c = require("gimp_colors")
 local sleeps = require("sleepDurations")
 local event = require("event")
 
-local verbosity = false
+local verbosity = true
 local print = print
 
 if not verbosity then
