@@ -170,7 +170,7 @@ local function highlight_maintenance()
     while true do
         for k, v in pairs(maintenance_problems) do
             v.remove()
-            table.remove(maintenance_problems, maintenance_problems[k])
+            maintenance_problems[k] = nil
         end
         os.sleep(sleeps.yield)
         for group_name, proxy_table in pairs(machinesManager.groups.groupings) do
