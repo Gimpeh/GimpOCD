@@ -154,7 +154,11 @@ local function highlight_maintenance()
 		return false
 	end
 
-    local configs = gimpHelper.loadTable("/home/programData/generalConfig.data")
+    local configBase = gimpHelper.loadTable("/home/programData/generalConfig.data")
+    if not configBase and configBase[1] then
+        return
+    end
+    local configs = configBase[1]
     if configs and configs.alertDisconnectedReconnected then
         if configs.alertDisconnectedReconnected == "true" then
             gimp_globals.alert_DC = true
