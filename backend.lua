@@ -159,7 +159,7 @@ local function highlight_maintenance()
         end
     end
 
-    if not configs or not configs.highlightMaintenance then
+    if not configs or not configs.maintenanceBeacons then
         return
     end
     local config = configs.highlightMaintenance
