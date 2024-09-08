@@ -214,6 +214,12 @@ end
 local maintenance_thread
 
 local function maintenance_thread_init()
+    if maintenance_problems then
+        for k, v in pairs(maintenance_problems) do
+            v.remove()
+            maintenance_problems[k] = nil
+        end
+    end
     if maintenance_thread and maintenance_thread:status() ~= "dead" then
         maintenance_thread:kill()
         maintenance_thread = nil
