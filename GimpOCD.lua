@@ -104,7 +104,8 @@ end
 local function onHighlightActual(xyz)
     print("GimpOCD - Line 67: onHighlightActual called with xyz =", s.serialize(xyz))
     local success, error = pcall(function()
-        for k, v in ipairs(highlighters) do
+        for k, v in pairs(highlighters) do
+            print("GimpOCD - Line 70: Checking existing highlighters for match")
             local hXyz = {}
             hXyz.x, hXyz.y, hXyz.z = v.get3DPos()
             if hXyz.x == xyz.x and hXyz.y == xyz.y and hXyz.z == xyz.z then
@@ -113,6 +114,7 @@ local function onHighlightActual(xyz)
                 v.remove()
                 table.remove(highlighters, k)
                 print("") -- Blank line after removal
+                return
             end
         end
         local beacon = widgetsAreUs.beacon(xyz.x, xyz.y, xyz.z, {0, 1, 1})
