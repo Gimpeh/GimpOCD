@@ -137,12 +137,16 @@ end
 local maintenance_problems = {}
 
 local function highlight_maintenance()
+    print("backend - line 126: highlight_maintenance initiated")
     local function hasProblems(sensor_info)
+        print("backend - line 129: checking for problems")
 		for _, line in ipairs(sensor_info) do
             os.sleep(sleeps.yield)
 			if line:match("Problems: §c%d+§r") then
+                print("backend - line 133: problems line found")
 				local problems = tonumber(line:match("Problems: §c(%d+)§r"))
 				if problems > 0 then
+                    print("backend - line 136: problems found")
 					return true
 				end
 			end
@@ -159,33 +163,47 @@ local function highlight_maintenance()
         end
     end
 
+    print("backend - line 151: checking configs")
     if not configs or not configs.maintenanceBeacons then
+        print("backend - line 153: no configs found")
         return
     end
     local config = configs.maintenanceBeacons
     if config == "false" then
+        print("backend - line 157: maintenance beacon config set to false")
         return
     end
 
     while true do
+        print("backend - line 162: starting maintenance loop")
         for k, v in pairs(maintenance_problems) do
+            print("backend - line 164: removing maintenance beacon")
             v.remove()
             maintenance_problems[k] = nil
         end
+        print("backend - line 167: done removing maintenance beacons")
         os.sleep(sleeps.yield)
         for group_name, proxy_table in pairs(machinesManager.groups.groupings) do
+            print("backend - line 170: checking group", group_name)
             for _, machine in ipairs(proxy_table) do
+                print("backend - line 172: checking machine", machine.getName())
                 os.sleep(sleeps.yield)
                 local sensor_info = machine.getSensorInformation()
+                print("backend - line 175: sensor info retrieved")
                 if hasProblems(sensor_info) then
+                    print("backend - line 177: problems found")
                     local x, y, z = machine.getCoordinates()
+                    print("backend - line 179: machine coords", x, y, z)
                     local xyzMod = gimpHelper.calc_modified_coords({x = x, y = y, z = z}, gimp_globals.glasses_controller_coords)
                     table.insert(maintenance_problems, widgetsAreUs.beacon(xyzMod.x, xyzMod.y, xyzMod.z, c.dangerbutton))
                     os.sleep(sleeps.yield)
+                    print("backend - line 183: beacon added")
                 end
             end
         end
+        print("backend - line 186: maintenance going to sleep")
         os.sleep(sleeps.thirty)
+        print("backend - line 188: maintenance waking up")
     end
 end
 
