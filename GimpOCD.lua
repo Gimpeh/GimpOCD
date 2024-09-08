@@ -7,6 +7,7 @@ local hud = require("hud")
 local sleeps = require("sleepDurations")
 local machinesManager = require("machinesManager")
 local c = require("gimp_colors")
+local s = require("serialization")
 
 local verbosity = true
 local print = print
@@ -102,7 +103,7 @@ local function onOverlayEvent(eventType, ...)
 end
 
 local function onHighlightActual(xyz)
-    print("GimpOCD - Line 67: onHighlightActual called with xyz =", tostring(xyz))
+    print("GimpOCD - Line 67: onHighlightActual called with xyz =", s.serialize(xyz))
     local success, error = pcall(function()
         for k, v in ipairs(highlighters) do
             if v.x == xyz.x and v.y == xyz.y and v.z == xyz.z then
