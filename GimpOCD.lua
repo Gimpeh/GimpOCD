@@ -23,7 +23,6 @@ end
 
 component.modem.open(202)
 component.glasses.removeAll()
-print("modem port 202 not opened!!! re-enable when ready")
 
 gimp_globals = {}
 gimp_globals.initializing_lock = false
@@ -106,13 +105,14 @@ local function onHighlightActual(xyz)
     print("GimpOCD - Line 67: onHighlightActual called with xyz =", s.serialize(xyz))
     local success, error = pcall(function()
         for k, v in ipairs(highlighters) do
-            if v.x == xyz.x and v.y == xyz.y and v.z == xyz.z then
+            local hXyz = {}
+            hXyz.x, hXyz.y, hXyz.z = v.get3DPos()
+            if hXyz.x == xyz.x and hXyz.y == xyz.y and hXyz.z == xyz.z then
                 print("GimpOCD - Line 71: Found existing beacon at xyz, removing it")
                 os.sleep(sleeps.yield)
                 v.remove()
                 table.remove(highlighters, k)
                 print("") -- Blank line after removal
-                return
             end
         end
         local beacon = widgetsAreUs.beacon(xyz.x, xyz.y, xyz.z, {0, 1, 1})
