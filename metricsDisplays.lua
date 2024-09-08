@@ -319,6 +319,18 @@ function machineIndividual.create(x, y, individualProxy)
         end
     end
 
+    local setState = function()
+        print("metricsDisplays - Line 270: Toggling work state for individual machine element.")
+        local allowed = machine.isWorkAllowed()
+        if allowed then
+            machine.setWorkAllowed(false)
+            background.setColor(1, 0, 0)
+        else
+            machine.setWorkAllowed(true)
+            background.setColor(1, 1, 1)
+        end
+    end
+
     local machineInterface = {
         background = background,
         setVisible = function(visible)
@@ -349,23 +361,13 @@ function machineIndividual.create(x, y, individualProxy)
                 background.setColor(1, 0, 0)
             end
         end,
-        setState = function()
-            print("metricsDisplays - Line 270: Toggling work state for individual machine element.")
-            local allowed = machine.isWorkAllowed()
-            if allowed then
-                machine.setWorkAllowed(false)
-                background.setColor(1, 0, 0)
-            else
-                machine.setWorkAllowed(true)
-                background.setColor(1, 1, 1)
-            end
-        end,
-        onClick = function(button, machinesInterface)
+        setState = setState,
+        onClick = function(button)
             print("metricsDisplays - Line 279: Handling onClick for individual machine element with button", tostring(button))
 			local normalColor = table.pack(background.getColor())
 			background.setColor(table.unpack(c.clicked))
             if button == 0 then -- left click
-                machinesInterface.setState(machinesInterface)
+                setState()
             elseif button == 1 then -- right click
                 local xyz = {}
                 xyz.x, xyz.y, xyz.z = machine.getCoordinates()
