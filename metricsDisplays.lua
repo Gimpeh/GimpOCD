@@ -327,6 +327,7 @@ function machineIndividual.create(x, y, individualProxy)
             name.setVisible(visible)
             name2.setVisible(visible)
             state.setVisible(visible)
+            highlightedIndicator.setVisible(visible)
         end,
         setName = setName,
         getCoords = function()
@@ -391,11 +392,13 @@ function machineIndividual.create(x, y, individualProxy)
             component.glasses.removeObject(name.getID())
             component.glasses.removeObject(name2.getID())
             component.glasses.removeObject(state.getID())
+            component.glasses.removeObject(highlightedIndicator.getID())
 
             background = nil
             name = nil
             name2 = nil
             state = nil
+            highlightedIndicator = nil
         end
     }
 
