@@ -130,7 +130,9 @@ end
 
 local function onHighlight(_, xyz)
     print("GimpOCD - Line 86: onHighlight called with xyz =", tostring(xyz))
-    local success, error = pcall(onHighlightActual, xyz)
+    local xyzMod = {}
+    xyzMod = gimpHelper.calc_modified_coords(xyz, gimp_globals.glasses_controller_coords)
+    local success, error = pcall(onHighlightActual, xyzMod)
     if not success then
         print("GimpOCD - Error in onHighlight: " .. tostring(error))
     end
