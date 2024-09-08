@@ -230,7 +230,7 @@ function widgetsAreUs.beacon(x, y, z, color)
     print("widgetsAreUs - Line 147: Creating a beacon.")
     local element = component.glasses.addDot3D()
     element.set3DPos(x, y, z)
-    if color then 
+    if color then
         element.setColor(table.unpack(color))
     else
         element.setColor(table.unpack(c.azure))

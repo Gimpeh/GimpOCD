@@ -115,8 +115,7 @@ local function onHighlightActual(xyz)
                 return
             end
         end
-        local beacon = widgetsAreUs.beacon(xyz.x, xyz.y, xyz.z)
-        beacon.beacon.setColor(0, 1, 1)
+        local beacon = widgetsAreUs.beacon(xyz.x, xyz.y, xyz.z, {0, 1, 1})
         table.insert(highlighters, beacon)
         print("GimpOCD - Line 78: New beacon created and added to highlighters.")
         os.sleep(sleeps.yield)
