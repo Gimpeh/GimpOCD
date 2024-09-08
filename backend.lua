@@ -168,7 +168,7 @@ local function highlight_maintenance()
     end
 
     while true do
-        for k, v in ipairs(maintenance_problems) do
+        for k, v in pairs(maintenance_problems) do
             v.remove()
             table.remove(maintenance_problems, maintenance_problems[k])
         end
