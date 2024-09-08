@@ -8,6 +8,7 @@ local sleeps = require("sleepDurations")
 local machinesManager = require("machinesManager")
 local c = require("gimp_colors")
 local s = require("serialization")
+local gimpHelper = require("gimpHelper")
 
 local verbosity = true
 local print = print
