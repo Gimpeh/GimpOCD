@@ -72,7 +72,7 @@ function batteryMetrics.create(x, y)
 
     local header = glasses.addTextLabel()
     header.setScale(2)
-    header.setText("Power Station")
+    header.setText("Power Metrics")
     header.setPosition(x + 33, y + 10)
 
     local fillBarForeground = glasses.addRect()
