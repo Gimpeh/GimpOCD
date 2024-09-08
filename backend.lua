@@ -162,7 +162,7 @@ local function highlight_maintenance()
     if not configs or not configs.maintenanceBeacons then
         return
     end
-    local config = configs.highlightMaintenance
+    local config = configs.maintenanceBeacons
     if config == "false" then
         return
     end
