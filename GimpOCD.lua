@@ -205,7 +205,7 @@ event.listen("overlay_closed", onOverlayEvent)
 print("GimpOCD - Event listeners registered.")
 local backend = require("backend")
 print("") -- Blank line for readability
-
+event.push("updated_configs")
 -------------------------------------------------------
 --- Break me to play games on the side
 
