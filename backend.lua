@@ -94,11 +94,11 @@ local function highlight_disabled_machines()
     print("backend - line 77: highlight_disabled_machines initiated")
     local configs = gimpHelper.loadTable("/home/programData/generalConfig.data")
     print("backend - line 79: configs loaded")
-    if not configs or not configs.highlightDisabled then
+    if not configs or not configs[1] or not configs[1].highlightDisabled then
         print("backend - line 81: no configs found, returning")
         return
     end
-    local config = configs.highlightDisabled
+    local config = configs[1].highlightDisabled
     if config == "false" then
         print("backend - line 85: config set to false, returning")
         return
