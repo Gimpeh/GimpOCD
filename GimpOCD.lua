@@ -43,6 +43,7 @@ print("") -- Blank line for readability
 local overlayUpdateEvent
 local highlighters = {}
 local onModemMessage
+local onOverlayEvent
 
 -----------------------------------------
 --- Event handlers
@@ -72,10 +73,22 @@ local function handleClick(_, _, _, x, y, button)
     print("") -- Blank line after function execution
 end
 
-local function onOverlayEvent(eventType, ...)
+local function overlayRedoClosed()
+    onOverlayEvent("overlay_closed")
+end
+
+local function overlayRedoOpened()
+    onOverlayEvent("overlay_opened")
+end
+
+onOverlayEvent = function(eventType, ...)
     print("GimpOCD - Line 44: onOverlayEvent called with eventType =", tostring(eventType))
     local success, error = pcall(function()
         if eventType == "overlay_opened" then
+            if gimp_globals.initializing_lock then
+                event.timer(1000, overlayRedoOpened, 1)
+                return
+            end
             print("GimpOCD - Line 47: overlay_opened event detected")
             event.ignore("modem_message", onModemMessage)
             event.listen("hud_click", handleClick)
@@ -86,13 +99,15 @@ local function onOverlayEvent(eventType, ...)
             os.sleep(sleeps.yield)
             overlayUpdateEvent = event.timer(2500, updateOverlay, math.huge)
         elseif eventType == "overlay_closed" then
+            if gimp_globals.initializing_lock then
+                event.timer(1000, overlayRedoClosed, 1)
+                return
+            end
             print("GimpOCD - Line 55: overlay_closed event detected")
             event.ignore("hud_click", handleClick)
-            os.sleep(sleeps.yield)
             overlay.hide()
             hud.show()
             event.cancel(overlayUpdateEvent)
-            os.sleep(sleeps.yield)
             event.listen("modem_message", onModemMessage)
         end
     end)
@@ -163,22 +178,23 @@ local function onHudReset()
         event.ignore("overlay_opened", onOverlayEvent)
         event.ignore("overlay_closed", onOverlayEvent)
         event.cancel(overlayUpdateEvent)
-
+        os.sleep(sleeps.one)
+        if gimp_globals.initializing_lock then
+            event.timer(1000, onHudReset, 1)
+            return
+        end
+        gimp_globals.initializing_lock = true
         print("GimpOCD - Line 116: HUD and Overlay reset")
         hud.show()
         overlay.hide()
-        while gimp_globals.initializing_lock do
-            os.sleep(10)
-        end
-        hud.init()
-        while gimp_globals.configuringHUD_lock do
-            os.sleep(10)
-        end
 
+        hud.init()
+        gimp_globals.initializing_lock = false
         event.listen("modem_message", onModemMessage)
         event.listen("highlight", onHighlight)
         event.listen("overlay_opened", onOverlayEvent)
         event.listen("overlay_closed", onOverlayEvent)
+
     print("") -- Blank line after function execution
 end
 
@@ -187,7 +203,13 @@ local function on_components_changed(addedOrRemoved, _, componentType)
         widgetsAreUs.alertMessage(c.alertMessage, componentType .. " : " .. addedOrRemoved, 5)
     end
     if componentType == "gt_machine" then
+        if gimp_globals.initializing_lock then
+            event.timer(1000, machinesManager.reproxy, 1)
+            return
+        end
+        gimp_globals.initializing_lock = true
         machinesManager.reproxy()
+        gimp_globals.initializing_lock = false
     end
 end
 

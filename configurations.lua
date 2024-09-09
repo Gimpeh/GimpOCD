@@ -457,7 +457,6 @@ function configurations.createItemManagerConfig(x, y, index)
 end
 
 createGeneralConfig = function(x, y)
-    gimp_globals.initializing_lock = true
     print("configurations - Line 301: createGeneralConfig called with x =", tostring(x), "y =", tostring(y))
     local success, err = pcall(function()
         configurations.panel.gc = {}
@@ -478,7 +477,6 @@ createGeneralConfig = function(x, y)
     if not success then
         print("configurations - Error in createGeneralConfig: " .. tostring(err))
     end
-    gimp_globals.initializing_lock = false
     print("") -- Blank line after function execution
 end
 
