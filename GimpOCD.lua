@@ -28,6 +28,7 @@ component.glasses.removeAll()
 gimp_globals = {}
 gimp_globals.initializing_lock = false
 gimp_globals.configuringHUD_lock = false
+gimp_globals.proxy_lock = false
 gimp_globals.glasses_controller_coords = {x = 5.5, y = 46, z = 13.5}
 gimp_globals.alert_DC = false
 
@@ -203,13 +204,14 @@ local function on_components_changed(addedOrRemoved, _, componentType)
         widgetsAreUs.alertMessage(c.alertMessage, componentType .. " : " .. addedOrRemoved, 5)
     end
     if componentType == "gt_machine" then
-        if gimp_globals.initializing_lock then
-            event.timer(1000, machinesManager.reproxy, 1)
+        if gimp_globals.proxy_lock then
             return
         end
+        gimp_globals.proxy_lock = true
         gimp_globals.initializing_lock = true
         machinesManager.reproxy()
         gimp_globals.initializing_lock = false
+        gimp_globals.proxy_lock = false
     end
 end
 
