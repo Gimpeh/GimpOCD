@@ -105,10 +105,10 @@ local function highlight_disabled_machines()
     end
     while true do
         print("backend - line 89: starting highlight loop")
-        for k, v in ipairs(table_of_highlighers) do
+        for k, v in pairs(table_of_highlighers) do
             print("backend - line 91: removing beacon")
             v.remove()
-            table.remove(table_of_highlighers, table_of_highlighers[k])
+            table_of_highlighers[k] = nil
         end
         for group_name, proxy_table in pairs(machinesManager.groups.groupings) do
             print("backend - line 95: checking group", group_name)
