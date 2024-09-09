@@ -64,7 +64,6 @@ end
 
 -- Function to display items for the current page
 function PagedWindow:displayItems()
-    gimp_globals.initializing_lock = true
     print("PagedWindow - Line 47: Displaying items for current page.")
     local success, err = pcall(function()
         print("PagedWindow - Line 49: Starting displayItems.")
