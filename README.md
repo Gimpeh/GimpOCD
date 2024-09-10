@@ -8,6 +8,6 @@ Check back in a week or 2
 
 Current Semi Stable code is in the semi-stable branch.
 
-As is an Actual Readme
+Has is an Actual Readme
 
 I'm probably doing branches backwards... 
