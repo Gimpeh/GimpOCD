@@ -299,3 +299,5 @@ I am working on it.
 Any problems, feel free to post on the single discussion I have started (unless you are able to create issues or start new discussions, I'm still fairly new to github) or to @Gimpeh in https://discord.com/channels/181078474394566657/794285628141207552 (which is the opencomputers help channel, which will almost certainly recieve a much quicker response from me).
 
 Any suggestions should go in discussions on github.
+
+If you would like to contribute, find me (by searching for my tag; Gimpeh) in the GTNH discord and shoot me a message! It might take a minute for me to see the message request however... because obviously I am 5 years old and need to personally approve the people who are allowed to send me messages.
