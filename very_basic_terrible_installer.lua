@@ -6,7 +6,7 @@ local fs = require("filesystem")
 -- Replace with your actual GitHub repo and branch
 local githubUser = "Gimpeh"  -- Replace with your GitHub username
 local githubRepo = "GimpOCD"  -- Replace with your GitHub repository name
-local branch = "main"  -- Replace with your branch name (e.g., "main" or "master")
+local branch = "semi-stable"  -- Replace with your branch name (e.g., "main" or "master")
 local libPath = "/home/lib"
 local files = {
   "GimpOCD.lua",
