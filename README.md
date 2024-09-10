@@ -162,3 +162,24 @@ The example will work, it will create 2 groups.
 All will almost certainly contain all of your connected gregtech machines (if not then MAD props)
 
 none will not contain any and is provided merely to demonstrate adding another entry.
+
+----------------------
+
+after that install GimpOCD on the server;
+
+```
+wget https://raw.githubusercontent.com/Gimpeh/GimpOCD/semi-stable/very_basic_terrible_installer.lua d && d
+```
+
+you can now run it with the following command from any directory;
+
+```
+GimpOCD.exe
+```
+
+and thats should be it...
+other than setting the hotkey for opening the overlay.
+
+If the battery widget disappears after setting its location and closing the overlay, do not despair.
+
+Just open and close the overlay and it should be resolved. And it shouldnt happen again.
