@@ -66,4 +66,5 @@ end
 
 os.execute("wget https://raw.githubusercontent.com/Gimpeh/GimpOCD/semi-stable/GimpOCD.exe /usr/bin/GimpOCD.exe")
 install()
+os.execute("rm d")
 
