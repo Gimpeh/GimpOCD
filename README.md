@@ -293,6 +293,38 @@ There currently aren't any. I don't know when I will be wiring them in or what t
 
 I don't actually know if Alert DC'd/Reconnected does anything.
 
+HUD
+----------------------------------------------------
+
+Right now the only item displayed is the battery widget
+
+![image](https://github.com/user-attachments/assets/1db8969b-3959-4d16-abd1-117fa6405fcd)
+
+Soon it's size WILL be configurable. It's position is set during when the program first runs, or when the Reset HUD button is clicked in options.
+Open the overlay to set it with a left or right click. Clicking again changes its position. 
+Left click puts it on the right side, with the top at the cursor. Right clicking does the opposite.
+
+Once the battery widget is in the right place, click with the middle mouse button to accept it's location.
+
+Close the overlay (The widget probably wont be displayed at this point due to a bug)
+
+Open the overlay. (let the Machines tab finish loading, another bug.. sorry)
+
+Close the overlay. The widget is now configured and working. (if no values show up, you may not have the subsystem turned on or connected to the battery controller, or maybe the range on wireless has been reached, or maybe there arent wireless cards in both systems, or maybe your not chunkloading everything (including the cable run))
+
+----------------------------------------
+The values;
+
+EU IN: the amount of EU entering All the connected batteries (a sum of all averages; average is over a timeframe that depends on the individual battery type)
+
+EU OUT: The amount of EU leaving All the connected batteries (a sum of all averages; average is over a timeframe that depends on the individual battery type)
+
+Wireless: The amount of EU in the wireless storage of ONE of the connected LSCs. (assuming the same person placed the controllers for multiple LSCs, it displays the correct total. If 2 different people placed the LSC controller, then there are 2 different amounts of EU being stored within the wireless storages.. One of them is not measured or displayed at all in that case)
+
+Stored: The amount of EU in the actual storages of the connected batteries (A sum of totals)
+
+Percent Bar: Percentage of total storage used. (1 battery might be full, while another is empty however..)
+
 Wrap-Up
 ----------------------------------------------------
 
