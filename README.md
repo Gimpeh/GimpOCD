@@ -345,7 +345,7 @@ Any suggestions should go in discussions on github.
 
 If you would like to contribute, find me (by searching for my tag; Gimpeh) in the GTNH discord and shoot me a message! It might take a minute for me to see the message request however... because obviously I am 5 years old and need to personally approve the people who are allowed to send me messages. or pop into the discord channel: https://discord.gg/BQXRm58nKg and @Gimpeh me.
 
-If it actually starts getting used, I'll do more than just create the discord channel and the invite link =].
+If it actually starts getting used, I'll do more to set up the discord then the very basic setup currently in place.
 
 Connecting Gregtech Machines (Or other things) as Components for an OpenComputers System
 --------------
