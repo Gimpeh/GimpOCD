@@ -87,15 +87,27 @@ The Server requires the following additional components;
 
 1 Glasses Controller
 
+------------------
+
 The server also requires you to create a groups.config file. Eventually systems for creating it will be included and run during install.
 
-create the file
+![image](https://github.com/user-attachments/assets/87a85765-c81f-4723-8ff8-833f2d497198)
+
+The system in the image has 2 groups specified in its groups.config file
+
+Active1 with 26 machines and Distillation with 17 machines.
+
+That means that 26 machines literal coordinate location in the world fall within the range specified under Active1's entry.
+
+
+First, create the file
 ```
 edit /home/programData/groups.config
 ```
 
 ChatGPT should be able to help you create the file if this part is confusing to you. Just paste the following into a chat with it;
 ```
+This file is for specifying coordinate ranges. The start coordinates should always be the lower of the 2 values. 
 The file should contain a lua array structured as follows (with a prepending return statement);
 
 return {
@@ -145,3 +157,8 @@ return {
   }
 }
 ```
+The example will work, it will create 2 groups.
+
+All will almost certainly contain all of your connected gregtech machines (if not then MAD props)
+
+none will not contain any and is provided merely to demonstrate adding another entry.
