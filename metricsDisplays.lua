@@ -36,52 +36,62 @@ function batteryMetrics.create(x, y)
     backgroundInterior.setColor(13, 255, 255)
     backgroundInterior.setAlpha(0.7)
 
-    local ampsLabel = glasses.addTextLabel()
-    ampsLabel.setText("Stored")
-    ampsLabel.setPosition(x + 20, y + 105)
-    ampsLabel.setScale(2)
-
-    local storedNumber = glasses.addTextLabel()
-    storedNumber.setText("")
-    storedNumber.setPosition(x + 103, y + 105)
-    storedNumber.setScale(2)
-
-    local fillBarBackground = glasses.addRect()
-    fillBarBackground.setPosition(x + 108, y + 138)
-    fillBarBackground.setSize(20, 80)
-
-    local euOutText = glasses.addTextLabel()
-    euOutText.setScale(2)
-    euOutText.setText(" ")
-    euOutText.setPosition(x + 103, y + 69)
-
-    local euOutLabel = glasses.addTextLabel()
-    euOutLabel.setText("EU OUT:")
-    euOutLabel.setPosition(x + 15, y + 68)
-    euOutLabel.setScale(2)
+    local header = glasses.addTextLabel()
+    header.setScale(2)
+    header.setText("Power Metrics")
+    header.setPosition(x + 33, y + 10)
+    
+    local euInLabel = glasses.addTextLabel()
+    euInLabel.setText("EU IN :")
+    euInLabel.setPosition(x + 23, y + 43)
+    euInLabel.setScale(2)
 
     local euInText = glasses.addTextLabel()
     euInText.setPosition(x + 103, y + 45)
     euInText.setText(" ")
     euInText.setScale(2)
 
-    local euInLabel = glasses.addTextLabel()
-    euInLabel.setText("EU IN :")
-    euInLabel.setPosition(x + 23, y + 43)
-    euInLabel.setScale(2)
+    local euOutLabel = glasses.addTextLabel()
+    euOutLabel.setText("EU OUT:")
+    euOutLabel.setPosition(x + 15, y + 68)
+    euOutLabel.setScale(2)
 
-    local header = glasses.addTextLabel()
-    header.setScale(2)
-    header.setText("Power Metrics")
-    header.setPosition(x + 33, y + 10)
+    local euOutText = glasses.addTextLabel()
+    euOutText.setScale(2)
+    euOutText.setText(" ")
+    euOutText.setPosition(x + 103, y + 69)
+
+    local wireless_stored_power_label = glasses.addTextLabel()
+    wireless_stored_power_label.setText("Wireless")
+    wireless_stored_power_label.setPosition(x + 5, y + 100)
+    wireless_stored_power_label.setScale(2)
+
+    local wireless_stored_power_number = glasses.addTextLabel()
+    wireless_stored_power_number.setText(" ")
+    wireless_stored_power_number.setPosition(x + 103, y + 100)
+    wireless_stored_power_number.setScale(2)
+
+    local stored_label = glasses.addTextLabel()
+    stored_label.setText("Stored")
+    stored_label.setPosition(x + 20, y + 125)
+    stored_label.setScale(2)
+
+    local storedNumber = glasses.addTextLabel()
+    storedNumber.setText("")
+    storedNumber.setPosition(x + 103, y + 125)
+    storedNumber.setScale(2)
+
+    local fillBarBackground = glasses.addRect()
+    fillBarBackground.setPosition(x + 108, y + 148)
+    fillBarBackground.setSize(20, 80)
 
     local fillBarForeground = glasses.addRect()
-    fillBarForeground.setPosition(x + 108, y + 138)
+    fillBarForeground.setPosition(x + 108, y + 148)
     fillBarForeground.setSize(20, 1)
     fillBarForeground.setColor(1, 1, 0)
 
     local percentPower = glasses.addTextLabel()
-    percentPower.setPosition(x + 33, y + 138)
+    percentPower.setPosition(x + 33, y + 148)
     percentPower.setText(" ")
     percentPower.setScale(2)
 
@@ -96,6 +106,7 @@ function batteryMetrics.create(x, y)
             local euStored = unserializedTable.stored
             local powerMax = unserializedTable.max
 			os.sleep(0)
+            wireless_stored_power_number.setText(gimpHelper.shorthandNumber(gimpHelper.cleanBatteryStorageString(unserializedTable.wireless)))
             local percent = gimpHelper.calculatePercentage(euStored, powerMax)
             storedNumber.setText(gimpHelper.shorthandNumber(gimpHelper.cleanBatteryStorageString(euStored)))
 			os.sleep(0)
@@ -107,7 +118,7 @@ function batteryMetrics.create(x, y)
             print("metricsDisplays - Line 73: Setting visibility of battery metrics display to", tostring(visible))
             backgroundBox.setVisible(visible)
             backgroundInterior.setVisible(visible)
-            ampsLabel.setVisible(visible)
+            stored_label.setVisible(visible)
             fillBarBackground.setVisible(visible)
             euOutText.setVisible(visible)
             euOutLabel.setVisible(visible)
@@ -122,7 +133,7 @@ function batteryMetrics.create(x, y)
             print("metricsDisplays - Line 87: Removing battery metrics display.")
             glasses.removeObject(backgroundBox.getID())
             glasses.removeObject(backgroundInterior.getID())
-            glasses.removeObject(ampsLabel.getID())
+            glasses.removeObject(stored_label.getID())
             glasses.removeObject(fillBarBackground.getID())
             glasses.removeObject(euOutText.getID())
             glasses.removeObject(euOutLabel.getID())
@@ -136,7 +147,7 @@ function batteryMetrics.create(x, y)
             -- Set all references to nil
             backgroundBox = nil
             backgroundInterior = nil
-            ampsLabel = nil
+            stored_label = nil
             fillBarBackground = nil
             euOutText = nil
             euOutLabel = nil
