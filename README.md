@@ -338,7 +338,7 @@ Any suggestions should go in discussions on github.
 
 If you would like to contribute, find me (by searching for my tag; Gimpeh) in the GTNH discord and shoot me a message! It might take a minute for me to see the message request however... because obviously I am 5 years old and need to personally approve the people who are allowed to send me messages.
 
-Connecting Gregtech Machines
+Connecting Gregtech Machines (Or other things) as Components for an OpenComputers System
 --------------
 
 Place an adapter on (or near if using an MFU as I would recommend) the controller. and connect it via opencomputers cable to the server. You CAN use AE2 p2p's for opencomputers components. Just right click the p2p with an opencomputers cable, and connect them as normal.
