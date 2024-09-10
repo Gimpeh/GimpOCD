@@ -46,6 +46,10 @@ local function install()
     fs.makeDirectory(libPath)
   end
 
+  if not fs.isDirectory("/usr/bin") then
+    fs.makeDirectory("/usr/bin")
+  end
+
   for _, file in ipairs(files) do
     local url = string.format("https://raw.githubusercontent.com/%s/%s/%s/%s", githubUser, githubRepo, branch, file)
     local path = libPath .. "/" .. file  -- Save files to /home/lib
@@ -59,4 +63,6 @@ local function install()
   print("battery_monitor.lua is contained in the supporting systems folder of the Repo")
 end
 
+os.execute("wget https://raw.githubusercontent.com/Gimpeh/GimpOCD/semi-stable/GimpOCD.exe /usr/bin/GimpOCD.exe")
 install()
+
