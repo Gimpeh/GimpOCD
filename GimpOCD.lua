@@ -25,7 +25,40 @@ end
 component.modem.open(202)
 component.glasses.removeAll()
 
-gimp_globals = {}
+local auto_init_mutex_unlock_timer
+
+local function gimp_globals_auto_init_mutex_unlock()
+    print("GimpOCD - Line 12: gimp_globals_auto_init_mutex_unlock called")
+    gimp_globals.initializing_lock = false
+    print("") -- Blank line after function execution
+end
+
+local gimp_globals_meta_table = {
+    __newindex = function(t, key, value)
+        if key == "initializing_lock" then
+            if value and gimp_globals.initializing_lock then
+                print("GimpOCD - Line 20: Initializing lock set to true while already true")
+                event.cancel(auto_init_mutex_unlock_timer)
+                event.timer(sleeps.thirty, gimp_globals_auto_init_mutex_unlock, 1)
+            elseif value and not gimp_globals.initializing_lock then
+                print("GimpOCD - Line 24: Initializing lock set to true")
+                rawset(t, key, value)
+                auto_init_mutex_unlock_timer = event.timer(sleeps.thirty, gimp_globals_auto_init_mutex_unlock, 1)
+            elseif not value and gimp_globals.initializing_lock then
+                print("GimpOCD - Line 27: Initializing lock set to false")
+                event.cancel(auto_init_mutex_unlock_timer)
+                rawset(t, key, value)
+            elseif not value and not gimp_globals.initializing_lock then
+                while true do
+                    print("GimpOCD - Line 31: Initializing lock set to false while already false")
+                    os.sleep(sleeps.yield)
+                end
+            end
+        end
+    end
+}
+
+gimp_globals = setmetatable({}, gimp_globals_meta_table)
 gimp_globals.initializing_lock = false
 gimp_globals.configuringHUD_lock = false
 gimp_globals.proxy_lock = false
