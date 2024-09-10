@@ -265,8 +265,17 @@ In the future, there will be a way to set the main item display's items to only 
 
 -------------------------------------------------------------
 
-The last functioning tab, options allows you to set various controls.
+The last functioning tab, options allows you to set various setting, as well as allowing you to reconfigure where the battery widget (and when they exist other HUD display item) are located.
 
+Before you get excited. The show help option doesnt actually do anything yet.
 
+![image](https://github.com/user-attachments/assets/1de935d3-761e-46ee-bee6-28e32230854c)
 
----
+This is what the page looks like when it is first initialized.
+
+NOTE THE SAVE BUTTON!
+
+While the UI does try to save values at times other than when the save button is clicked, it is currently not the most reliable way of saving the data. The save button is.
+
+Also, the save button actually updates (and starts) the level maintainer as well as actually enabling the settings in The general configurations (Hight disabled, etc) Eventually this will be fixed... but that one might be a bit.
+
