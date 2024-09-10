@@ -1,5 +1,20 @@
-This is the home of GimpOCD (Overseeing, Controlling, Directing).
+GimpOCD - Overseeing, Controlling, Directing
+-----------------
 
-This is currently a WIP.
+Made for the Gregtech New Horizons modpack (minecraft)
 
-Check back in a week or 2
+Overview
+-----------------
+
+This is a UI for the Opencomputers Glass
+
+Features;
+
+Battery Widget - for monitoring power metrics
+
+Item Monitoring - Interface with an ME system and allows selecting Items to keep track of (display on the HUD coming soon)
+
+Level Maintaining - Like an AE level maintainer but with much more configuration available
+
+Gregtech Machine/Multi monitoring/controlling - Displays if machines are disabled/enabled, if they are running, and allows turning them on/off. (Mostly back on due to power loss or something stupid =])
+
