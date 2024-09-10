@@ -231,3 +231,30 @@ Middle Mouse Button Allows you to set the machine name (for the overlay only). M
 
 The cyan button in the top right allows you to go back to the Machine Groups page. (Yes it will be labeled in the future)
 
+----------------------------
+
+The storage tab is for your connected ME systems storage.
+
+![image](https://github.com/user-attachments/assets/0d917b44-8856-4120-bc63-8a214cb1a4ad)
+
+Typing while in the tab will usually input text into the search bar. Pressing after entering text will change the items displayed from your ME system. (the big box containing items on the left)
+
+At this time, it only searches exact case sensitive strings. (so sto wont show anything, stone won't show anything, but Stone will show stone) REAL search functionality is incoming soon.
+
+This doubles up as a fluid monitor (search `drop of Nitrogen Gas` for example)
+
+Clicking an item in the ME box (left box) adds it to the bottom box, which is merely for easy monitoring. Soon items in the bottom box will probably be able to be displayed on the HUD in addition to within the overlay. Right click or middle click an item in the bottom box to get rid of it.
+
+The white boxes (they actually are only white at first, this will be fixed) by the green and red boxes changes what section items are added to. When they are white or yellow, they aren't active. While they are green, clicking items in the main box adds the item to the active section.
+
+The red section isnt actually used currently. It was going to be a reverse level maintainer (void items after amount reached).. but after testing, it would require a fair bit from users to scalable. And would take up too much space and be ugly and all that. So I'm probably not going to add in that functionality. It will probably be converted to the Display on HUD section.
+
+The green box (the top right) is for level maintaining the selected object. THESE WONT LEVEL MAINTAIN UNTIL CONFIGURED IN THE OPTIONS TAB, which we will cover later.
+At the time of this writing (Im fixing this as soon as I'm done here and pushing the fix to this branch) removing an item from the level maintainer (with a middle click) temporarily breaks it (but does remove the item from it), which can be fixed by switching to a different tab and back again... dont do the machines tab though. (clicking before it is loaded causes its background box to persist, which can only be fixed by restarting the entire program. Also a thing I intend to fix VERY shortly) #bugsIjustFound
+
+![image](https://github.com/user-attachments/assets/42de3535-5704-4129-aed1-783db4694c4e)
+
+
+
+
+
