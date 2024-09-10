@@ -99,6 +99,8 @@ probably 2 dozen opencomputers capacitors (Or you could just edit the openglasse
 
 An adapter connected to the controller of any and all gregtech machines you want the system connected to (MFU's are an item that allows you to wirelessly connect an adapter to the component you want connected, within 16 blocks I believe. Shift right click the controller with an MFU, and place the MFU in the adapter (that is connected to the server)
 
+Side note: Running opencomputers cables everywhere can quickly become problematic.. Consider using AE2 p2p's (excellent when used with wireless AE2) Also, this can allow connecting components across dimensions.
+
 ------------------
 
 The server also requires you to create a groups.config file. Eventually systems for creating it will be included and run during install.
