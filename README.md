@@ -46,3 +46,11 @@ Recommended for the subsystem;
 Tier 3 APU
 
 1 Memory(Tier 3.5) will do it. Almost certainly requires less with 1 battery connected.. Almost certainly requires more with 100 batteries connected
+
+A Hard Drive
+
+Optionally, add a redstone component and configure the battery monitoring program for generator control
+
+---------------
+
+
