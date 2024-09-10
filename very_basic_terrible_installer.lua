@@ -58,6 +58,7 @@ local function install()
   end
 
   print("Installation complete!")
+  print("Run with the command 'GimpOCD.exe' CAPITOL G!!")
   print("\n IMPORTANT: Don't forget to install battery_monitor.lua (preferable on another system)")
   print("The battery widget requires that subsystem")
   print("battery_monitor.lua is contained in the supporting systems folder of the Repo")
