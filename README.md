@@ -53,6 +53,9 @@ A Wireless Card
 
 An Internet Card
 
+![image](https://github.com/user-attachments/assets/624513a2-85d4-490d-9799-a59ebbee0174)
+
+
 ---------------
 
 Recommended for the subsystem;
@@ -68,6 +71,8 @@ A wireless card
 Optionally, add a redstone component and configure the battery monitoring program for generator control
 
 Optionally an internet card for the downloader
+
+
 
 ---------------
 
@@ -113,7 +118,7 @@ The system in the image has 2 groups specified in its groups.config file
 
 Active1 with 26 machines and Distillation with 17 machines.
 
-That means that 26 machines literal coordinate location in the world fall within the range specified under Active1's entry.
+That means that there are 26 machines whose literal coordinate locations in the world fall within the range specified under Active1's entry.
 
 
 First, create the file
