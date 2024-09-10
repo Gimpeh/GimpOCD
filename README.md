@@ -86,3 +86,62 @@ The Server requires the following additional components;
 1 ME Interface that is connected to the system to be monitored
 
 1 Glasses Controller
+
+The server also requires you to create a groups.config file. Eventually systems for creating it will be included and run during install.
+
+create the file
+```
+edit /home/programData/groups.config
+```
+
+ChatGPT should be able to help you create the file if this part is confusing to you. Just paste the following into a chat with it;
+```
+The file should contain a lua array structured as follows (with a prepending return statement);
+
+return {
+  [1] = {
+    name="<group name>",
+    start={
+      x=<The starting x coordinate for the groups coordinate range>,
+      y=<The starting y coordinate for the groups coordinate range>,
+      z=<The starting z coordinate for the groups coordinate range>
+    },
+    ending={
+      x=<The ending x coordinate for the groups coordinate range>,
+      y=<The ending y coordinate for the groups coordinate range>,
+      z=<The ending z coordinate for the groups coordinate range>
+    }
+  }
+}
+
+So for example;
+
+return {
+  [1] = {
+    name="All",
+    start={
+      x=-100000000,
+      y=0,
+      z=-100000000
+    },
+    ending={
+      x=1000000000,
+      y=1000,
+      z=1000000000
+    }
+  },
+  [2] = {
+    name="none",
+    start={
+      x=0,
+      y=0,
+      z=0
+    },
+    ending={
+      x=0,
+      y=0,
+      z=0
+    }
+  }
+}
+```
