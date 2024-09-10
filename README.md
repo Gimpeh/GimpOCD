@@ -16,7 +16,7 @@ Made for the Gregtech New Horizons modpack (minecraft)
 Overview
 -----------------
 
-This is a UI for the Opencomputers Glass
+This is a User Interface (UI) for the Opencomputers Glass
 
 Features;
 
