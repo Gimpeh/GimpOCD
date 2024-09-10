@@ -7,6 +7,8 @@ Expect Bugs. You have been warned!
 Real installers will be available on release to make parts of installing this easy, and do things like set autorun, choose which modules are available in the UI, and more.
 Not right now however.
 
+The current code has only been tested in one enviroment. That environment has buffed values in the opencomputers config and is on a pretty beefy server. I'd be interested in hearing about how it works in your environment. (under the wrap-up section, reference "people interested in contributing")
+
 -----------------
 
 Made for the Gregtech New Horizons modpack (minecraft)
