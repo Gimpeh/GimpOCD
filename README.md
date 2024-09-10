@@ -279,3 +279,23 @@ While the UI does try to save values at times other than when the save button is
 
 Also, the save button actually updates (and starts) the level maintainer as well as actually enabling the settings in The general configurations (Hight disabled, etc) Eventually this will be fixed... but that one might be a bit.
 
+![image](https://github.com/user-attachments/assets/5606bc96-d2c1-4b80-bfab-da3ad5b72f08)
+
+Currently the options for the items don't do anything, and the alerts under the level maintainer options are not really tested and may or may not work at all or may only work sometimes. As I've stated several times.. its in the works.
+
+You probably noticed that the machines box (bottom left) doesn't have any options next to it...
+
+There currently aren't any. I don't know when I will be wiring them in or what they will be either.
+
+I don't actually know if Alert DC'd/Reconnected does anything.
+
+Wrap-Up
+----------------------------------------------------
+
+Still needs a lot of work; still needs a lot of capabilites, Still needs the tab for interfacing with the Space Elevator modules, Still needs the text editor, still needs to be extensively tested, and a whole bunch more.
+
+I am working on it.
+
+Any problems, feel free to post on the single discussion I have started (unless you are able to create issues or start new discussions, I'm still fairly new to github) or to @Gimpeh in https://discord.com/channels/181078474394566657/794285628141207552 (which is the opencomputers help channel, which will almost certainly recieve a much quicker response from me).
+
+Any suggestions should go in discussions on github.
