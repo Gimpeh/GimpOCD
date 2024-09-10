@@ -218,7 +218,7 @@ These are for scrolling through the displayed content.
 
 ------------------------------
 
-The first tab on opening the overlay;
+The first tab on opening the overlay is Machines;
 ![image](https://github.com/user-attachments/assets/dc412c48-0bd5-4365-890e-d9ab6ffa6355)
 
 The boxes for the different groups are white if all enabled, purple if some are disabled, red if all are disabled, and yellow if processing user clicks.
