@@ -1,6 +1,12 @@
 GimpOCD - Overseeing, Controlling, Directing
 -----------------
 
+This is still under development.
+
+Expect Bugs. You have been warned!
+
+-----------------
+
 Made for the Gregtech New Horizons modpack (minecraft)
 
 Overview
@@ -86,6 +92,8 @@ The Server requires the following additional components;
 1 ME Interface that is connected to the system to be monitored
 
 1 Glasses Controller
+
+probably 2 dozen opencomputers capacitors (Or you could just edit the openglasses config to make it not consume a buttload of energy)
 
 ------------------
 
