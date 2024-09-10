@@ -22,7 +22,7 @@ Features;
 
 Battery Widget - for monitoring power metrics. You may connect any combination of an INSANE amount of battery blocks. (For example; 100 LSC's + 2 Battery Buffers + 2 4-slot Battery Buffers + 3 Power Sub-Stations)
 
-Item Monitoring - Interface with an ME system and allows selecting Items to keep track of (display on the HUD coming soon)
+Item Monitoring - Interface with an ME system and allows selecting Items to monitor of (display on the HUD coming soon)
 
 Level Maintaining - Like an AE level maintainer but with much more configuration available
 
