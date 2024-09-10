@@ -62,7 +62,7 @@ function batteryMetrics.create(x, y)
     euOutText.setPosition(x + 103, y + 69)
 
     local wireless_stored_power_label = glasses.addTextLabel()
-    wireless_stored_power_label.setText("Wireless")
+    wireless_stored_power_label.setText("Wireless:")
     wireless_stored_power_label.setPosition(x + 9, y + 100)
     wireless_stored_power_label.setScale(2)
 
@@ -72,7 +72,7 @@ function batteryMetrics.create(x, y)
     wireless_stored_power_number.setScale(2)
 
     local stored_label = glasses.addTextLabel()
-    stored_label.setText("Stored")
+    stored_label.setText("Stored:")
     stored_label.setPosition(x + 20, y + 125)
     stored_label.setScale(2)
 
