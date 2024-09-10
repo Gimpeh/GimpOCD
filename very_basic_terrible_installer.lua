@@ -64,6 +64,7 @@ local function install()
   print("battery_monitor.lua is contained in the supporting systems folder of the Repo")
 end
 
+os.execute("mkdir /home/programData")
 os.execute("wget https://raw.githubusercontent.com/Gimpeh/GimpOCD/semi-stable/GimpOCD.exe /usr/bin/GimpOCD.exe")
 install()
 os.execute("rm d")
