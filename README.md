@@ -73,7 +73,7 @@ Optionally an internet card for the downloader
 
 The subsystem needs to be connected to whatever battery (batteries) you wish to monitor. Any batteries, in any combination, technically in almost any amount.
 
-Optionally connect its redstone component to a generator (containing the relevant cover) and configure the battery_monitor.lua file to have it control generators. This is not recommended however.. other ways are always more reliable than any opencomputers system.
+Optionally connect its redstone component to a generator (containing the relevant cover) and configure the battery_monitor.lua file to have it control generators. This is not recommended however.. other ways are always more reliable than any opencomputers system. THE CURRENT FILE DOES NOT, IN FACT, ACTUALLY CONTROL GENERATORS!! I'm an idiot and left out half of the required functionality.. Coming soon however =].
 
 ![image](https://github.com/user-attachments/assets/ad2236cf-cdde-46f9-95fc-33cc567d678a)
 
