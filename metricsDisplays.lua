@@ -128,6 +128,8 @@ function batteryMetrics.create(x, y)
             fillBarForeground.setVisible(visible)
             percentPower.setVisible(visible)
             storedNumber.setVisible(visible)
+            wireless_stored_power_label.setVisible(visible)
+            wireless_stored_power_number.setVisible(visible)
         end,
         remove = function()
             print("metricsDisplays - Line 87: Removing battery metrics display.")
@@ -143,6 +145,8 @@ function batteryMetrics.create(x, y)
             glasses.removeObject(fillBarForeground.getID())
             glasses.removeObject(percentPower.getID())
             glasses.removeObject(storedNumber.getID())
+            glasses.removeObject(wireless_stored_power_label.getID())
+            glasses.removeObject(wireless_stored_power_number.getID())
 
             -- Set all references to nil
             backgroundBox = nil
@@ -157,6 +161,8 @@ function batteryMetrics.create(x, y)
             fillBarForeground = nil
             percentPower = nil
             storedNumber = nil
+            wireless_stored_power_label = nil
+            wireless_stored_power_number = nil
         end
     }
 end
