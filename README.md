@@ -378,4 +378,5 @@ MFU after shift right clicking controller;
 ![image](https://github.com/user-attachments/assets/7e0405ab-0c35-4053-98b4-ee9d1b3ca095)
 
 Placement of MFU in adapter;
+
 ![image](https://github.com/user-attachments/assets/472f2a09-db2f-451a-becf-b5e2ebf6821a)
