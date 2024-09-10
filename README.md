@@ -337,3 +337,38 @@ Any problems, feel free to post on the single discussion I have started (unless 
 Any suggestions should go in discussions on github.
 
 If you would like to contribute, find me (by searching for my tag; Gimpeh) in the GTNH discord and shoot me a message! It might take a minute for me to see the message request however... because obviously I am 5 years old and need to personally approve the people who are allowed to send me messages.
+
+Connecting Gregtech Machines
+--------------
+
+Place an adapter on (or near if using an MFU as I would recommend) the controller. and connect it via opencomputers cable to the server. You CAN use AE2 p2p's for opencomputers components. Just right click the p2p with an opencomputers cable, and connect them as normal.
+
+If using an MFU; Shift right click the controller for the machine with an MFU in hand and then place the MFU in the adapter.
+
+Adapter;
+
+![image](https://github.com/user-attachments/assets/98701359-fe22-4914-a94f-2efb995c1406)
+
+MFU;
+
+![image](https://github.com/user-attachments/assets/3a196d90-8ec5-44c5-a0fd-7a5d603c01dc)
+
+Pre-Placement;
+
+![image](https://github.com/user-attachments/assets/41d58ad1-96d7-4dd4-945e-3a0de05cf670)
+
+Placement On;
+
+![image](https://github.com/user-attachments/assets/3cbba31e-f621-4a2e-b9d5-0108601d757d)
+
+Placement Near;
+
+![image](https://github.com/user-attachments/assets/bfa01c92-77e1-49be-a851-a6d1f7364836)
+
+MFU after shift right clicking controller;
+
+![image](https://github.com/user-attachments/assets/4b59f21b-44f4-40fc-a006-6480f7547bea)
+![image](https://github.com/user-attachments/assets/7e0405ab-0c35-4053-98b4-ee9d1b3ca095)
+
+Placement of MFU in adapter;
+![image](https://github.com/user-attachments/assets/472f2a09-db2f-451a-becf-b5e2ebf6821a)
