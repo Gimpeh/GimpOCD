@@ -158,7 +158,7 @@ local function getMetrics()
 end
 
 local function setGenerator(energyStored)
-    if component.redstone and output_redstone and output_redstone_when_this_amount_of_energy_is_stored then
+    if component.redstone ~= nil and output_redstone and output_redstone_when_this_amount_of_energy_is_stored and output_redstone_when_this_amount_of_energy_is_stored < energyStored then
         if output_redstone_when_this_amount_of_energy_is_stored > tonumber(energyStored) then
             component.redstone.setOutput({[0]=15,15,15,15,15,15})
         else
@@ -169,19 +169,15 @@ end
 
 local function main()
     local powerMetrics = getMetrics()
-    setGenerator(powerMetrics.stored)
     modem.broadcast(powerMetricsPort, s.serialize(powerMetrics))
+    local suc, err = pcall(setGenerator, powerMetrics.stored)
+    if not suc then print(err) end
 end
 
 --------------------------------------------------------------------------
 --- The MAIN event
 
 init()
-while true do
-    local success, error = pcall(main)
-    if not success then print(error) end
-    os.sleep(2)
-end
 
 event.listen("component_added", function()
     init()
@@ -190,3 +186,9 @@ end)
 event.listen("component_removed", function()
     init()
 end)
+
+while true do
+    local success, error = pcall(main)
+    if not success then print(error) end
+    os.sleep(2)
+end
