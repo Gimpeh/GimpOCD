@@ -1,0 +1,1 @@
+os.execute("/home/lib/GimpOCD.lua > /dev/null")
