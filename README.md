@@ -39,6 +39,10 @@ Creative APU
 
 I'd be surprised if it required anything more than a Tier 1 HDD, unless you try to capture the output. Then it will easily fill a RAID array with 3 tier 3's
 
+A Wireless Card
+
+An Internet Card
+
 ---------------
 
 Recommended for the subsystem;
@@ -49,7 +53,11 @@ Tier 3 APU
 
 A Hard Drive
 
+A wireless card
+
 Optionally, add a redstone component and configure the battery monitoring program for generator control
+
+Optionally an internet card for the downloader
 
 ---------------
 
@@ -73,3 +81,8 @@ run it from the directory you downloaded it from with `battery_monitor.lua` from
 
 -----------------
 
+The Server requires the following additional components;
+
+1 ME Interface that is connected to the system to be monitored
+
+1 Glasses Controller
