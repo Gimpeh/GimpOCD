@@ -193,3 +193,41 @@ other than setting the hotkey for opening the overlay.
 If the battery widget disappears after setting its location and closing the overlay, do not despair.
 
 Just open and close the overlay and it should be resolved. And it shouldnt happen again.
+
+The Program
+---------------------------------
+
+Seeing how the 'show help' config option isnt operational yet, This section will cover how to use the UI.
+
+First, most of the tabs have little square buttons with little 'arrows'
+
+![image](https://github.com/user-attachments/assets/c8fc3220-0d97-4674-b729-cd1779c7ca09)
+
+These are for scrolling through the displayed content.
+
+------------------------------
+
+The first tab on opening the overlay;
+![image](https://github.com/user-attachments/assets/dc412c48-0bd5-4365-890e-d9ab6ffa6355)
+
+Clicking the purple buttons at the top switches tabs.
+
+Left clicking on one of the machine groups (Active1 or Distillation in the image) turns all machines contained within on or off.
+On if none are running, off if any are running.
+
+Double clicking might not cycle then off then back on if you click too fast, but there should be enough of a delay that you can cycle them all on in the case of machines with controlling covers.
+
+Right clicking on one of the machine groups pull up a sub menu displaying individual machines.
+
+![image](https://github.com/user-attachments/assets/553925ff-cd33-472f-b5ea-daf0c562e330)
+
+as you can see, I still definately need to do something about long machine names.. and I will.
+
+Left clicking a machine cycles its state (disable/enabled)
+
+Right clicking sets a beacon (teal dot) to the machine in the world. -- although right this second, it will be to the wrong location unless you change the values for gimp_globals.glasses_controller_coords to the coords of your glasses controller. (this will eventually be configurable in the overlay as well as obtained from users during the installation process. But that is not included just yet.
+
+Middle Mouse Button Allows you to set the machine name (for the overlay only). MAKE SURE TO PRESS ENTER AFTER ITS TYPED IN!! I don't actually know what will happen if you forget to do so.
+
+The cyan button in the top right allows you to go back to the Machine Groups page. (Yes it will be labeled in the future)
+
