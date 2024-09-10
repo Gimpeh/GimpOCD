@@ -27,7 +27,7 @@ More features coming soon!
 Setup
 ----------------
 
-The current required systems are an opencomputers server and a supporting opencomputers computer.
+The current required systems are an opencomputers server and a supporting opencomputers computer (referred to as subsystem).
 
 -----------
 
@@ -53,4 +53,17 @@ Optionally, add a redstone component and configure the battery monitoring progra
 
 ---------------
 
+The subsystem needs to be connected to whatever battery (batteries) you wish to monitor. Any batteries, in any combination, technically in almost any amount.
+
+Optionally connect its redstone component to a generator (containing the relevant cover) and configure the battery_monitor.lua file to have it control generators. This is not recommended however.. other ways are always more reliable than any opencomputers system.
+
+![image](https://github.com/user-attachments/assets/ad2236cf-cdde-46f9-95fc-33cc567d678a)
+
+change to
+
+![image](https://github.com/user-attachments/assets/bf45b0f7-1756-476c-8cd2-38dc2b04b2b3)
+
+setting the number to whatever number required.. almost certainly more than the number in the picture =].
+
+-----------------
 
