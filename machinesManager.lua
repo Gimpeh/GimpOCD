@@ -5,6 +5,7 @@ local PagedWindow = require("PagedWindow")
 local widgetsAreUs = require("widgetsAreUs")
 local event = require("event")
 local c = require("gimp_colors")
+local sleeps = require("sleepDurations")
 
 local verbosity = true
 local print = print
@@ -49,7 +50,7 @@ local function getProxies()
     for address, _ in pairs(components_to_proxy) do
         print("machinesManager - Line 35: Adding proxy for component:", tostring(address))
         table.insert(gt_machine_proxies, component.proxy(address))
-        os.sleep(0)
+        os.sleep(sleeps.yield)
     end
     print("machinesManager - Line 39: Total proxies retrieved:", tostring(#gt_machine_proxies))
     return gt_machine_proxies
@@ -59,7 +60,7 @@ local function sortProxies()
     print("machinesManager - Line 26: Sorting component proxies.")
     local success, err = pcall(function()
         local unsorted_gt_machines = getProxies()
-        os.sleep(0)  -- Yield execution after getting proxies
+        os.sleep(sleeps.yield)  -- Yield execution after getting proxies
   
         local config = gimpHelper.loadTable("/home/programData/groups.config")
         print("machinesManager - Line 30: Loaded configuration data:", tostring(config))
@@ -75,7 +76,7 @@ local function sortProxies()
                 local x, y, z = i.getCoordinates()
                 print("machinesManager - Line 39: Checking proxy coordinates: (", tostring(x), ",", tostring(y), ",", tostring(z), ")")
           
-                os.sleep(0)  -- Yield execution within inner loop
+                os.sleep(sleeps.yield)  -- Yield execution within inner loop
                 if v.start.x < x and x < v.ending.x and v.start.z < z and z < v.ending.z then
                     print("machinesManager - Line 43: Proxy in range for group:", groupname)
                     table.insert(proxies, i)
@@ -270,7 +271,7 @@ function machinesManager.update()
     local success, err = pcall(function()
         for k, v in ipairs(machinesManager.display.currentlyDisplayed) do
             v.update()
-            os.sleep(0)
+            os.sleep(sleeps.yield)
         end
     end)
     print("machinesManager - Line 189: Updated machinesManager display.")

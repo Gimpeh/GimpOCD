@@ -4,6 +4,7 @@ local PagedWindow = require("PagedWindow")
 local event = require("event")
 local s = require("serialization")
 local c = require("gimp_colors")
+local sleeps = require("sleepDurations")
 
 local verbosity = true
 local print = print
@@ -24,12 +25,12 @@ local function stockPileData(derp, machineValues, xyz)
         machineValues.xyz = xyz
         local tbl = gimpHelper.loadTable("/home/programData/machinesNamed.data")
         if not tbl then
-            os.sleep(0)
+            os.sleep(sleeps.yield)
             tbl = {}
         end
         if tbl[1] then
             for k, v in ipairs(tbl) do
-                os.sleep(0)
+                os.sleep(sleeps.yield)
                 if v.xyz.x == machineValues.xyz.x and v.xyz.y == machineValues.xyz.y and v.xyz.z == machineValues.xyz.z then
                     print("configurations - Line 23: Removing item from table at index", tostring(k))
                     table.remove(tbl, k)
@@ -39,7 +40,7 @@ local function stockPileData(derp, machineValues, xyz)
         print("configurations - Line 27: Inserting machineValues into table")
         table.insert(tbl, machineValues)
         gimpHelper.saveTable(tbl, "/home/programData/machinesNamed.data")
-        os.sleep(0)
+        os.sleep(sleeps.yield)
     end)
     if not success then
         print("configurations - Error in stockPileData: " .. tostring(err))
@@ -55,13 +56,13 @@ local function removeIndex(_, path, index)
         if not tbl then
             tbl = {}
         end
-        os.sleep(0)
+        os.sleep(sleeps.yield)
         if tbl[index] then
             print("configurations - Line 44: Removing item from table at index", tostring(index))
             table.remove(tbl, index)
         end
         gimpHelper.saveTable(tbl, path)
-        os.sleep(0)
+        os.sleep(sleeps.yield)
     end)
     if not success then
         print("configurations - Error in removeIndex: " .. tostring(err))
@@ -386,7 +387,7 @@ function configurations.createLevelMaintainerConfig(x, y, index)
         configurations.panel.lm.maxCpuTitle2 = widgetsAreUs.text(x+90, y+45, "Usage:", 1)
         configurations.panel.lm.alertStalled = widgetsAreUs.checkboxFullLine(x, y+60, "alertStalled", "Alert Stalled")
         configurations.panel.lm.alertResources = widgetsAreUs.checkboxFullLine(x, y+90, "alertResources", "Alert Can't Craft")
-        os.sleep(0)
+        os.sleep(sleeps.yield)
 
         currentlyDisplayedConfigs["lm"] = {index = index, elements = configurations.panel.lm}
         local success_load, error_load = pcall(loadConfigData, "lm", "/home/programData/levelMaintainerConfig.data", index)
@@ -413,7 +414,7 @@ function configurations.createMachineManagerConfig(x, y, index)
         configurations.panel.mm = {}
         configurations.panel.mm.name = widgetsAreUs.textBoxWithTitle(x, y, "name", "Name")
         configurations.panel.mm.name.setValue(tbl[index].newName)
-        configurations.panel.mm.group = widgetsAreUs.textBoxWithTitle(x, y+30, "group", "Group") os.sleep(0)
+        configurations.panel.mm.group = widgetsAreUs.textBoxWithTitle(x, y+30, "group", "Group")
         configurations.panel.mm.group.setValue(tbl[index].groupName)
         configurations.panel.mm.autoTurnOn = widgetsAreUs.numberBox(x, y+60, "autoTurnOn", "Auto On")
         configurations.panel.mm.autoTurnOff = widgetsAreUs.numberBox(x+80, y+60, "autoTurnOff", "Auto Off")
@@ -463,9 +464,9 @@ createGeneralConfig = function(x, y)
         configurations.panel.gc.showHelp = widgetsAreUs.checkBoxHalf(x, y, "showHelp", "Show Help", c.configsettingtitle)
         configurations.panel.gc.resetHud = widgetsAreUs.configsButtonHalf(x+80, y, "Reset HUD", "Reset", c.brightred, function()
             event.push("reset_hud")
-            os.sleep(100)
+            os.sleep(sleeps.yield)
         end)
-        os.sleep(0)
+        os.sleep(sleeps.yield)
         configurations.panel.gc.highlightDisabled = widgetsAreUs.checkboxFullLine(x, y+30, "highlightDisabled", "Highlight Disabled Mach's", c.configsettingtitle)
         configurations.panel.gc.maintenanceBeacons = widgetsAreUs.checkboxFullLine(x, y+60, "maintenanceBeacons", "Maintenance Beacons", c.configsettingtitle)
         configurations.panel.gc.alertDisconnected = widgetsAreUs.checkboxFullLine(x, y+90, "alertDisconnectedReconnected", "A: DC'd/Reconnected", c.alertsettingtitle)
@@ -490,24 +491,24 @@ generateHelperTable = function()
     local success, err = pcall(function()
         helperTable = {}
         for k, v in pairs(boxes) do
-            os.sleep(0)
+            os.sleep(sleeps.yield)
             table.insert(helperTable, v)
         end
         print("") -- Blank line after boxes loop
         for k, v in pairs(buttons) do
-            os.sleep(0)
+            os.sleep(sleeps.yield)
             table.insert(helperTable, v)
         end
         print("") -- Blank line after buttons loop
         for k, v in pairs(displays) do
-            os.sleep(0)
+            os.sleep(sleeps.yield)
             for i, j in ipairs(displays[k].currentlyDisplayed) do
                 table.insert(helperTable, displays[k].currentlyDisplayed[i])
             end
         end
         print("") -- Blank line after displays loop
         for k, v in pairs(configurations.panel) do
-            os.sleep(0)
+            os.sleep(sleeps.yield)
             for i, j in pairs(configurations.panel[k]) do
                 table.insert(helperTable, configurations.panel[k][i])
             end
@@ -535,7 +536,7 @@ function configurations.setVisible(visible)
         for k, v in pairs(helperTable) do
             if v.setVisible then
                 v.setVisible(visible)
-                os.sleep(0)
+                os.sleep(sleeps.yield)
             end
         end
         print("") -- Blank line after loop
@@ -565,7 +566,7 @@ function configurations.remove()
         for k, v in pairs(helperTable) do
             if v.remove then
                 v.remove()
-                os.sleep(0)
+                os.sleep(sleeps.yield)
             end
         end
         print("") -- Blank line after loop
@@ -583,17 +584,17 @@ function configurations.onClick(x, y, button)
         for k, v in pairs(helperTable) do
             if v.box and v.box.contains(x, y) and v.onClick then
                 v.onClick(x, y, button)
-                os.sleep(0)
+                os.sleep(sleeps.yield)
                 print("") -- Blank line after condition
                 return
             elseif v.contains and v.contains(x, y) and v.onClick then
                 v.onClick(x, y, button)
-                os.sleep(0)
+                os.sleep(sleeps.yield)
                 print("") -- Blank line after condition
                 return
             elseif v.option and v.option.box and v.option.box.contains(x, y) and v.onClick then
                 v.onClick(x, y, button)
-                os.sleep(0)
+                os.sleep(sleeps.yield)
                 print("") -- Blank line after condition
                 return
             end

@@ -37,7 +37,7 @@ function overlay.loadTab(tab)
         os.sleep(sleeps.ten)
     end
     gimp_globals.initializing_lock = true
-    mutex_timer = event.timer(sleeps.ten, function() gimp_globals.initializing_lock = false end)
+    mutex_timer = event.timer(sleeps.thirty, function() gimp_globals.initializing_lock = false end)
     print("\n overlay.tabs - Line 24: init lock enabled \n")
     local success, err = pcall(function()
         if active and active.remove then 

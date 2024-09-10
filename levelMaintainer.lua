@@ -3,8 +3,8 @@ local event = require("event")
 local thread = require("thread")
 local gimpHelper = require("gimpHelper")
 local s = require("serialization")
+local sleeps = require("sleepDurations")
 
-local y = os.sleep
 local me = component.me_interface
 local levelMaintainer = {}
 
@@ -18,12 +18,6 @@ if not verbosity then
         return false
     end
 end
-
--- Configurable sleep duration variables
-local yieldDuration = 0
-local shortDuration = 1000
-local medDuration = 5000
-local longDuration = 10000
 
 ----------------------------------------------
 --- Level Maintainer Functions and Variables
@@ -51,14 +45,14 @@ local levelMaintVars = {
 local function awaitUnlock(num)
     while levelMaintVars.lock[num] do
         print("levelMaintainer - line 41: waiting for unlock", tostring(num))
-        y(longDuration)
+        os.sleep(sleeps.thirty)
     end
 end
 
 local function unlock(num)
     levelMaintVars.lock[num] = false
     print("levelMaintainer - line 53: levelMaintainer unlocked", tostring(num))
-    y(shortDuration) 
+    os.sleep(sleeps.ten) 
 end
 
 local function lock(num)
@@ -74,7 +68,7 @@ local function lock(num)
     levelMaintVars.lock[num] = true
     unlock_timer:detach()
     unlock_timer:resume()
-    y(yieldDuration)
+   os.sleep(sleeps.yield)
 end
 
 -------------
@@ -85,19 +79,19 @@ local function isItMyTurn(data)
     local myTurn = true
     for k, v in ipairs(levelMaintVars) do
         print("levelMaintainer - line 64: Checking if it's my turn against", k)
-        y(shortDuration)
-        y(yieldDuration)
+        os.sleep(sleeps.ten)
+       os.sleep(sleeps.yield)
         if v.enabled and v.canRun then
             print("levelMaintainer - line 67: Competition Is enabled, can run")
             if v.priority > data.priority then
                 print("levelMaintainer - line 69: My priority is lower than another levelMaintainer")
-                y(yieldDuration)
+               os.sleep(sleeps.yield)
                 myTurn = false
                 print("levelMaintainer - line 72: It's not my turn, returning false")
                 return myTurn
             end
         end
-        y(yieldDuration)  
+       os.sleep(sleeps.yield)  
      end
     print("levelMaintainer - line 77: It's my turn, returning true")
     return myTurn
@@ -107,47 +101,47 @@ local function getNumActiveCpus()
     print("levelMaintainer - line 85: Getting number of active cpus")
     local cpus = me.getCpus()
     local cpusInUse = 0
-    y(yieldDuration)
+   os.sleep(sleeps.yield)
     for k, v in ipairs(cpus) do
         print("levelMaintainer - line 89: Checking if cpu is active, CPU: ", k)
         if v.cpu.isBusy() then
-            y(yieldDuration)
+           os.sleep(sleeps.yield)
             cpusInUse = cpusInUse + 1
             print("levelMaintainer - line 93: CPU is active, incrementing cpusInUse")
         end
-        y(yieldDuration)
-        y(shortDuration)  
+       os.sleep(sleeps.yield)
+        os.sleep(sleeps.ten)  
     end
     print("levelMaintainer - line 97: done getting number of active cpus")
-    y(shortDuration)  
+    os.sleep(sleeps.ten)  
     print("levelMaintainer - line 99: Returning cpus and cpusInUse")
     return cpus, cpusInUse
 end
 
 local function shouldRun(data, index)
     print("levelMaintainer - line 106: Checking if I should run", index)
-    y(shortDuration)
+    os.sleep(sleeps.ten)
     if data and data.enabled then
         print("levelMaintainer - line 109: Data is enabled")
-        y(yieldDuration)
+       os.sleep(sleeps.yield)
         if me.getCraftables({label = data.itemStack.label, name = data.itemStack.name, damage = data.itemStack.damage})[1] then
             print("levelMaintainer - line 112: Craftables exist")
-            y(yieldDuration)
+           os.sleep(sleeps.yield)
             local cpus, cpusInUse = getNumActiveCpus()
             print("levelMaintainer - line 115: Got number of active cpus and cpu proxies")
-            y(shortDuration)  
+            os.sleep(sleeps.ten)  
             if data.minCpu <= (#cpus - cpusInUse) then
                 print("levelMaintainer - line 118: MinCpu is less than or equal to available cpus")
-                y(yieldDuration)
+               os.sleep(sleeps.yield)
                 if levelMaintVars[index].cpusUsed and levelMaintVars[index].cpusUsed < data.maxCpu then
                     print("levelMaintainer - line 121: Cpus used is less than maxCpu")
                     local itemInStock = me.getItemsInNetwork({label = data.itemStack.label, name = data.itemStack.name, damage = data.itemStack.damage})[1]
                     print("levelMaintainer - line 123: got itemstack", itemInStock.label)
-                    y(shortDuration)  
+                    os.sleep(sleeps.ten)  
                     if itemInStock and itemInStock.size < data.amount then
                         print("levelMaintainer - line 126: Item in stock is less than target amount")
                         levelMaintVars[index].canRun = true
-                        y(yieldDuration)
+                       os.sleep(sleeps.yield)
                         print("levelMaintainer - line 129: shouldrun Returning true")
                         return true
                     else
@@ -165,7 +159,7 @@ local function shouldRun(data, index)
     end
     print("levelMaintainer - line 134: shouldrun Returning false")
     levelMaintVars[index].canRun = false
-    y(yieldDuration)
+   os.sleep(sleeps.yield)
     return false
 end
 
@@ -174,16 +168,16 @@ local function computeLevelMaintainerCpuUsage()
     levelMaintVars.levelMaintainerCpuUsage = 0
     for k, v in ipairs(levelMaintVars) do
         print("levelMaintainer - line 148: Computing levelMaintainerCpuUsage for", k)
-        y(shortDuration)  
+        os.sleep(sleeps.ten)  
         if v.cpusUsed then
             print("levelMaintainer - line 151: Adding cpusUsed to levelMaintainerCpuUsage")
-            y(yieldDuration)
+           os.sleep(sleeps.yield)
             levelMaintVars.levelMaintainerCpuUsage = levelMaintVars.levelMaintainerCpuUsage + v.cpusUsed
         else
         print("levelMaintainer - line 154: No cpusUsed for", k)
         end
     end
-    y(medDuration)
+    os.sleep(sleeps.ten)
     print("levelMaintainer - line 157: done computing levelMaintainerCpuUsage")
     return levelMaintVars.levelMaintainerCpuUsage
 end
@@ -193,15 +187,15 @@ local function craftItems(data, index)
     local tbl = {}
     local cpus, cpusInUse = getNumActiveCpus()
     print("levelMaintainer - line 165: Got number of active cpus and cpu proxies")
-    y(yieldDuration)
+   os.sleep(sleeps.yield)
     levelMaintVars[index].cpusUsed = 0
     print("levelMaintainer - line 168: Setting cpusUsed to 0 (precalc number)")
     for i = 1, math.min(data.maxCpu, #cpus - cpusInUse, levelMaintVars.maxCpu - computeLevelMaintainerCpuUsage()) do
         print("levelMaintainer - line 171: Initiating craft number: " .. i .. " of same recipe")
-        y(yieldDuration)
+       os.sleep(sleeps.yield)
         local obj = me.getCraftables({label = data.itemStack.label, name = data.itemStack.name})[1].request(data.batch)
         print("levelMaintainer - line 174: Craftables requested")
-        y(shortDuration)
+        os.sleep(sleeps.ten)
         if obj then
             obj.itemLabel = data.itemStack.label
             print("levelMaintainer - line 177: Object returned from me_interface.getCraftables")
@@ -214,7 +208,7 @@ local function craftItems(data, index)
             end
             levelMaintVars[index].cpusUsed = levelMaintVars[index].cpusUsed + 1
             print("levelMaintainer - line 180: cpusUsed incremented")
-            y(yieldDuration)
+           os.sleep(sleeps.yield)
             --[[for key, cpu in ipairs(cpus) do
                 if cpu.cpu.finalOutput().label == data.itemStack.label then
                     if not cpu.cpu.activeItems()[1] then
@@ -227,12 +221,12 @@ local function craftItems(data, index)
                 event.push("alert_notification", "alertResources", data.itemStack.label)
             end
             print("backend - line 93: No object returned from me_interface.getCraftables")
-            y(longDuration) 
+            os.sleep(sleeps.thirty) 
             return false, tbl
         end
-        y(yieldDuration) 
+       os.sleep(sleeps.yield) 
     end
-    y(yieldDuration)
+   os.sleep(sleeps.yield)
     print("levelMaintainer - line 186: Ordering Crafts done")
     return true, tbl
 end
@@ -244,13 +238,13 @@ local function saveRunningCrafts(tbl)
         for k, v in pairs(tbl) do
             print("levelMaintainer - line 196: inserting running craft into levelMaintVars.runningCrafts")
             table.insert(levelMaintVars.runningCrafts, tbl[k])
-            y(yieldDuration)
+           os.sleep(sleeps.yield)
         end
         print("levelMaintainer - line 199: Running crafts saved")
     else
     print("levelMaintainer - line 201: No running crafts to save")
     end
-    y(shortDuration)  
+    os.sleep(sleeps.ten)  
 end
 
 ----------
@@ -261,10 +255,10 @@ local function getLevelMaintainerConfigs(index)
     local data = {}
     local tbl1 = gimpHelper.loadTable("/home/programData/levelMaintainer.data")
     print("levelMaintainer - line 224: Loaded levelMaintainer.data")
-    y(shortDuration)
+    os.sleep(sleeps.ten)
     local tbl2 = gimpHelper.loadTable("/home/programData/levelMaintainerConfig.data")
     print("levelMaintainer - line 227: Loaded levelMaintainerConfig.data")
-    y(yieldDuration) 
+   os.sleep(sleeps.yield) 
     print(tbl2[index].enabled)
     if tbl2 and tbl2[index] and tbl2[index].enabled and tbl2[index].enabled == "true" then
         print("levelMaintainer - line 230: Config option enabled is true for index", index)
@@ -274,7 +268,7 @@ local function getLevelMaintainerConfigs(index)
         data.batch = tonumber(tbl1[index].batch)
         data.alertResources = tbl2[index].alertResources == "true"
         data.alertStalled = tbl2[index].alertStalled == "true"
-        y(yieldDuration)
+       os.sleep(sleeps.yield)
         if tbl2[index].maxCpu and type(tonumber(tbl2[index].maxCpu)) == "number" then
             data.maxCpu = tonumber(tbl2[index].maxCpu)
         else
@@ -290,13 +284,13 @@ local function getLevelMaintainerConfigs(index)
         else
             data.minCpu = 1
         end
-        y(shortDuration) 
+        os.sleep(sleeps.ten) 
         print("levelMaintainer - line 253: Returning data")
         return data
     else
         print("levelMaintainer - line 256: Config option enabled is false for index", index)
         data = nil
-        y(shortDuration) 
+        os.sleep(sleeps.ten) 
         return data
     end
 end
@@ -306,11 +300,11 @@ local function killOldThread(index)
     if levelMaintThreads and levelMaintThreads[index] and levelMaintThreads[index] ~= "nil" then
         print("levelMaintainer - line 266: Killing existing levelMaintThread", index)
         levelMaintThreads[index]:suspend()
-        y(yieldDuration)
+       os.sleep(sleeps.yield)
         levelMaintThreads[index]:kill()
-        y(shortDuration)  
+        os.sleep(sleeps.ten)  
         levelMaintThreads[index] = nil
-        y(yieldDuration) 
+       os.sleep(sleeps.yield) 
     end
 end
 
@@ -324,13 +318,13 @@ local function setThreadState(configs, index, thr)
         levelMaintVars[index].minCpu = configs.minCpu     
         levelMaintVars[index].maxCpu = configs.maxCpu    
         levelMaintThreads[index]:resume()
-        y(shortDuration) 
+        os.sleep(sleeps.ten) 
         print("levelMaintainer - line 286: Thread state set, thread is running")
     else
         print("levelMaintainer - line 288: Configs enabled is false")
         levelMaintThreads[index] = "nil"
         levelMaintVars[index].enabled = false
-        y(medDuration) 
+        os.sleep(sleeps.ten)
         print("levelMaintainer - line 291: Thread state set, thread is not running")
     end
     print("levelMaintainer - line 293: Returning from setThreadState")
@@ -343,33 +337,33 @@ local function runLevelMaintainer(data, index)
     print("levelMaintainer - line 301: Running levelMaintainer")
     awaitUnlock(1)
     lock(1) 
-    y(shortDuration) 
+    os.sleep(sleeps.ten) 
     if not isItMyTurn(data) then  
         unlock(1) 
-        y(shortDuration) 
+        os.sleep(sleeps.ten) 
         return 
     end
     local willRun = shouldRun(data, index) 
     unlock(1) 
-    y(shortDuration) 
+    os.sleep(sleeps.ten) 
     if willRun then
         awaitUnlock(2) 
         lock(2) 
-        y(yieldDuration)
+       os.sleep(sleeps.yield)
         local success, tbl = craftItems(data, index) 
         if not success then 
             event.push("alert_notification", "alertResources") 
         end
         saveRunningCrafts(tbl) 
         unlock(2) 
-        y(yieldDuration)  
+       os.sleep(sleeps.yield)  
     else
-        y(shortDuration)
+        os.sleep(sleeps.ten)
         print("levelMaintainer - line 321: Not running, returning")
         return
     end
     print("levelMaintainer - line 324: Done running levelMaintainer")
-    y(medDuration)
+    os.sleep(sleeps.ten)
 end
 
 local function createLevelMaintainerThread(configs, key)
@@ -378,7 +372,7 @@ local function createLevelMaintainerThread(configs, key)
     if data and data.enabled then
         local levelMaintThread = thread.create(function()
             while true do
-                y(medDuration)  
+                os.sleep(sleeps.ten)
                 print("levelMaintainer - line 334: Running levelMaintThread")
                 runLevelMaintainer(data, index)
             end
@@ -393,16 +387,16 @@ local function setLevelMaintThread(_, index)
     print("levelMaintainer - line 342: Setting levelMaintThread")
     awaitUnlock(3) 
     lock(3) 
-    y(yieldDuration)
+   os.sleep(sleeps.yield)
     local configs = getLevelMaintainerConfigs(index) 
     print(s.serialize(configs))
-    y(yieldDuration)
+   os.sleep(sleeps.yield)
     killOldThread(index) 
-    y(yieldDuration)
+   os.sleep(sleeps.yield)
     local thr = createLevelMaintainerThread(configs, index) 
     setThreadState(configs, index, thr) 
     unlock(3)
-    y(medDuration)
+    os.sleep(sleeps.ten)
     print("levelMaintainer - line 352: Done setting levelMaintThread")
 end
 
@@ -411,11 +405,11 @@ end
 
 local function cleanup()
     while true do
-        os.sleep(5000)
+        os.sleep(sleeps.thirty)
         print("levelMaintainer - line 359: Running levelMaintainer cleanup")
         for k, v in ipairs(levelMaintVars.runningCrafts) do
             print("levelMaintainer - line 361: Checking on craft: ", k)
-            y(yieldDuration)
+           os.sleep(sleeps.yield)
             if v.isDone() or v.isCanceled() then
                 print("levelMaintainer - line 362: Craft is done or canceled")
                 table.remove(levelMaintVars.runningCrafts, k)
@@ -436,7 +430,7 @@ local function cleanup()
                 end
             end
             print("levelMaintainer - line 367: Done checking on craft: ", k)
-            y(yieldDuration)
+           os.sleep(sleeps.yield)
         end
         print("levelMaintainer - line 370: Done running levelMaintainer cleanup")
     end

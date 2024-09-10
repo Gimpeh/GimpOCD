@@ -4,6 +4,7 @@ local gimpHelper = require("gimpHelper")
 local s = require("serialization")
 local event = require("event")
 local c = require("gimp_colors")
+local sleeps = require("sleepDurations")
 
 local glasses = component.glasses
 local modem = component.modem
@@ -99,17 +100,17 @@ function batteryMetrics.create(x, y)
         update = function(unserializedTable)
             local euin = unserializedTable.powerIn
             local out = unserializedTable.powerOut
-			os.sleep(0)
+			os.sleep(sleeps.yield)
             euInText.setText(gimpHelper.shorthandNumber(euin))
             euOutText.setText(gimpHelper.shorthandNumber(out))
-			os.sleep(0)
+			os.sleep(sleeps.yield)
             local euStored = unserializedTable.stored
             local powerMax = unserializedTable.max
-			os.sleep(0)
+			os.sleep(sleeps.yield)
             wireless_stored_power_number.setText(gimpHelper.shorthandNumber(gimpHelper.cleanBatteryStorageString(unserializedTable.wireless)))
             local percent = gimpHelper.calculatePercentage(euStored, powerMax)
             storedNumber.setText(gimpHelper.shorthandNumber(gimpHelper.cleanBatteryStorageString(euStored)))
-			os.sleep(0)
+			os.sleep(sleeps.yield)
             local fillWidth = math.ceil(74 * (percent / 100))
             fillBarForeground.setSize(20, fillWidth)
             percentPower.setText(string.format("%.2f%%", tonumber(percent)))
@@ -214,7 +215,7 @@ function machinesMetricsElement.createElement(x, y, machineTable, header)
             for k, v in ipairs(machinesTable) do
                 if v.isWorkAllowed() then
                     allowedToWork = allowedToWork + 1
-                    os.sleep(0)
+                    os.sleep(sleeps.yield)
                 end
             end
             local allowed = allowedToWork
@@ -246,7 +247,7 @@ function machinesMetricsElement.createElement(x, y, machineTable, header)
             if button == 0 then
                 print("metricsDisplays - Line 173: Sifting through machines table")
                 for _, machine in ipairs(machinesTable) do
-                    os.sleep(0)
+                    os.sleep(sleeps.yield)
                     if workAllowed == true then
                         machine.setWorkAllowed(false)
                     else

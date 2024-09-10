@@ -2,6 +2,7 @@ local widgetsAreUs = require("widgetsAreUs")
 local event = require("event")
 local metricsDisplays = require("metricsDisplays")
 local s = require("serialization")
+local sleeps = require("sleepDurations")
 
 local hud = {}
 hud.elements = {}
@@ -33,7 +34,7 @@ function hud.init()
         table.insert(initMessages, widgetsAreUs.initText(200, 187, "Middle click to accept"))
         if hud.elements.battery then
             hud.elements.battery.remove()
-            os.sleep(0.1)
+            os.sleep(sleeps.yield)
             hud.elements.battery = nil
         end
         hud.elements.battery = metricsDisplays.battery.create(1, 1)
@@ -45,31 +46,28 @@ function hud.init()
                     print("hud - Line 25: Left click detected, setting battery location.")
                     if hud.elements.battery then
                         hud.elements.battery.remove()
-                        os.sleep(0.1)
                         hud.elements.battery = nil
                     end
-                    os.sleep(1)
                     hud.elements.battery = metricsDisplays.battery.create(x, y)
                     hud.savedCoordinates.battery = {x = x, y = y}
-                    os.sleep(1)
+                    os.sleep(sleeps.one)
                 elseif button == 1 then  -- Right click
                     print("hud - Line 34: Right click detected, adjusting battery location.")
                     if hud.elements.battery then
                         hud.elements.battery.remove()
-                        os.sleep(0.1)
                         hud.elements.battery = nil
                     end
-                    os.sleep(1)
                     local xModified = x - 203
                     local yModified = y - 183
                     hud.elements.battery = metricsDisplays.battery.create(xModified, yModified)
                     hud.savedCoordinates.battery = {x = xModified, y = yModified}
+                    os.sleep(sleeps.one)
                 elseif button == 2 then  -- Middle click
                     print("hud - Line 44: Middle click detected, finalizing battery location.")
                     break
                 end
             end
-            os.sleep(0.3)
+            os.sleep(sleeps.yield)
         end
 
         print("hud - Line 51: Hiding HUD and removing initialization messages.")
@@ -78,7 +76,6 @@ function hud.init()
             v.remove()
         end
         initMessages = nil
-        os.sleep(100)
         gimp_globals.configuringHUD_lock = false
         print("hud - Line 58: Configuring HUD lock set to false.")
     end)
@@ -120,7 +117,6 @@ function hud.modemMessageHandler(port, message)
     if not success then
         print("hud - Line 91: Error in hud.modemMessageHandler: " .. tostring(err))
     end
-    os.sleep(0)
 end
 
 function hud.persist_through_soft_reset()

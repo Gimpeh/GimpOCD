@@ -252,7 +252,7 @@ local function updated_configs_handler()
     end
     for i = 1, #configs do
         event.push("add_level_maint_thread", i)
-        os.sleep(1)
+        os.sleep(sleeps.yield)
     end
 end
 

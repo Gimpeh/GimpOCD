@@ -5,6 +5,7 @@ local event = require("event")
 local gimpHelper = require("gimpHelper")
 local s = require("serialization")
 local c = require("gimp_colors")
+local sleeps = require("sleepDurations")
 
 local verbosity = true
 local print = print
@@ -265,7 +266,7 @@ function itemWindow.onClick(x, y, button)
     local success, err = pcall(function()
         --buttons
         for k, v in pairs(itemWindow.elements) do
-            os.sleep(0)
+            os.sleep(sleeps.yield)
             if widgetsAreUs.isPointInBox(x, y, v.previousButton.box) then
                 v.display:prevPage()
                 return
@@ -278,7 +279,7 @@ function itemWindow.onClick(x, y, button)
         --clicking from main storage side
         if itemWindow.elements.mainStorage.background.contains(x, y) then
             for k, v in pairs(itemWindow.elements.mainStorage.display.currentlyDisplayed) do
-                os.sleep(0)
+                os.sleep(sleeps.yield)
                 if widgetsAreUs.isPointInBox(x, y, v.box) then
                     if not addTo then
                         if button == 0 then
@@ -354,7 +355,7 @@ function itemWindow.onClick(x, y, button)
         --clicking from monitored items side
         if itemWindow.elements.monitoredItems.background.contains(x, y) then
             for k, v in ipairs(itemWindow.elements.monitoredItems.display.currentlyDisplayed) do
-                os.sleep(0)
+                os.sleep(sleeps.yield)
                 if widgetsAreUs.isPointInBox(x, y, v.box) then
                     if not addTo then
                         print("itemWindow - Line 298: Removing item from monitoredItems.")
@@ -410,7 +411,7 @@ function itemWindow.onClick(x, y, button)
         --clicking from levelMaintainer side
         if lm.background.contains(x, y) then
             for k, v in ipairs(lm.display.currentlyDisplayed) do
-                os.sleep(0)
+                os.sleep(sleeps.yield)
                 if widgetsAreUs.isPointInBox(x, y, v.box) then
                     if button == 0 then
                         if widgetsAreUs.isPointInBox(x, y, v.amountText.box) then
@@ -463,7 +464,7 @@ function itemWindow.onClick(x, y, button)
         --clicking from reverseLevelMaintainer side
         if rlm.background.contains(x, y) then
             for k, v in ipairs(rlm.display.currentlyDisplayed) do
-                os.sleep(0)
+                os.sleep(sleeps.yield)
                 if widgetsAreUs.isPointInBox(x, y, v.box) then
                     if button == 0 then
                         if widgetsAreUs.isPointInBox(x, y, v.amountText.box) then
@@ -524,7 +525,7 @@ function itemWindow.update()
         for k, v in pairs(itemWindow.elements) do
             if v.display and v.display.currentlyDisplayed then
                 for i, j in ipairs(v.display.currentlyDisplayed) do
-                    os.sleep(100)
+                    os.sleep(sleeps.one)
                     j.update(i)
                 end
             end
