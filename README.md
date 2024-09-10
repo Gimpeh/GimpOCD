@@ -341,7 +341,7 @@ If you would like to contribute, find me (by searching for my tag; Gimpeh) in th
 Connecting Gregtech Machines (Or other things) as Components for an OpenComputers System
 --------------
 
-Place an adapter on (or near if using an MFU as I would recommend) the controller. and connect it via opencomputers cable to the server. You CAN use AE2 p2p's for opencomputers components. Just right click the p2p with an opencomputers cable, and connect them as normal.
+Place an adapter on (or near if using an MFU as I would recommend) the controller. and connect it via opencomputers cable to the server. You CAN use AE2 p2p's for opencomputers cables. Just right click the p2p with an opencomputers cable, and connect them as normal.
 
 If using an MFU; Shift right click the controller for the machine with an MFU in hand and then place the MFU in the adapter.
 
