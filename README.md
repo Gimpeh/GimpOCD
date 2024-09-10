@@ -3,6 +3,8 @@ GimpOCD - Overseeing, Controlling, Directing
 
 This is still under development.
 
+Real installers will be available on release to make parts of installing this easy, and do things like autorun on the battery monitor and such.
+
 Expect Bugs. You have been warned!
 
 -----------------
