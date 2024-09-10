@@ -1,11 +1,11 @@
 GimpOCD - Overseeing, Controlling, Directing
 -----------------
 
-This is still under development.
-
-Real installers will be available on release to make parts of installing this easy, and do things like autorun on the battery monitor and such.
-
+This is still under HEAVY development. A lot of features are missing and all that. 
 Expect Bugs. You have been warned!
+
+Real installers will be available on release to make parts of installing this easy, and do things like set autorun, choose which modules are available in the UI, and more.
+Not right now however.
 
 -----------------
 
@@ -210,6 +210,8 @@ These are for scrolling through the displayed content.
 The first tab on opening the overlay;
 ![image](https://github.com/user-attachments/assets/dc412c48-0bd5-4365-890e-d9ab6ffa6355)
 
+The boxes for the different groups are white if all enabled, purple if some are disabled, red if all are disabled, and yellow if processing user clicks.
+
 Clicking the purple buttons at the top switches tabs.
 
 Left clicking on one of the machine groups (Active1 or Distillation in the image) turns all machines contained within on or off.
@@ -222,6 +224,8 @@ Right clicking on one of the machine groups pull up a sub menu displaying indivi
 ![image](https://github.com/user-attachments/assets/553925ff-cd33-472f-b5ea-daf0c562e330)
 
 as you can see, I still definately need to do something about long machine names.. and I will.
+
+Red means disabled, white means enabled.
 
 Left clicking a machine cycles its state (disable/enabled)
 
@@ -250,11 +254,19 @@ The white boxes (they actually are only white at first, this will be fixed) by t
 The red section isnt actually used currently. It was going to be a reverse level maintainer (void items after amount reached).. but after testing, it would require a fair bit from users to scalable. And would take up too much space and be ugly and all that. So I'm probably not going to add in that functionality. It will probably be converted to the Display on HUD section.
 
 The green box (the top right) is for level maintaining the selected object. THESE WONT LEVEL MAINTAIN UNTIL CONFIGURED IN THE OPTIONS TAB, which we will cover later.
-At the time of this writing (Im fixing this as soon as I'm done here and pushing the fix to this branch) removing an item from the level maintainer (with a middle click) temporarily breaks it (but does remove the item from it), which can be fixed by switching to a different tab and back again... dont do the machines tab though. (clicking before it is loaded causes its background box to persist, which can only be fixed by restarting the entire program. Also a thing I intend to fix VERY shortly) #bugsIjustFound
+
+At the time of this writing (Im fixing this as soon as I'm done here and pushing the fix to this branch) removing an item from the level maintainer (with a middle click) temporarily breaks the level maintainer display (but does remove the item from it), which can be fixed by switching to a different tab and back again... dont do the machines tab though. (clicking before it is loaded causes its background box to persist, which can only be fixed by restarting the entire program. Also a thing I intend to fix VERY shortly) #bugsIjustFound
 
 ![image](https://github.com/user-attachments/assets/42de3535-5704-4129-aed1-783db4694c4e)
 
+Left clicking on batch lets you set the batch (number of crafting recipes to initiate at a time) make sure to press enter when finished setting it. (makes keyboard input go to the batch box instead of the search bar) Left click on amount lets you set the amount in the exact same way. Which is the amount to keep in stock.
+
+In the future, there will be a way to set the main item display's items to only those that are craftable in the system. That is not currently the case however.
+
+-------------------------------------------------------------
+
+The last functioning tab, options allows you to set various controls.
 
 
 
-
+---
