@@ -189,7 +189,7 @@ none will not contain any and is provided merely to demonstrate adding another e
 after that install GimpOCD on the server;
 
 ```
-wget https://raw.githubusercontent.com/Gimpeh/GimpOCD/semi-stable/very_basic_terrible_installer.lua d && d
+wget https://raw.githubusercontent.com/Gimpeh/GimpOCD/main/very_basic_terrible_installer.lua d && d
 ```
 
 you can now run it with the following command from any directory;
