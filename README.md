@@ -89,7 +89,7 @@ change to
 setting the number to whatever number required.. almost certainly more than the number in the picture =].
 
 ```
-wget https://raw.githubusercontent.com/Gimpeh/GimpOCD/semi-stable/Supporting%20Systems/Battery_Monitor.lua battery_monitor.lua
+wget https://raw.githubusercontent.com/Gimpeh/GimpOCD/main/Supporting%20Systems/Battery_Monitor.lua battery_monitor.lua
 ```
 
 run it from the directory you downloaded it from with `battery_monitor.lua` from the command line
