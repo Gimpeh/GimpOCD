@@ -449,7 +449,7 @@ function itemWindow.onClick(x, y, button)
                         lm.display = nil
                         gimpHelper.saveTable(tbl, "/home/programData/levelMaintainer.data")
                         if tbl[1] then
-                            lm.display = PagedWindow.new(tbl, 150, 30, {x1=330, y1=71, x2=490, y2=238}, 5, widgetsAreUs.levelMaintainer)
+                            lm.display = PagedWindow.new(tbl, 150, 30, {x1=505, y1= 83, x2= 660, y2=238}, 5, widgetsAreUs.levelMaintainer)
                             gimp_globals.initializing_lock = true
                             print("itemWindow - Line 372: init lock enabled")
                             lm.display:displayItems()
