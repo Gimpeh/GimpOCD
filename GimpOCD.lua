@@ -33,6 +33,16 @@ local function gimp_globals_auto_init_mutex_unlock()
     print("") -- Blank line after function execution
 end
 
+local gimp_globals_meta_table 
+
+gimp_globals = setmetatable({}, gimp_globals_meta_table)
+gimp_globals.initializing_lock = false
+gimp_globals.configuringHUD_lock = false
+gimp_globals.proxy_lock = false
+gimp_globals.glasses_controller_coords = {x = 5.5, y = 46, z = 13.5}
+gimp_globals.alert_DC = false
+
+
 local gimp_globals_meta_table = {
     __newindex = function(t, key, value)
         if key == "initializing_lock" then
@@ -57,13 +67,6 @@ local gimp_globals_meta_table = {
         end
     end
 }
-
-gimp_globals = setmetatable({}, gimp_globals_meta_table)
-gimp_globals.initializing_lock = false
-gimp_globals.configuringHUD_lock = false
-gimp_globals.proxy_lock = false
-gimp_globals.glasses_controller_coords = {x = 5.5, y = 46, z = 13.5}
-gimp_globals.alert_DC = false
 
 overlay.init()
 hud.init()
