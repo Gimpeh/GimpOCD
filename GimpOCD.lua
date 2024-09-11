@@ -46,19 +46,19 @@ gimp_globals.alert_DC = false
 local gimp_globals_meta_table = {
     __newindex = function(t, key, value)
         if key == "initializing_lock" then
-            if value and gimp_globals.initializing_lock then
+            if value and t.initializing_lock then
                 print("GimpOCD - Line 20: Initializing lock set to true while already true")
                 event.cancel(auto_init_mutex_unlock_timer)
                 event.timer(sleeps.thirty, gimp_globals_auto_init_mutex_unlock, 1)
-            elseif value and not gimp_globals.initializing_lock then
+            elseif value and not t.initializing_lock then
                 print("GimpOCD - Line 24: Initializing lock set to true")
                 rawset(t, key, value)
                 auto_init_mutex_unlock_timer = event.timer(sleeps.thirty, gimp_globals_auto_init_mutex_unlock, 1)
-            elseif not value and gimp_globals.initializing_lock then
+            elseif not value and t.initializing_lock then
                 print("GimpOCD - Line 27: Initializing lock set to false")
                 event.cancel(auto_init_mutex_unlock_timer)
                 rawset(t, key, value)
-            elseif not value and not gimp_globals.initializing_lock then
+            elseif not value and not t.initializing_lock then
                 while true do
                     print("GimpOCD - Line 31: Initializing lock set to false while already false")
                     os.sleep(sleeps.yield)
