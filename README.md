@@ -9,7 +9,7 @@ Not right now however.
 
 The current code has only been tested in one enviroment. That environment has buffed values in the opencomputers config and is on a pretty beefy server. I'd be interested in hearing about how it works in your environment. (under the wrap-up section, reference "people interested in contributing")
 
-his current ReadMe is going to be made almost entirely irrelevant. And shortened by a very large magnitude.
+This current ReadMe is going to be made almost entirely irrelevant. And shortened by a very large magnitude.
 But it is here if you wanna mess around or whatever.
 
 -----------------
