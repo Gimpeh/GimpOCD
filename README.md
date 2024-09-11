@@ -3,6 +3,9 @@ GimpOCD - Overseeing, Controlling, Directing
 
 This is still under HEAVY development. A lot of features are missing and all that. 
 Expect Bugs. You have been warned!
+It should be noted that I looked at the code for NIDAS...
+Now I have to go through the entirety of my code and organize the code properly, as well as change how I'm doing some stuff. At least some.. Because I am now embarrassed by what I have here.
+So expect a considerably longer time before this is actually in a release state.
 
 Real installers will be available on release to make parts of installing this easy, and do things like set autorun, choose which modules are available in the UI, and more.
 Not right now however.
