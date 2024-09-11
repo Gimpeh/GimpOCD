@@ -118,7 +118,7 @@ onOverlayEvent = function(eventType, ...)
     local success, error = pcall(function()
         if eventType == "overlay_opened" then
             if gimp_globals.initializing_lock then
-                event.timer(sleeps.ten, overlayRedoOpened, 1)
+                event.timer(sleeps.ten/2, overlayRedoOpened, 1)
                 return
             end
             print("GimpOCD - Line 47: overlay_opened event detected")
@@ -132,7 +132,7 @@ onOverlayEvent = function(eventType, ...)
             overlayUpdateEvent = event.timer(sleeps.thirty / 2, updateOverlay, math.huge)
         elseif eventType == "overlay_closed" then
             if gimp_globals.initializing_lock then
-                event.timer(sleeps.ten, overlayRedoClosed, 1)
+                event.timer(sleeps.ten/2, overlayRedoClosed, 1)
                 return
             end
             print("GimpOCD - Line 55: overlay_closed event detected")
@@ -212,7 +212,7 @@ local function onHudReset()
         event.cancel(overlayUpdateEvent)
         os.sleep(sleeps.one)
         if gimp_globals.initializing_lock then
-            event.timer(sleeps.ten, onHudReset, 1)
+            event.timer(sleeps.ten/2, onHudReset, 1)
             return
         end
         gimp_globals.initializing_lock = true
