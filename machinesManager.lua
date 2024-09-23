@@ -65,13 +65,14 @@ local function sortProxies()
         local config = gimpHelper.loadTable("/home/programData/groups.config")
         print("machinesManager - Line 30: Loaded configuration data:", tostring(config))
   
+        local groupname
         machinesManager.groups.groupings = {}
         for e = #unsorted_gt_machines, 1, -1 do
         
             local proxies = {}
             for k, v in ipairs(config) do
                 print("machinesManager - Line 34: Processing group:", tostring(v.name))
-                local groupname = v.name
+                groupname = v.name
   
             
                 local i = unsorted_gt_machines[e]
