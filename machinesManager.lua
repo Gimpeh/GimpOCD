@@ -76,14 +76,16 @@ local function sortProxies()
   
             
                 local i = unsorted_gt_machines[e]
-                local x, y, z = i.getCoordinates()
-                print("machinesManager - Line 39: Checking proxy coordinates: (", tostring(x), ",", tostring(y), ",", tostring(z), ")")
+                if i and i.getCoordinates then
+                    local x, y, z = i.getCoordinates()
+                    print("machinesManager - Line 39: Checking proxy coordinates: (", tostring(x), ",", tostring(y), ",", tostring(z), ")")
           
-                os.sleep(sleeps.yield)  -- Yield execution within inner loop
-                if v.start.x < x and x < v.ending.x and v.start.z < z and z < v.ending.z then
-                    print("machinesManager - Line 43: Proxy in range for group:", groupname)
-                    table.insert(proxies, i)
-                    table.remove(unsorted_gt_machines, e)
+                    os.sleep(sleeps.yield)  -- Yield execution within inner loop
+                    if v.start.x < x and x < v.ending.x and v.start.z < z and z < v.ending.z then
+                        print("machinesManager - Line 43: Proxy in range for group:", groupname)
+                        table.insert(proxies, i)
+                        table.remove(unsorted_gt_machines, e)
+                    end
                 end
             end
   
