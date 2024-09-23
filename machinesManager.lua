@@ -68,9 +68,9 @@ local function sortProxies()
         machinesManager.groups.groupings = {}
         for e = #unsorted_gt_machines, 1, -1 do
         
-            print("machinesManager - Line 34: Processing group:", tostring(v.name))
             local proxies = {}
             for k, v in ipairs(config) do
+                print("machinesManager - Line 34: Processing group:", tostring(v.name))
                 local groupname = v.name
   
             
