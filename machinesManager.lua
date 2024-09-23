@@ -66,12 +66,14 @@ local function sortProxies()
         print("machinesManager - Line 30: Loaded configuration data:", tostring(config))
   
         machinesManager.groups.groupings = {}
-        for k, v in ipairs(config) do
+        for e = #unsorted_gt_machines, 1, -1 do
+        
             print("machinesManager - Line 34: Processing group:", tostring(v.name))
             local proxies = {}
-            local groupname = v.name
+            for k, v in ipairs(config) do
+                local groupname = v.name
   
-            for e = #unsorted_gt_machines, 1, -1 do
+            
                 local i = unsorted_gt_machines[e]
                 local x, y, z = i.getCoordinates()
                 print("machinesManager - Line 39: Checking proxy coordinates: (", tostring(x), ",", tostring(y), ",", tostring(z), ")")

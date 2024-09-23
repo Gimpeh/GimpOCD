@@ -15,7 +15,7 @@ return {
     [14]={name="OreProc",start={y=56,x=95,z=61},ending={y=75,x=119,z=106}},
     [15]={name="Radox",start={y=56,x=56,z=-98},ending={y=90,x=88,z=-66}},
     [16]={name="Radox2",start={y=56,x=43,z=-91},ending={y=80,x=57,z=-65}},
-    [17]={name="Nanoforge",start=ending={y=56,x=21,z=-85},{y=150,x=44,z=-65}},
+    [17]={name="Nanoforge",start={y=56,x=21,z=-85},ending={y=150,x=44,z=-65}},
     [18]={name="Circ Bios",start={y=56,x=22,z=-170},ending={y=150,x=92,z=-114}},
     [19]={name="Circ Ass",start={y=129.0,x=96.0,z=-269.0},ending={y=56,x=130,z=-180}},
     [20]={name="Assline",start={y=56,x=208,z=-121},ending={y=136.0,x=259.0,z=-45.0}},
