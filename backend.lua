@@ -63,9 +63,8 @@ local function onUpdate()
     print("backend - line 48: Creating new updateThread")
     updateThread = thread.create(update)
     print("backend - line 50: waiting for locks to clear")
-    while gimp_globals.initializing_lock or gimp_globals.configuringHUD_lock do
-        print("backend - line 52: Still waiting for locks to clear")
-        os.sleep(sleeps.one)
+    if gimp_globals.initializing_lock or gimp_globals.configuringHUD_lock then
+        return
     end
     print("backend - line 53: Starting updateThread")
     updateThread:resume()
