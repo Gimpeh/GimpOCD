@@ -226,7 +226,7 @@ end
 function overlay.update()
     print("overlay - 220 : waiting on init lock")
     while gimp_globals.initializing_lock do
-        print("overlay - 222 : still waiting on init lock")
+        return
         os.sleep(sleeps.ten)
     end
     print("overlay - 225 : done waiting on init lock")
